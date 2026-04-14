@@ -3,12 +3,19 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mindfloox Learner</title>
+    <title>Home - Mindfloox</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 </head>
 
-<body class="overflow-x-hidden bg-white text-gray-800 dark:bg-[#0F0F1A] dark:text-white transition">
+<body class="">
 
     {{-- navbar --}}
     <x-navbar />
@@ -106,226 +113,54 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 
-                <div
-                    class="h-full flex flex-col bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg dark:border-gray-700 overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
-                    <div class="relative">
-                        <img src="img/momo.png" class="w-full h-48 object-cover">
-                        <span
-                            class="absolute top-3 left-3 bg-primary text-white text-sm px-3 font-medium py-1 rounded-full">DESIGN</span>
-                        <span
-                            class="absolute top-3 right-3 bg-secondary text-white text-sm px-3 font-medium py-1 rounded-full">$49</span>
-                    </div>
-                    <div class="p-5 flex flex-col flex-grow text-left">
-                        <h3 class="font-semibold text-lg mb-2 dark:text-white text-left">Desain Grafis</h3>
-                        <p class="line-clamp-4 text-gray-500 text-sm mb-4">
-                            Pelajari dasar hingga mahir desain grafis menggunakan tools modern seperti Adobe Photoshop,
-                            Illustrator, dan Figma. Kurikulum mencakup teori warna, tipografi, pembuatan logo
-                            profesional, hingga teknik layouting untuk media cetak dan digital yang sangat relevan
-                            dengan kebutuhan industri saat ini.
-                        </p>
-                        <div class="flex items-center gap-4 my-6">
-                            <img src="img/momo.png"
-                                class="w-12 h-12 rounded-full object-cover border border-gray-100" />
-                            <div class="flex flex-col"><span
-                                    class="text-base text-gray-800 dark:text-gray-200 font-medium">Fahad
-                                    Arifin</span><span class="text-xs text-gray-500">Graphic Designer</span></div>
-                        </div>
-                        <hr class="border-t border-gray-100 dark:border-gray-800 my-5">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-1 text-yellow-400 text-sm">⭐ ⭐ ⭐ ⭐ ⭐ <span
-                                    class="text-gray-500 text-xs ml-1">(4.9)</span></div>
-                            <span class="text-primary font-bold">$49</span>
-                        </div>
-                        <button
-                            class="mt-auto w-full bg-primary text-white py-2 rounded-lg hover:bg-blue-700 transition">Enroll
-                            Now</button>
-                    </div>
-                </div>
+                @foreach ($courses as $course)
+                    <div class="card">
 
-                <div
-                    class="h-full flex flex-col bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg dark:border-gray-700 overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600"
-                            class="w-full h-48 object-cover">
-                        <span
-                            class="absolute top-3 left-3 bg-primary text-white text-sm px-3 font-medium py-1 rounded-full">CODE</span>
-                        <span
-                            class="absolute top-3 right-3 bg-secondary text-white text-sm px-3 font-medium py-1 rounded-full">$89</span>
-                    </div>
-                    <div class="p-5 flex flex-col flex-grow text-left">
-                        <h3 class="font-semibold text-lg mb-2 dark:text-white">Fullstack Web Dev</h3>
-                        <p class="line-clamp-4 text-gray-500 text-sm mb-4">
-                            Bangun aplikasi web modern menggunakan Laravel, Tailwind CSS, dan Vue.js. Anda akan belajar
-                            mulai dari manajemen database MySQL, Entity Relationship Diagram (ERD), proses normalisasi
-                            data, hingga deployment ke server produksi menggunakan Git dan GitHub secara profesional
-                            untuk portofolio Anda.
-                        </p>
-                        <div class="flex items-center gap-4 my-6">
-                            <img src="https://i.pravatar.cc/150?u=dev"
-                                class="w-12 h-12 rounded-full object-cover border border-gray-100" />
-                            <div class="flex flex-col"><span
-                                    class="text-base text-gray-800 dark:text-gray-200 font-medium">Budi
-                                    Santoso</span><span class="text-xs text-gray-500">Fullstack Engineer</span></div>
-                        </div>
-                        <hr class="border-t border-gray-100 dark:border-gray-800 my-5">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-1 text-yellow-400 text-sm">⭐ ⭐ ⭐ ⭐ ⭐ <span
-                                    class="text-gray-500 text-xs ml-1">(5.0)</span></div>
-                            <span class="text-primary font-bold">$89</span>
-                        </div>
-                        <button
-                            class="mt-auto w-full bg-primary text-white py-2 rounded-lg hover:bg-blue-700 transition">Enroll
-                            Now</button>
-                    </div>
-                </div>
+                        <div class="relative">
+                            <img src="{{ $course['image'] }}" class="w-full h-48 object-cover">
 
-                <div
-                    class="h-full flex flex-col bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg dark:border-gray-700 overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600"
-                            class="w-full h-48 object-cover">
-                        <span
-                            class="absolute top-3 left-3 bg-primary text-white text-sm px-3 font-medium py-1 rounded-full">DATA</span>
-                        <span
-                            class="absolute top-3 right-3 bg-secondary text-white text-sm px-3 font-medium py-1 rounded-full">$75</span>
-                    </div>
-                    <div class="p-5 flex flex-col flex-grow text-left">
-                        <h3 class="font-semibold text-lg mb-2 dark:text-white">Data Science with Python</h3>
-                        <p class="line-clamp-4 text-gray-500 text-sm mb-4">
-                            Pelajari cara mengolah data mentah menjadi wawasan bisnis yang berharga. Kursus ini mencakup
-                            penggunaan library populer seperti Pandas, Numpy, dan Matplotlib. Anda juga akan diajarkan
-                            konsep dasar Machine Learning, pembersihan data (data cleaning), serta teknik visualisasi
-                            data yang memukau.
-                        </p>
-                        <div class="flex items-center gap-4 my-6">
-                            <img src="https://i.pravatar.cc/150?u=data"
-                                class="w-12 h-12 rounded-full object-cover border border-gray-100" />
-                            <div class="flex flex-col"><span
-                                    class="text-base text-gray-800 dark:text-gray-200 font-medium">Siti
-                                    Aminah</span><span class="text-xs text-gray-500">Data Scientist</span></div>
-                        </div>
-                        <hr class="border-t border-gray-100 dark:border-gray-800 my-5">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-1 text-yellow-400 text-sm">⭐ ⭐ ⭐ ⭐ ⭐ <span
-                                    class="text-gray-500 text-xs ml-1">(4.8)</span></div>
-                            <span class="text-primary font-bold">$75</span>
-                        </div>
-                        <button
-                            class="mt-auto w-full bg-primary text-white py-2 rounded-lg hover:bg-blue-700 transition">Enroll
-                            Now</button>
-                    </div>
-                </div>
+                            <span class="badge left-3 bg-primary">
+                                {{ $course['category'] }}
+                            </span>
 
-                <div
-                    class="h-full flex flex-col bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg dark:border-gray-700 overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600"
-                            class="w-full h-48 object-cover">
-                        <span
-                            class="absolute top-3 left-3 bg-primary text-white text-sm px-3 font-medium py-1 rounded-full">SECURE</span>
-                        <span
-                            class="absolute top-3 right-3 bg-secondary text-white text-sm px-3 font-medium py-1 rounded-full">$99</span>
-                    </div>
-                    <div class="p-5 flex flex-col flex-grow text-left">
-                        <h3 class="font-semibold text-lg mb-2 dark:text-white">Cyber Security Expert</h3>
-                        <p class="line-clamp-4 text-gray-500 text-sm mb-4">
-                            Lindungi data digital dari serangan hacker dengan mempelajari teknik penetration testing dan
-                            pertahanan jaringan. Materi meliputi pengenalan Linux, pengujian celah keamanan aplikasi
-                            web, kriptografi, hingga etika hacking yang diperlukan untuk menjadi seorang ahli keamanan
-                            siber bersertifikat.
-                        </p>
-                        <div class="flex items-center gap-4 my-6">
-                            <img src="https://i.pravatar.cc/150?u=sec"
-                                class="w-12 h-12 rounded-full object-cover border border-gray-100" />
-                            <div class="flex flex-col"><span
-                                    class="text-base text-gray-800 dark:text-gray-200 font-medium">Andi
-                                    Wijaya</span><span class="text-xs text-gray-500">Security Analyst</span></div>
+                            <span class="badge right-3 bg-secondary">
+                                ${{ $course['price'] }}
+                            </span>
                         </div>
-                        <hr class="border-t border-gray-100 dark:border-gray-800 my-5">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-1 text-yellow-400 text-sm">⭐ ⭐ ⭐ ⭐ ⭐ <span
-                                    class="text-gray-500 text-xs ml-1">(4.7)</span></div>
-                            <span class="text-primary font-bold">$99</span>
-                        </div>
-                        <button
-                            class="mt-auto w-full bg-primary text-white py-2 rounded-lg hover:bg-blue-700 transition">Enroll
-                            Now</button>
-                    </div>
-                </div>
 
-                <div
-                    class="h-full flex flex-col bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg dark:border-gray-700 overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600"
-                            class="w-full h-48 object-cover">
-                        <span
-                            class="absolute top-3 left-3 bg-primary text-white text-sm px-3 font-medium py-1 rounded-full">MOBILE</span>
-                        <span
-                            class="absolute top-3 right-3 bg-secondary text-white text-sm px-3 font-medium py-1 rounded-full">$69</span>
-                    </div>
-                    <div class="p-5 flex flex-col flex-grow text-left">
-                        <h3 class="font-semibold text-lg mb-2 dark:text-white">Mobile Development (Flutter)</h3>
-                        <p class="line-clamp-4 text-gray-500 text-sm mb-4">
-                            Kembangkan satu basis kode untuk aplikasi Android dan iOS sekaligus menggunakan Flutter dan
-                            Dart. Pelajari teknik manajemen state, integrasi API eksternal, pembuatan antarmuka pengguna
-                            (UI) yang interaktif, hingga proses publikasi aplikasi Anda ke Google Play Store dan Apple
-                            App Store secara mandiri.
-                        </p>
-                        <div class="flex items-center gap-4 my-6">
-                            <img src="https://i.pravatar.cc/150?u=mob"
-                                class="w-12 h-12 rounded-full object-cover border border-gray-100" />
-                            <div class="flex flex-col"><span
-                                    class="text-base text-gray-800 dark:text-gray-200 font-medium">Raka
-                                    Pratama</span><span class="text-xs text-gray-500">Mobile Developer</span></div>
-                        </div>
-                        <hr class="border-t border-gray-100 dark:border-gray-800 my-5">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-1 text-yellow-400 text-sm">⭐ ⭐ ⭐ ⭐ ⭐ <span
-                                    class="text-gray-500 text-xs ml-1">(4.9)</span></div>
-                            <span class="text-primary font-bold">$69</span>
-                        </div>
-                        <button
-                            class="mt-auto w-full bg-primary text-white py-2 rounded-lg hover:bg-blue-700 transition">Enroll
-                            Now</button>
-                    </div>
-                </div>
+                        <div class="p-5 flex flex-col flex-grow">
+                            <h3 class="font-semibold text-lg mb-2">
+                                {{ $course['title'] }}
+                            </h3>
 
-                <div
-                    class="h-full flex flex-col bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg dark:border-gray-700 overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600"
-                            class="w-full h-48 object-cover">
-                        <span
-                            class="absolute top-3 left-3 bg-primary text-white text-sm px-3 font-medium py-1 rounded-full">MARKETING</span>
-                        <span
-                            class="absolute top-3 right-3 bg-secondary text-white text-sm px-3 font-medium py-1 rounded-full">$39</span>
-                    </div>
-                    <div class="p-5 flex flex-col flex-grow text-left">
-                        <h3 class="font-semibold text-lg mb-2 dark:text-white">Digital Marketing Strategy</h3>
-                        <p class="line-clamp-4 text-gray-500 text-sm mb-4">
-                            Tingkatkan penjualan bisnis Anda melalui strategi pemasaran digital yang efektif. Fokus pada
-                            Search Engine Optimization (SEO), manajemen media sosial, Google Ads, hingga Copywriting.
-                            Anda akan belajar cara menganalisis data pasar dan perilaku konsumen untuk membuat kampanye
-                            yang berdampak tinggi.
-                        </p>
-                        <div class="flex items-center gap-4 my-6">
-                            <img src="https://i.pravatar.cc/150?u=mkt"
-                                class="w-12 h-12 rounded-full object-cover border border-gray-100" />
-                            <div class="flex flex-col"><span
-                                    class="text-base text-gray-800 dark:text-gray-200 font-medium">Larasati</span><span
-                                    class="text-xs text-gray-500">Marketing Lead</span></div>
+                            <p class="text-gray-500 text-sm mb-4">
+                                Lorem ipsum dolor sit amet...
+                            </p>
+
+                            <div class="flex items-center gap-4 my-6">
+                                <img src="img/momo.png" class="w-12 h-12 rounded-full object-cover">
+                                <div>
+                                    <p class="font-medium">{{ $course['author'] }}</p>
+                                    <p class="text-xs text-gray-500">{{ $course['role'] }}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-yellow-400 text-sm">
+                                    ⭐ {{ $course['rating'] }}
+                                </span>
+                                <span class="text-primary font-bold">
+                                    ${{ $course['price'] }}
+                                </span>
+                            </div>
+
+                            <button class="mt-auto w-full bg-primary text-white py-2 rounded-lg">
+                                Enroll Now
+                            </button>
                         </div>
-                        <hr class="border-t border-gray-100 dark:border-gray-800 my-5">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-1 text-yellow-400 text-sm">⭐ ⭐ ⭐ ⭐ ⭐ <span
-                                    class="text-gray-500 text-xs ml-1">(4.6)</span></div>
-                            <span class="text-primary font-bold">$39</span>
-                        </div>
-                        <button
-                            class="mt-auto w-full bg-primary text-white py-2 rounded-lg hover:bg-blue-700 transition">Enroll
-                            Now</button>
+
                     </div>
-                </div>
+                @endforeach
 
             </div>
 
@@ -337,157 +172,93 @@
             </div>
         </section>
 
+        {{-- kategori --}}
+        <section class="my-10">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-4 dark:text-white">
+                        Explore Top <span class="text-primary">Course</span>
+                    </h2>
+                    <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+
+                    @foreach ($categories as $category)
+                        <a href="#"
+                            class="group p-8 rounded-2xl border border-gray-600/0 hover:border-blue-500/50 hover:shadow-lg hover:-translate-y-2 transition-transform transition-shadow duration-300 text-center relative overflow-hidden">
+                                <div
+                                    class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                </div>
+
+                                <div
+                                    class="w-16 h-16 border {{ $category['color'] }} rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 group-hover:bg-blue-500 group-hover:text-white group-hover:border-blue-800/0 transition-all duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="{{ $category['icon'] }}" />
+                                    </svg>
+                                </div>
+
+                                <h3 class="font-medium text-lg mb-1">{{ $category['name'] }}</h3>
+                                <p class="text-sm text-gray-400">{{ $category['count'] }} Courses</p>
+                            </a>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+
         {{-- instructors --}}
-        <section class="px-4 py-16 text-center dark:bg-[#0F0F1E]">
+        <section class="px-4 py-16 text-center">
             <h2 class="text-2xl md:text-3xl font-bold mb-4 dark:text-white">
                 Featured <span class="text-blue-600">Instructor</span>
             </h2>
 
             <div class="w-20 h-1 mx-auto bg-gradient-to-r from-blue-600 to-cyan-400 mb-10"></div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-                <div
-                    class="h-full flex flex-col bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg dark:border-gray-700 overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group">
-                    <div class="relative overflow-hidden">
-                        <img src="img/momo.png" alt="instructor"
-                            class="w-full h-56 object-cover transition-transform duration-500 ease-in-out group-hover:scale-110">
-                        <div
-                            class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-black text-sm px-3 font-semibold py-1 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
-                            ⭐ <span class="ml-1">4.8</span>
-                        </div>
-                        <div
-                            class="absolute top-3 right-3 bg-blue-600 text-white text-xs px-3 font-medium py-1 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
-                            <span>18 Courses</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex flex-col flex-grow text-left">
-                        <h3 class="font-bold text-xl mb-1 dark:text-white text-gray-800">Sarah Johnson</h3>
-                        <p
-                            class="text-blue-600 dark:text-blue-400 font-semibold text-xs uppercase tracking-wider mb-3">
-                            Web Development</p>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5">Spesialis di bidang
-                            Frontend dengan pengalaman 5 tahun di industri kreatif.</p>
-                        <div
-                            class="mt-auto bg-gray-100 dark:bg-gray-800/50 rounded-xl p-4 flex justify-between text-center mb-5">
-                            <div>
-                                <p class="text-lg font-bold dark:text-white">2.1k</p>
-                                <p class="text-[10px] text-gray-500 uppercase font-semibold">Students</p>
-                            </div>
-                            <div class="px-6  dark:border-gray-700">
-                                <p class="text-lg font-bold dark:text-white">4.8</p>
-                                <p class="text-[10px] text-gray-500 uppercase font-semibold">Rating</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between gap-3">
-                            <a href="#"
-                                class="flex-grow text-center bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition">View
-                                Profile</a>
-                        </div>
-                    </div>
-                </div>
+                @foreach ($instructors as $inst)
+                    <div class="card group">
 
-                <div
-                    class="h-full flex flex-col bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg dark:border-gray-700 overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600"
-                            class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div
-                            class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-black text-sm px-3 font-semibold py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                            ⭐ <span class="ml-1">4.9</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex flex-col flex-grow text-left">
-                        <h3 class="font-bold text-xl mb-1 dark:text-white text-gray-800">Alex Rivera</h3>
-                        <p
-                            class="text-blue-600 dark:text-blue-400 font-semibold text-xs uppercase tracking-wider mb-3">
-                            UI/UX Design</p>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5">Pakar desain antarmuka
-                            yang fokus pada user-centric experience.</p>
-                        <div
-                            class="mt-auto bg-gray-100 dark:bg-gray-800/50 rounded-xl p-4 flex justify-between text-center mb-5">
-                            <div>
-                                <p class="text-lg font-bold dark:text-white">1.5k</p>
-                                <p class="text-[10px] text-gray-500 uppercase font-semibold">Students</p>
-                            </div>
-                            <div class="px-6  dark:border-gray-700">
-                                <p class="text-lg font-bold dark:text-white">4.9</p>
-                                <p class="text-[10px] text-gray-500 uppercase font-semibold">Rating</p>
-                            </div>
-                        </div>
-                        <a href="#"
-                            class="text-center bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition">View
-                            Profile</a>
-                    </div>
-                </div>
+                        <div class="relative overflow-hidden">
+                            <img src="{{ $inst['image'] }}"
+                                class="w-full h-56 object-cover group-hover:scale-110 transition duration-200">
 
-                <div
-                    class="h-full flex flex-col bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg dark:border-gray-700 overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600"
-                            class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div
-                            class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-black text-sm px-3 font-semibold py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                            ⭐ <span class="ml-1">4.7</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex flex-col flex-grow text-left">
-                        <h3 class="font-bold text-xl mb-1 dark:text-white text-gray-800">Michael Chen</h3>
-                        <p
-                            class="text-blue-600 dark:text-blue-400 font-semibold text-xs uppercase tracking-wider mb-3">
-                            Backend Engineer</p>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5">Membangun arsitektur
-                            server yang scalable dan aman bagi startup global.</p>
-                        <div
-                            class="mt-auto bg-gray-100 dark:bg-gray-800/50 rounded-xl p-4 flex justify-between text-center mb-5">
-                            <div>
-                                <p class="text-lg font-bold dark:text-white">3.2k</p>
-                                <p class="text-[10px] text-gray-500 uppercase font-semibold">Students</p>
+                            <div class="badge left-3 bg-white text-black opacity-0 group-hover:opacity-100">
+                                ⭐ {{ $inst['rating'] }}
                             </div>
-                            <div class="px-6  dark:border-gray-700">
-                                <p class="text-lg font-bold dark:text-white">4.7</p>
-                                <p class="text-[10px] text-gray-500 uppercase font-semibold">Rating</p>
-                            </div>
-                        </div>
-                        <a href="#"
-                            class="text-center bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition">View
-                            Profile</a>
-                    </div>
-                </div>
 
-                <div
-                    class="h-full flex flex-col bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg dark:border-gray-700 overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600"
-                            class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div
-                            class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-black text-sm px-3 font-semibold py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                            ⭐ <span class="ml-1">5.0</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex flex-col flex-grow text-left">
-                        <h3 class="font-bold text-xl mb-1 dark:text-white text-gray-800">Sophia Miller</h3>
-                        <p
-                            class="text-blue-600 dark:text-blue-400 font-semibold text-xs uppercase tracking-wider mb-3">
-                            Digital Marketing</p>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5">Ahli SEO dan strategi
-                            konten yang telah membantu ratusan brand.</p>
-                        <div
-                            class="mt-auto bg-gray-100 dark:bg-gray-800/50 rounded-xl p-4 flex justify-between text-center mb-5">
-                            <div>
-                                <p class="text-lg font-bold dark:text-white">4.5k</p>
-                                <p class="text-[10px] text-gray-500 uppercase font-semibold">Students</p>
-                            </div>
-                            <div class="px-6  dark:border-gray-700">
-                                <p class="text-lg font-bold dark:text-white">5.0</p>
-                                <p class="text-[10px] text-gray-500 uppercase font-semibold">Rating</p>
+                            <div class="badge right-3 bg-white text-black opacity-0 group-hover:opacity-100">
+                                {{ $inst['totalCourses'] }} Course
                             </div>
                         </div>
-                        <a href="#"
-                            class="text-center bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition">View
-                            Profile</a>
+
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="font-bold text-xl mb-1">{{ $inst['name'] }}</h3>
+
+                            <p class="text-blue-600 text-xs uppercase mb-3">
+                                {{ $inst['field'] }}
+                            </p>
+
+                            <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex justify-between mb-5">
+                                <div>
+                                    <p class="font-bold">{{ $inst['students'] }}</p>
+                                    <p class="text-xs text-gray-500">Students</p>
+                                </div>
+                                <div>
+                                    <p class="font-bold">{{ $inst['rating'] }}</p>
+                                    <p class="text-xs text-gray-500">Rating</p>
+                                </div>
+                            </div>
+
+                            <button class="bg-blue-600 text-white py-2 rounded-full">
+                                View Profile
+                            </button>
+                        </div>
+
                     </div>
-                </div>
+                @endforeach
 
             </div>
 
