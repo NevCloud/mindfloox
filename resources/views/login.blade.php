@@ -3,91 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
-    @vite('resources/css/app.css')
-    <style>
-        body {
-            background: radial-gradient(circle at center, #1e0b3a, #0b0120);
-        }
-    </style>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen flex items-center justify-center text-white">
+<body class="min-h-screen bg-violet-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 relative overflow-x-hidden flex flex-col justify-between transition-colors duration-300">
 
-    <!-- Background Stars -->
-    <div class="absolute inset-0 overflow-hidden">
-        <div class="w-full h-full bg-[radial-gradient(white_1px,transparent_1px)] [background-size:40px_40px] opacity-20"></div>
-    </div>
+    {{-- Navbar --}}
+    <x-navbar />
 
-    <!-- Card -->
-    <div class="relative w-full max-w-md p-8 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl shadow-[0_0_60px_rgba(140,85,247,0.4)] ">
+    {{-- Section login --}}
+    <section class="relative z-10 flex items-center justify-center px-4 py-16">
 
-        <!-- Icon -->
-        <div class="flex justify-center mb-4">
-            <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-purple-500/20 shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-            </div>
-        </div>
+        {{-- Card login --}}
+        <div class="w-full max-w-md p-8 rounded-3xl bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl border border-white dark:border-gray-700 shadow-2xl shadow-violet-200 dark:shadow-none"
+            x-data="{
+                username: '',
+                password: '',
+                showPassword: false,
+                errors: {},
+                validate() {
+                    this.errors = {};
+                    if (!this.username.trim()) this.errors.username = 'Username wajib diisi.';
+                    if (!this.password.trim()) this.errors.password = 'Password wajib diisi.';
+                    else if (this.password.length < 6) this.errors.password = 'Password minimal 6 karakter.';
+                    return Object.keys(this.errors).length === 0;
+                }
+            }">
 
-        <!-- Title -->
-        <h2 class="text-center text-2xl font-bold">Selamat Datang</h2>
-        <p class="text-center text-sm text-gray-400 mb-6">Masuk ke akun Mindfloox Anda</p>
-
-        <!-- Error -->
-        <div class="bg-red-500/20 border border-red-500 text-red-300 text-sm p-3 rounded-lg mb-4">
-            The username field is required.
-        </div>
-
-        <!-- Form -->
-        <form class="space-y-4">
-
-            <!-- Username -->
-            <div>
-                <label class="text-sm text-gray-300">Username</label>
-
-                <div class="relative mt-1">
-                    <input type="text"
-                        placeholder="Masukkan Username"
-                        class="w-full p-3 pl-10 pr-10 rounded-lg bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500">
-
-                    <!-- Icon kiri -->
-                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-purple-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-5" fill="currentColor">
-                            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clip-rule="evenodd" />
-                        </svg>
-
-                    </span>
+            {{-- Icon user --}}
+            <div class="flex justify-center mb-5">
+                <div class="w-14 h-14 flex items-center justify-center rounded-2xl bg-primary/10 shadow-inner">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
                 </div>
             </div>
 
-           <!-- Password -->
-            <div>
-                <label class="text-sm text-gray-300">Password</label>
+            {{-- Judul --}}
+            <h2 class="text-center text-2xl text-primary font-bold ">Selamat Datang</h2>
+            <p class="text-center text-sm text-gray-400 dark:text-gray-300 mb-6">Masuk ke akun Mindfloox Anda</p>
 
-                <div class="relative mt-1">
-                    <input type="password"
-                        placeholder="Masukkan password Anda"
-                        class="w-full p-3 pl-10 pr-10 rounded-lg bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500">
-
-                    <!-- Icon kiri -->
-                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-purple-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
-                            <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
-                        </svg>
-                    </span>
-                </div>
+            {{-- Banner error global --}}
+            <div x-show="Object.keys(errors).length > 0"
+                x-transition
+                class="bg-red-50 border border-red-300 text-red-500 text-sm p-3 rounded-xl mb-4">
+                Mohon periksa kembali form Anda.
             </div>
 
-             <!-- Button -->
-            <button type="submit"
-                class="w-full py-3 mt-4 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 hover:opacity-90 transition">
-                Masuk
-            </button>
+            {{-- Form --}}
+            <form class="space-y-4" @submit.prevent="validate()">
 
-        </form>
-    </div>
+                {{-- Username --}}
+                <div>
+                    <label class="text-sm font-medium mb-1 block">Username</label>
+                    <div class="relative">
+                        <input type="text"
+                            placeholder="Masukkan Username"
+                            x-model="username"
+                            :class="errors.username ? 'border-red-400 focus:ring-red-400' : 'border-violet-200 focus:ring-primary'"
+                            class="w-full px-4 py-3 pl-10 rounded-xl border bg-white/80 focus:outline-none focus:ring-2 transition text-sm text-gray-700">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2"
+                            :class="errors.username ? 'text-red-400' : 'text-primary'">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-5" fill="currentColor">
+                                <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                    </div>
+                    <p x-show="errors.username" x-text="errors.username" x-transition class="text-red-400 text-xs mt-1"></p>
+                </div>
+
+                {{-- Password --}}
+                <div>
+                    <label class="text-sm font-mediumd mb-1 block ">Password</label>
+                    <div class="relative">
+                        <input
+                            :type="showPassword ? 'text' : 'password'"
+                            placeholder="Masukkan password Anda"
+                            x-model="password"
+                            :class="errors.password ? 'border-red-400 focus:ring-red-400' : 'border-violet-200 focus:ring-primary'"
+                            class="w-full px-4 py-3 pl-10 pr-10 rounded-xl border bg-white/80 focus:outline-none focus:ring-2 transition text-sm text-gray-700">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2"
+                            :class="errors.password ? 'text-red-400' : 'text-primary'">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+                                <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                        {{-- Toggle show/hide password --}}
+                        <button type="button" @click="showPassword = !showPassword"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-400 hover:text-primary dark:hover:text-primaryd transition">
+                            <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                            <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p x-show="errors.password" x-text="errors.password" x-transition class="text-red-400 text-xs mt-1"></p>
+                </div>
+
+                {{-- Tombol submit --}}
+                <button type="submit"
+                    class="w-full py-3 mt-2 rounded-xl bg-primary text-white font-semibold hover:opacity-90 hover:-translate-y-0.5 transition duration-300 ">
+                    Masuk
+                </button>
+
+                {{-- Link daftar --}}
+                <p class="text-center text-sm text-gray-400 mt-4">
+                    Belum punya akun?
+                    <a href="/enroll" class="text-primary font-medium hover:underline">Daftar sekarang</a>
+                </p>
+
+            </form>
+        </div>
+
+    </section>
+
+    {{-- Footer --}}
+    <x-footer/>
+
 
 </body>
 </html>
