@@ -20,3 +20,26 @@
     box-shadow: 0px 0px 20px rgb(0 0 0 / 0.2);
   }
 }
+@layer components {
+
+    body{
+        @apply overflow-x-hidden bg-white text-gray-800 dark:bg-[#0F0F1A] dark:text-white transition-all duration-300;
+    }
+
+    .card {
+        @apply h-full flex flex-col bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300;
+    }
+
+    .badge {
+        @apply absolute top-3 text-white text-sm px-3 py-1 rounded-full font-medium;
+    }
+
+    .btn-primary {
+        @apply bg-primary text-white px-6 py-3 rounded-full hover:shadow-lg hover:-translate-y-1 transition duration-300;
+    }
+
+    .btn-outline {
+        @apply border border-primary text-primary px-6 py-3 rounded-full hover:bg-primary hover:text-white hover:shadow-lg hover:-translate-y-1 transition duration-300;
+    }
+    
+}
