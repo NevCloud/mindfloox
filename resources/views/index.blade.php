@@ -11,7 +11,7 @@
 <body class="overflow-x-hidden bg-white text-gray-800 dark:bg-[#0F0F1A] dark:text-white transition">
 
     {{-- navbar --}}
-    <x-navbar/>
+    <x-navbar />
 
     <div class="max-w-7xl mx-auto">
 
@@ -338,7 +338,7 @@
         </section>
 
         {{-- instructors --}}
-        <section class="px-4 py-16 text-center bg-gray-50 dark:bg-[#0F0F1E]">
+        <section class="px-4 py-16 text-center dark:bg-[#0F0F1E]">
             <h2 class="text-2xl md:text-3xl font-bold mb-4 dark:text-white">
                 Featured <span class="text-blue-600">Instructor</span>
             </h2>
@@ -416,7 +416,8 @@
                             </div>
                         </div>
                         <a href="#"
-                            class="text-center bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition">View Profile</a>
+                            class="text-center bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition">View
+                            Profile</a>
                     </div>
                 </div>
 
@@ -449,7 +450,8 @@
                             </div>
                         </div>
                         <a href="#"
-                            class="text-center bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition">View Profile</a>
+                            class="text-center bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition">View
+                            Profile</a>
                     </div>
                 </div>
 
@@ -482,7 +484,8 @@
                             </div>
                         </div>
                         <a href="#"
-                            class="text-center bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition">View Profile</a>
+                            class="text-center bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition">View
+                            Profile</a>
                     </div>
                 </div>
 
@@ -499,7 +502,7 @@
 
     </div>
 
-    <x-footer/>
+    <x-footer />
 
 </body>
 
