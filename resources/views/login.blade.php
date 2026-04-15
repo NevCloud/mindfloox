@@ -25,14 +25,15 @@
             x-data="{
                 username: '',
                 password: '',
+                role: '',
                 showPassword: false,
                 errors: {},
                 validate() {
                     this.errors = {};
                     if (!this.username.trim()) this.errors.username = 'Username wajib diisi.';
-                    if (!this.password.trim()) this.errors.password = 'Password wajib diisi.';
-                    else if (this.password.length < 6) this.errors.password = 'Password minimal 6 karakter.';
-                    return Object.keys(this.errors).length === 0;
+                   if (!this.password.trim()) {this.errors.password = 'Password wajib diisi.'; }
+                   else if (this.password.length < 6) {this.errors.password = 'Password minimal 6 karakter.';}
+                    if (!this.role) {this.errors.role = 'Role wajib dipilih.';}
                 }
             }">
 
@@ -66,8 +67,7 @@
                         <input type="text"
                             placeholder="Masukkan Username"
                             x-model="username"
-                            :class="errors.username ? 'border-red-400 focus:ring-red-400' : 'border-violet-200 focus:ring-primary'"
-                            class="w-full px-4 py-3 pl-10 rounded-xl border bg-white/80 focus:outline-none focus:ring-2 transition text-sm text-gray-700">
+                            :class="errors.username ? 'input input-error' : 'input'" class="pl-10">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2"
                             :class="errors.username ? 'text-red-400' : 'text-primary'">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-5" fill="currentColor">
@@ -80,20 +80,20 @@
 
                 {{-- Password --}}
                 <div>
-                    <label class="text-sm font-mediumd mb-1 block ">Password</label>
+                    <label class="text-sm font-medium mb-1 block ">Password</label>
                     <div class="relative">
                         <input
                             :type="showPassword ? 'text' : 'password'"
                             placeholder="Masukkan password Anda"
                             x-model="password"
-                            :class="errors.password ? 'border-red-400 focus:ring-red-400' : 'border-violet-200 focus:ring-primary'"
-                            class="w-full px-4 py-3 pl-10 pr-10 rounded-xl border bg-white/80 focus:outline-none focus:ring-2 transition text-sm text-gray-700">
+                            :class="errors.password ? 'input input-error' : 'input'" class="pl-10">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2"
                             :class="errors.password ? 'text-red-400' : 'text-primary'">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
                                 <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
                             </svg>
                         </span>
+
                         {{-- Toggle show/hide password --}}
                         <button type="button" @click="showPassword = !showPassword"
                             class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-400 hover:text-primary dark:hover:text-primaryd transition">
@@ -106,7 +106,41 @@
                             </svg>
                         </button>
                     </div>
-                    <p x-show="errors.password" x-text="errors.password" x-transition class="text-red-400 text-xs mt-1"></p>
+                    <p x-show="errors.password" x-text="errors.password" x-transition class="error-text"></p>
+                </div>
+
+                 {{-- Role --}}
+                <div>
+                    <label for="role" class="text-sm font-medium mb-1 block">Login sebagai</label>
+                    <div x-data="{ open: false, selected: 'Pilih Role' }" class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 " :class="errors.role ? 'text-red-400' : 'text-primary'">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+                                <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                        <button @click="open = !open" :class="errors.role ? 'dropdown-btn dropdown-error pl-10': 'dropdown-btn pl-10'" type="button">
+                            <span x-text="selected"></span>
+                            <span>
+                                 <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    :class="open ? 'rotate-180' : ''"
+                                    class="size-4 transition-transform duration-200">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                </svg>
+                            </span>
+                        </button>
+                        <div x-show="open" @click.outside="open = false" class="dropdown-menu">
+                            <div @click="selected = 'Peserta'; role = 'Peserta'; open = false" class="dropdown-item">Peserta</div>
+                            <div @click="selected = 'Instruktur'; role = 'Instruktur'; open = false" class="dropdown-item">Instruktur</div>
+                            <div @click="selected = 'Admin'; role = 'Admin'; open = false" class="dropdown-item ">Admin</div>
+                            <div @click="selected = 'SuperAdmin'; role = 'Super Admin'; open = false" class="dropdown-item">Super Admin</div>
+                        </div>
+                    </div>
+                    <p x-show="errors.role" x-text="errors.role" class="text-red-400 text-xs mt-1"></p>
                 </div>
 
                 {{-- Tombol submit --}}
