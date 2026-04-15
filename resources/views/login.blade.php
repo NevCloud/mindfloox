@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark')
+            document.documentElement.classList.remove('light')
+        }
+    </script>
 </head>
 <body class="min-h-screen bg-violet-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 relative overflow-x-hidden flex flex-col justify-between transition-colors duration-300">
 
