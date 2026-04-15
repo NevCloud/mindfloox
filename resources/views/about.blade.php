@@ -32,7 +32,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold mb-4 leading-tight">
                     Empowering Future Leaders Through Quality Education
                 </h2>
-                <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm sm:text-base md:text-lg text-justify">
+                <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm sm:text-base md:text-lg">
                     Mind Floox adalah platform digital pembelajaran daring yang memungkinkan mahasiswa mengikuti kursus sesuai bidang yang diminati dan mendapatkan sertifikat digital sebagai bukti pengakuan kompetensi resmi dari institusi.
                 </p>
 
@@ -115,7 +115,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4 leading-tight">
                     Transforming Education for a Better Tomorrow
                 </h2>
-                <p class="text-gray-500 dark:text-gray-400 mb-6 leading-relaxed text-justify">
+                <p class="text-gray-500 dark:text-gray-400 mb-6 leading-relaxed">
                     Platform pembelajaran digital yang dirancang khusus untuk meningkatkan kompetensi mahasiswa melalui kursus fleksibel, instruktur ahli, dan sertifikasi digital otomatis yang diakui secara resmi. Kami menjembatani kesenjangan antara perkuliahan formal dan kebutuhan industri masa depan.
                 </p>
 

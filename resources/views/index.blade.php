@@ -154,9 +154,9 @@
                                 </span>
                             </div>
 
-                            <button class="mt-auto w-full bg-primary text-white py-2 rounded-lg">
+                            <a href="enroll" class="mt-auto w-full bg-primary text-white py-2 rounded-lg">
                                 Enroll Now
-                            </button>
+                            </a>
                         </div>
 
                     </div>

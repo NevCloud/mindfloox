@@ -4,6 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enroll - Mindfloox</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 </head>
 <body class="overflow-x-hidden bg-gray-50 text-gray-800 dark:bg-[#0F0F1A] dark:text-white transition">
 
@@ -14,7 +22,7 @@
         <div class="grid md:grid-cols-3 gap-8 items-start">
 
             {{-- KOLOM KIRI: Form --}}
-            <div class="md:col-span-2 bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-lg p-8 mt-13"
+            <div class="md:col-span-2 bg-white dark:bg-[#1A1A2E] border border-gray-200 dark:border-none rounded-2xl shadow-lg p-8 mt-13"
                 x-data="{
                     firstName: '',
                     lastName: '',
@@ -56,7 +64,7 @@
                             <input type="text"
                                 x-model="firstName"
                                 :class="errors.firstName ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-primary'"
-                                class="w-full px-4 py-2.5 rounded-lg border bg-white dark:bg-[#0F0F1A] focus:outline-none focus:ring-2 transition text-sm">
+                                class="input">
                             <p x-show="errors.firstName" x-text="errors.firstName" x-transition class="text-red-500 text-xs mt-1"></p>
                         </div>
 
@@ -68,7 +76,7 @@
                             <input type="text"
                                 x-model="lastName"
                                 :class="errors.lastName ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-primary'"
-                                class="w-full px-4 py-2.5 rounded-lg border bg-white dark:bg-[#0F0F1A] focus:outline-none focus:ring-2 transition text-sm">
+                                class="input">
                             <p x-show="errors.lastName" x-text="errors.lastName" x-transition class="text-red-500 text-xs mt-1"></p>
                         </div>
 
@@ -85,7 +93,7 @@
                             <input type="email"
                                 x-model="email"
                                 :class="errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-primary'"
-                                class="w-full px-4 py-2.5 rounded-lg border bg-white dark:bg-[#0F0F1A] focus:outline-none focus:ring-2 transition text-sm">
+                                class="input">
                             <p x-show="errors.email" x-text="errors.email" x-transition class="text-red-500 text-xs mt-1"></p>
                         </div>
 
@@ -100,7 +108,7 @@
                                     :type="showPassword ? 'text' : 'password'"
                                     x-model="password"
                                     :class="errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-primary'"
-                                    class="w-full px-4 py-2.5 pr-10 rounded-lg border bg-white dark:bg-[#0F0F1A] focus:outline-none focus:ring-2 transition text-sm">
+                                    class="input">
 
                                 {{-- Toggle show/hide password --}}
                                 <button type="button" @click="showPassword = !showPassword"
@@ -129,7 +137,7 @@
                         <label class="text-sm font-medium mb-1 block">What motivates you to take this course?</label>
                         <textarea x-model="motivation" rows="5"
                             placeholder="Share your goals and what you hope to achieve..."
-                            class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#0F0F1A] focus:outline-none focus:ring-2 focus:ring-primary transition text-sm resize-none"></textarea>
+                            class="textarea"></textarea>
                     </div>
 
                     {{-- Submit Button --}}

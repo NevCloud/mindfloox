@@ -36,9 +36,9 @@
                     <label class="sr-only" for="search"> Search </label>
 
                     <input
-                        class="h-10 w-full p-5 rounded-full border border-gray-300 transition-all focus:border-blue-600/50 focus:ring-2 focus:ring-blue-600/20 outline-none dark:bg-gray-800 dark:border-gray-700 " type="text" placeholder="Search..." />
+                        class="h-10 w-full p-5 rounded-full border border-gray-300 transition-all focus:border-blue-600/50 focus:ring-2 focus:ring-blue-600/20 outline-none dark:bg-gray-800 dark:border-gray-700" type="text" placeholder="Search..." />
                     <button type="button"
-                        class="absolute inset-y-1 end-1 flex items-center justify-center rounded-full bg-gray-200 px-3 text-gray-600 transition hover:bg-gray-50 hover:text-primary dark:bg-gray-900 dark:text-gray-300">
+                        class="absolute inset-y-1 end-1 flex items-center justify-center rounded-full bg-gray-200 px-3 text-gray-600 transition hover:bg-white hover:text-primary dark:bg-gray-800 dark:text-gray-300">
                         <span class="sr-only">Search</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" class="h-5 w-5">
@@ -101,7 +101,7 @@
                 @endforeach
 
             </div>
-            
+
         </section>
 
     </div>

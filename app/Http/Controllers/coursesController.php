@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class coursesController extends Controller
 {
-    public function courses()
+    public function courses(Request $request)
     {
         $courses = [
             [

@@ -1,5 +1,5 @@
 {{-- NAVBAR --}}
-<nav class="bg-white dark:bg-[#1A1A2E] border-b dark:border-gray-700 sticky top-0 z-50 transition-all duration-300"
+<nav class="bg-gray-100 dark:bg-[#1A1A2E] border-b dark:border-gray-700 sticky top-0 z-50 transition-all duration-300"
     x-cloak x-data="{
         menuOpen: false,
         // Ambil status langsung dari class <html> yang sudah di-set di HEAD
@@ -70,20 +70,20 @@
                 </div>
             </button>
 
-            <a href="/enroll"
-                class="bg-primary text-white px-3 md:px-5 py-1.5 md:py-2 text-sm md:text-base rounded-full hover:opacity-90">
-                Enroll
+            <a href="/login"
+                class="bg-primary font-semibold text-white px-3 md:px-5 py-1.5 md:py-2 text-sm md:text-base rounded-full hover:opacity-90">
+                Login
             </a>
 
             {{-- MOBILE MENU BUTTON --}}
             <button @click="menuOpen = !menuOpen"
                 class="md:hidden relative w-8 h-8 flex flex-col justify-center items-center gap-1">
                 <span :class="menuOpen ? 'rotate-45 translate-y-1.5' : ''"
-                    class="w-6 h-0.5 bg-black dark:bg-white transition-all"></span>
+                    class="w-6 h-0.5 bg-black dark:bg-gray-200 transition-all"></span>
                 <span :class="menuOpen ? 'opacity-0' : ''"
-                    class="w-6 h-0.5 bg-black dark:bg-white transition-all"></span>
+                    class="w-6 h-0.5 bg-black dark:bg-gray-200 transition-all"></span>
                 <span :class="menuOpen ? '-rotate-45 -translate-y-1.5' : ''"
-                    class="w-6 h-0.5 bg-black dark:bg-white transition-all"></span>
+                    class="w-6 h-0.5 bg-black dark:bg-gray-200 transition-all"></span>
             </button>
         </div>
     </div>
