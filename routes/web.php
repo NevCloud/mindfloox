@@ -19,6 +19,10 @@ Route::get('/course', function () {
     return view('courses');
 })->name('courses');
 
+route::get('/myCourses', function () {
+    return view('myCourses');
+})->name('mycourses');
+
 // Halaman Instructors
 use App\Http\Controllers\instructorsController;
 Route::get('/instructors', [instructorsController::class, 'instructors'])->name('instructors');
