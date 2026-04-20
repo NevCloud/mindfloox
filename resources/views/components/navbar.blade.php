@@ -43,10 +43,6 @@
                     <span
                         class="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary duration-300 group-hover:w-full {{ request()->routeIs('instructors') ? 'w-full' : 'w-0' }}"></span>
                 </a></li>
-            <li><a href="/myCourses" class="relative group py-1 block">My Courses
-                    <span
-                        class="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary duration-300 group-hover:w-full {{ request()->routeIs('mycourses') ? 'w-full' : 'w-0' }}"></span>
-                </a></li>
         </ul>
 
         <div class="flex items-center gap-2 md:gap-4">

@@ -17,6 +17,7 @@ class HomeController extends Controller
                 'author' => 'Fahad Arifin',
                 'role' => 'Graphic Designer',
                 'rating' => 4.9,
+                'students' => 79,
             ],
             [
                 'title' => 'Fullstack Web Dev',
@@ -26,6 +27,7 @@ class HomeController extends Controller
                 'author' => 'Budi Santoso',
                 'role' => 'Fullstack Engineer',
                 'rating' => 5.0,
+                'students' => 159,
             ],
             [
                 'title' => 'Data Science',
@@ -35,6 +37,7 @@ class HomeController extends Controller
                 'author' => 'Siti Aminah',
                 'role' => 'Data Scientist',
                 'rating' => 4.8,
+                'students' => 49,
             ],
         ];
 

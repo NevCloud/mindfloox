@@ -24,30 +24,11 @@
 
         {{-- course --}}
         <section class="px-4 py-16 text-left max-w-7xl mx-auto">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
-                <div>
-                    <h2 class="text-2xl md:text-3xl font-bold dark:text-white">
-                        Featured <span class="text-primary">Course</span>
-                    </h2>
-                    <div class="w-20 h-1 bg-gradient-to-r from-primary to-accent mt-2"></div>
-                </div>
+            <h2 class="text-2xl md:text-3xl font-bold mb-4 dark:text-white">
+                Featured <span class="text-primary">Course</span>
+            </h2>
 
-                <div class="relative w-full sm:max-w-xs">
-                    <label class="sr-only" for="search"> Search </label>
-
-                    <input
-                        class="h-10 w-full p-5 rounded-full border border-gray-300 transition-all focus:border-primary focus:ring-2 focus:ring-blue-600/20 outline-none dark:bg-gray-800 dark:border-gray-700" type="text" placeholder="Search..." />
-                    <button type="button"
-                        class="absolute inset-y-1 end-1 flex items-center justify-center rounded-full bg-gray-200 px-3 text-gray-600 transition hover:bg-white hover:text-primary dark:bg-gray-800 dark:text-gray-300">
-                        <span class="sr-only">Search</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" class="h-5 w-5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
+            <div class="w-20 h-1 mx-auto bg-gradient-to-r from-primary to-accent mb-10"></div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 
@@ -71,7 +52,7 @@
                                 {{ $course['title'] }}
                             </h3>
 
-                            <p class="text-gray-500 text-sm mb-4">
+                            <p class="text-gray-500 text-sm mb-4 line-clamp-2">
                                 Lorem ipsum dolor sit amet...
                             </p>
 
@@ -84,14 +65,25 @@
                             </div>
 
                             <div class="flex justify-between items-center mb-4">
-                                <span class="text-yellow-400 text-sm">
+                                <span class="text-yellow-400 font-bold">
                                     ⭐ {{ $course['rating'] }}
+                                </span>
+                                <span class="flex gap-1 text-primary font-bold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-users-icon lucide-users">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                        <path d="M16 3.128a4 4 0 0 1 0 7.744" />
+                                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                        <circle cx="9" cy="7" r="4" />
+                                    </svg> {{ $course['students'] }}
                                 </span>
                             </div>
 
-                            <button class="mt-auto w-full bg-primary text-white py-2 rounded-lg">
+                            <a href="enroll" class="text-center mt-auto w-full bg-primary text-white py-2 rounded-lg">
                                 Enroll Now
-                            </button>
+                            </a>
                         </div>
 
                     </div>
@@ -99,6 +91,12 @@
 
             </div>
 
+            <div class="mt-10 text-center">
+                <button
+                    class="border border-primary text-primary px-6 py-3 rounded-full hover:bg-primary hover:text-white hover:shadow-lg hover:-translate-y-1 transition duration-300 font-semibold">
+                    View All Course
+                </button>
+            </div>
         </section>
 
     </div>

@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
-class coursesController extends Controller
+class myCoursesController extends Controller
 {
-    public function courses(Request $request)
+    public function myCourses(Request $request)
     {
-        $courses = [
+        $myCourses = [
             [
                 'title' => 'Desain Grafis',
                 'category' => 'DESIGN',
@@ -19,7 +17,6 @@ class coursesController extends Controller
                 'author' => 'Fahad Arifin',
                 'role' => 'Graphic Designer',
                 'rating' => 4.9,
-                'students' => 79,
             ],
             [
                 'title' => 'Fullstack Web Dev',
@@ -29,7 +26,6 @@ class coursesController extends Controller
                 'author' => 'Budi Santoso',
                 'role' => 'Fullstack Engineer',
                 'rating' => 5.0,
-                'students' => 159,
             ],
             [
                 'title' => 'Data Science',
@@ -39,9 +35,8 @@ class coursesController extends Controller
                 'author' => 'Siti Aminah',
                 'role' => 'Data Scientist',
                 'rating' => 4.8,
-                'students' => 49,
             ],
         ];
-        return view('courses', compact('courses'));
+        return view('myCourses', compact('myCourses'));
     }
 }
