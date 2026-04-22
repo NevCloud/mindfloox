@@ -1,5 +1,5 @@
 {{-- NAVBAR --}}
-<nav class="bg-gray-100 dark:bg-[#1A1A2E] border-b dark:border-gray-700 sticky top-0 z-50 transition-all duration-300"
+<nav class="bg-white dark:bg-[#1A1A2E] nav-shadow dark:border-gray-700 sticky top-0 z-50 transition-all duration-300"
     x-cloak x-data="{
         menuOpen: false,
         // Ambil status langsung dari class <html> yang sudah di-set di HEAD
