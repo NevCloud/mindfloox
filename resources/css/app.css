@@ -15,9 +15,12 @@
     --color-accent: #ff6584;
 }
 @layer base {
-    .border-b {
+    .nav-shadow {
         border-color: rgb(0 0 0 / 0.1);
-        box-shadow: 0px 0px 20px rgb(0 0 0 / 0.2);
+        box-shadow: 0px 0px 20px rgb(0 0 0 / 0.1);
+    }
+    .border-b {
+        @apply transition duration-300
     }
 }
 @layer components {
@@ -26,7 +29,7 @@
     }
 
     .card {
-        @apply h-full flex flex-col bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300;
+        @apply h-full flex flex-col bg-white dark:bg-gray-900 border border-[#e8e8e8] dark:border-gray-800 rounded-xl shadow-[0_0_25px_-10px_rgba(0,0,0,0.2)] overflow-hidden hover:-translate-y-2 hover:rounded-xl transition-all duration-300;
     }
 
     .badge {
@@ -45,7 +48,7 @@
         @apply w-full px-3 py-2 rounded-lg border text-sm
         bg-white dark:bg-[#1A1A2E]
         border-gray-300 dark:border-gray-600
-        focus:outline-none focus:ring-2 focus:ring-primary
+        focus:outline-none focus:ring-1 focus:ring-primary/70
         placeholder-gray-400 dark:placeholder-gray-500;
     }
 
@@ -66,7 +69,7 @@
     }
 
     .textarea {
-        @apply w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#1A1A2E] focus:outline-none focus:ring-2 focus:ring-primary transition text-sm resize-none;
+        @apply w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#1A1A2E] focus:outline-none focus:ring-1 focus:ring-primary/70 transition text-sm resize-none;
     }
 
     .dropdown-btn {
@@ -90,5 +93,33 @@
 
     .dropdown-error {
         @apply border-red-500 focus:ring-red-500;
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar {
+        width: 6px;
+        @apply border-l border-[#e8e8e8];
+    }
+
+    .dark ::-webkit-scrollbar {
+        @apply border-gray-800;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(150, 150, 150, 0.4);
+        border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(120, 120, 120, 0.6);
+    }
+
+    .dark ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        @apply border-l border-gray-800;
+    }
+
+    .dark ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.35);
     }
 }
