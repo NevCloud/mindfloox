@@ -7,64 +7,75 @@ use App\Http\Controllers\instructorsController;
 use App\Http\Controllers\authController;
 use App\Http\Controllers\tugasController;
 
+/*
+|--------------------------------------------------------------------------
+| AUTH
+|--------------------------------------------------------------------------
+*/
+Route::get('/login', fn() => view('login'))->name('login');
 Route::post('/login', [authController::class, 'login'])->name('login.process');
 
-// Halaman Utama
+/*
+|--------------------------------------------------------------------------
+| PUBLIC PAGES
+|--------------------------------------------------------------------------
+*/
 Route::get('/', [homeController::class, 'index'])->name('index');
+Route::get('/about', fn() => view('about'))->name('about');
 
-// Halaman Otentikasi
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
+/*
+|--------------------------------------------------------------------------
+| COURSES
+|--------------------------------------------------------------------------
+*/
+Route::prefix('courses')->name('courses.')->group(function () {
+    Route::get('/', [coursesController::class, 'index'])->name('index');
+    Route::get('/my', fn() => view('mycourses'))->name('my');
+    Route::get('/enroll', fn() => view('enroll'))->name('enroll');
+});
 
-// Halaman Informasi & Statis
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
+/*
+|--------------------------------------------------------------------------
+| INSTRUCTORS
+|--------------------------------------------------------------------------
+*/
+Route::get('/instructors', [instructorsController::class, 'instructors'])
+    ->name('instructors');
 
-// Halaman Kursus
-Route::get('/courses', [coursesController::class, 'index'])->name('courses');
+/*
+|--------------------------------------------------------------------------
+| PESERTA
+|--------------------------------------------------------------------------
+*/
+Route::prefix('peserta')->name('peserta.')->group(function () {
 
-Route::get('/my-courses', function () {
-    return view('mycourses');
-})->name('courses.my');
+    Route::get('/dashboard', fn() => view('peserta.dashboard'))->name('dashboard');
 
-Route::get('/enroll', function () {
-    return view('enroll');
-})->name('courses.enroll');
+    Route::get('/courses', fn() => view('peserta.courses'))->name('courses');
+    Route::get('/course-detail', fn() => view('peserta.courseDetail'))->name('courseDetail');
 
-// Halaman instruktur
-Route::get('/instructors', [instructorsController::class, 'instructors'
-])->name('instructors');
+    Route::get('/tugas', [tugasController::class, 'tugas'])->name('tugas');
+    Route::get('/tugas-detail', fn() => view('peserta.tugasDetail'))->name('tugasDetail');
+    Route::get('/tugas-kumpul', fn() => view('peserta.tugasKumpul'))->name('tugasKumpul');
 
-// Halaman Peserta
-Route::get('/peserta/dashboard', function () {
-    return view('peserta.dashboard');
-})->name('peserta.dashboard');
+    Route::get('/kuis-mulai', [tugasController::class, 'kuis'])->name('kuisMulai');
+    Route::get('/kuis-detail', [tugasController::class, 'kuisDetail'])->name('kuisDetail');
+});
 
-Route::get('/peserta/courses', function () {
-    return view('peserta.courses');
-})->name('peserta.courses');
+/*
+|--------------------------------------------------------------------------
+| SUPER ADMIN
+|--------------------------------------------------------------------------
+*/
+Route::prefix('super-admin')->name('superAdmin.')->group(function () {
+    Route::get('/dashboard', fn() => view('superAdmin.dashboard'))->name('dashboard');
+});
 
-Route::get('/peserta/tugas',  [tugasController::class, 'index'
-])->name('peserta.tugas');
-
-Route::get('/peserta/tugasDetail', function () {
-    return view('peserta.tugasDetail');
-})->name('peserta.tugasDetail');
-
-Route::get('/peserta/tugasKumpul', function () {
-    return view('peserta.tugasKumpul');
-})->name('peserta.tugasKumpul');
-
-Route::get('/dashboard/instruktur', function () {
-    return view('instruktur.dashboard');
-})->name('dashboard.instruktur');
-
-Route::get('/dashboard/admin', function () {
-    return view('admin.dashboard');
-})->name('dashboard.admin');
-
-Route::get('/dashboard/superadmin', function () {
-    return view('superadmin.dashboard');
-})->name('dashboard.superadmin');
+/*
+|--------------------------------------------------------------------------
+| SUPER ADMIN
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+});
