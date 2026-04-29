@@ -117,9 +117,6 @@
                     <!-- Welcome Banner -->
                     <x-banner />
 
-                    <!-- Stat Cards -->
-                    <x-stats />
-
                     <!-- Deadline Mendekati -->
                     <section>
                         <div class="flex items-center justify-between mb-4">
@@ -128,30 +125,49 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
                             <!-- Tugas 1 — Overdue -->
-                            @foreach ($tugas as $tugas)
-                                <div onclick="window.location='tugasDetail'" class="card p-4 border-{{ $tugas['color'] }}-500 dark:border-{{ $tugas['color'] }}-500/30">
+                            @foreach ($tugas as $task)
+                                <div onclick="window.location='{{ $task['type'] === 'kuis' ? 'kuisDetail' : 'tugasDetail' }}'"
+                                    class="card p-4 {{ $task['ui']['border'] }}">
+
                                     <div class="flex items-start justify-between mb-2">
+
                                         <span
-                                            class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-{{ $tugas['color'] }}-100 text-{{ $tugas['color'] }}-600 dark:bg-{{ $tugas['color'] }}-500/20 dark:text-{{ $tugas['color'] }}-400">
+                                            class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full {{ $task['ui']['badge'] }}">
                                             <span
-                                                class="w-1.5 h-1.5 rounded-full bg-{{ $tugas['color'] }}-500 dark:bg-{{ $tugas['color'] }}-200 animate-pulse inline-block"></span>{{ $tugas['label'] }}
+                                                class="w-1.5 h-1.5 rounded-full animate-pulse inline-block {{ $task['ui']['dot'] }}"></span>
+                                            {{ $task['label'] }}
                                         </span>
-                                        <span class="text-[10px] text-gray-400">{{ $tugas['time'] }}</span>
+
+                                        <span class="text-[10px] text-gray-400">{{ $task['time'] }}</span>
                                     </div>
-                                    <h4 class="text-sm font-semibold dark:text-white mb-1 leading-tight">{{ $tugas['title'] }}</h4>
-                                    <p class="text-[11px] text-gray-400 mb-3">UI/UX Design Fundamentals</p>
+
+                                    <h4 class="text-sm font-semibold dark:text-white mb-1 leading-tight">
+                                        {{ $task['title'] }}
+                                    </h4>
+
+                                    <p class="text-[11px] text-gray-400 mb-3">
+                                        {{ $task['course'] }}
+                                    </p>
+
                                     <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-1.5 text-[11px] text-{{ $tugas['color'] }}-500 font-medium">
+
+                                        <div
+                                            class="flex items-center gap-1.5 text-[11px] font-medium {{ $task['ui']['text'] }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5"
                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                                 stroke-width="2">
                                                 <circle cx="12" cy="12" r="10" />
                                                 <polyline points="12 6 12 12 16 14" />
                                             </svg>
-                                            {{ $tugas['deadline'] }}
+                                            {{ $task['deadline'] }}
                                         </div>
-                                        <a href="tugasKumpul"
-                                            class="text-xs bg-{{ $tugas['color'] }}-500 text-white px-3 py-1 rounded-lg hover:bg-{{ $tugas['color'] }}-600 transition">{{ $tugas['color'] == 'track' ? 'Kerjakan' : 'Kumpulkan' }}</a>
+
+                                        <a href="{{ $task['type'] === 'kuis' ? 'kuisMulai' : 'tugasKumpul' }}"
+                                            class="text-xs px-3 py-1 rounded-lg transition {{ $task['ui']['button'] }}">
+
+                                            {{ $task['type'] === 'kuis' ? 'Mulai' : ($task['status'] === 'track' ? 'Kerjakan' : 'Kumpulkan') }}
+                                        </a>
+
                                     </div>
                                 </div>
                             @endforeach

@@ -114,12 +114,6 @@
                 <!-- Scrollable content -->
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">
 
-                    <!-- Welcome Banner -->
-                    <x-banner />
-
-                    <!-- Stat Cards -->
-                    <x-stats />
-
                     <section>
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-base font-semibold dark:text-white">Kumpul Tugas</h3>
