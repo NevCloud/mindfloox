@@ -116,9 +116,6 @@
                     <!-- Welcome Banner -->
                     <x-banner/>
 
-                    <!-- Stat Cards -->
-                    <x-stats/>
-
 
                     <!-- Course Saya -->
                     <section>
@@ -129,7 +126,7 @@
 
                             <!-- Course 1 -->
 
-                            <div class="card p-0 overflow-hidden flex flex-row">
+                            <div onclick="window.location.href='course-detail'" class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
                                 <div class="flex-1 p-4">
                                     <div class="flex items-stretch gap-3">
                                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -149,16 +146,22 @@
                                                 <div class="h-1.5 rounded-full" style="width:80%;background:#2196f3">
                                                 </div>
                                             </div>
-                                            <div class="flex items-center justify-between text-[10px] text-gray-400">
+                                            <div class="flex items-center justify-between text-[10px] text-gray-400 mb-3">
                                                 <span>8/10 Modul selesai</span>
                                                 <span class="text-gray-400">Hampir selesai</span>
                                             </div>
+                                            <button class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded-lg transition">
+                                                Lanjutkan
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="card p-0 overflow-hidden flex flex-row">
+                            <div onclick="window.location.href='course-detail'" class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
                                 <div class="flex-1 p-4">
                                     <div class="flex items-stretch gap-3">
                                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -178,16 +181,22 @@
                                                 <div class="h-1.5 rounded-full" style="width:50%;background:#9c27b0">
                                                 </div>
                                             </div>
-                                            <div class="flex items-center justify-between text-[10px] text-gray-400">
+                                            <div class="flex items-center justify-between text-[10px] text-gray-400 mb-3">
                                                 <span>6/12 Modul selesai</span>
                                                 <span class="text-gray-400">Berjalan</span>
                                             </div>
+                                            <button class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-500 hover:bg-purple-600 text-white text-xs font-semibold rounded-lg transition">
+                                                Lanjutkan
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="card p-0 overflow-hidden flex flex-row">
+                            <div onclick="window.location.href='course-detail'" class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
                                 <div class="flex-1 p-4">
                                     <div class="flex items-stretch gap-3">
                                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -207,18 +216,22 @@
                                                 <div class="h-1.5 rounded-full" style="width:15%;background:#ff9800">
                                                 </div>
                                             </div>
-                                            <div class="flex items-center justify-between text-[10px] text-gray-400">
+                                            <div class="flex items-center justify-between text-[10px] text-gray-400 mb-3">
                                                 <span>1/8 Modul selesai</span>
                                                 <span class="text-gray-400">Baru mulai</span>
                                             </div>
+                                            <button class="inline-flex items-center gap-2 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold rounded-lg transition">
+                                                Lanjutkan
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div onclick="window.location.href='/halaman-tujuan'"
-                                class="card cursor-pointer p-0 overflow-hidden flex flex-row border rounded-xl hover:shadow-md transition">
-
+                            <div onclick="window.location.href='course-detail'" class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
                                 <div class="flex-1 p-4">
                                     <div class="flex items-stretch gap-3">
                                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -238,10 +251,16 @@
                                                 <div class="h-1.5 rounded-full" style="width:100%;background:#f44336">
                                                 </div>
                                             </div>
-                                            <div class="flex items-center justify-between text-[10px] text-gray-400">
+                                            <div class="flex items-center justify-between text-[10px] text-gray-400 mb-3">
                                                 <span>5/5 Modul selesai</span>
                                                 <span class="text-gray-400">Selesai</span>
                                             </div>
+                                            <button class="inline-flex items-center gap-2 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded-lg transition">
+                                                Lanjutkan
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
