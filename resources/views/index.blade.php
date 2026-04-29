@@ -105,11 +105,11 @@
 
         {{-- course --}}
         <section class="px-4 py-16 text-left max-w-7xl mx-auto">
-            <h2 class="text-2xl md:text-3xl font-bold mb-4 dark:text-white">
+            <h2 class="text-2xl md:text-3xl font-bold mb-4 dark:text-white ">
                 Featured <span class="text-primary">Course</span>
             </h2>
 
-            <div class="w-20 h-1 mx-auto bg-gradient-to-r from-primary to-accent mb-10"></div>
+            <div class="w-20 h-1 bg-gradient-to-r from-primary to-accent mb-10"></div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 

@@ -28,7 +28,7 @@
                 Featured <span class="text-primary">Course</span>
             </h2>
 
-            <div class="w-20 h-1 mx-auto bg-gradient-to-r from-primary to-accent mb-10"></div>
+            <div class="w-20 h-1 bg-gradient-to-r from-primary to-accent mb-10"></div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 
