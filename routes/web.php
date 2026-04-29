@@ -39,8 +39,21 @@ Route::prefix('courses')->name('courses.')->group(function () {
 | INSTRUCTORS
 |--------------------------------------------------------------------------
 */
-Route::get('/instructors', [instructorsController::class, 'instructors'])
-    ->name('instructors');
+
+Route::prefix('instructor')->name('instructor.')->group(function () {
+
+    Route::get('/dashboard', fn() => view('instructor.dashboard'))->name('dashboard');
+
+    Route::get('/courses', fn() => view('instructor.courses'))->name('courses');
+    Route::get('/course', fn() => view('instructor.course'))->name('course');
+
+    Route::get('/tugas', [tugasController::class, 'tugas'])->name('tugas');
+    Route::get('/tugas-detail', fn() => view('instructor.tugasDetail'))->name('tugasDetail');
+    Route::get('/tugas-kumpul', fn() => view('instructor.tugasKumpul'))->name('tugasKumpul');
+
+    Route::get('/kuis-mulai', [tugasController::class, 'kuis'])->name('kuisMulai');
+    Route::get('/kuis-detail', [tugasController::class, 'kuisDetail'])->name('kuisDetail');
+});
 
 /*
 |--------------------------------------------------------------------------
