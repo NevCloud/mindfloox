@@ -131,30 +131,28 @@
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 flex items-center justify-center rounded-xl bg-pink-100 dark:bg-pink-500/20 text-pink-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                            <path d="M14 2v6h6" />
-                                            <path d="M8 10h8" />
-                                            <path d="M8 14h4" />
-                                            <path d="M8 18h4" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="lucide lucide-contact-round-icon lucide-contact-round">
+                                            <path d="M16 2v2" />
+                                            <path d="M17.915 22a6 6 0 0 0-12 0" />
+                                            <path d="M8 2v2" />
+                                            <circle cx="12" cy="12" r="4" />
+                                            <rect x="3" y="4" width="18" height="18" rx="2" />
                                         </svg>
                                     </div>
                                     <div>
                                         <h3 class="font-semibold text-gray-800 dark:text-white">
-                                            Jenis Microcredential
+                                            Pendaftaran Terbaru
                                         </h3>
-                                        <p class="text-xs text-gray-500">Kelola kategori sertifikasi</p>
+                                        <p class="text-xs text-gray-500">Daftar pendaftar terbaru</p>
                                     </div>
                                 </div>
 
                                 <div class="flex gap-2">
                                     <button class="text-xs text-primary  font-medium px-3 py-1.5 rounded-lg transition"
                                         style="background:rgba(108,99,255,0.10)">Lihat Semua</button>
-                                    <button
-                                        class="bg-primary text-white text-sm px-3 py-1.5 rounded-lg shadow-sm transition">
-                                        + Tambah
-                                    </button>
                                 </div>
                             </div>
 
@@ -164,90 +162,34 @@
                                 <table class="w-full text-sm">
                                     <thead class="text-gray-500 transition-all duration-300">
                                         <tr class="text-left">
-                                            <th class="px-4 py-3">Jenis</th>
-                                            <th class="px-4 py-3">Deskripsi</th>
-                                            <th class="px-4 py-3 text-right">Aksi</th>
+                                            <th class="px-4 py-3">Nama</th>
+                                            <th class="px-4 py-3">Program</th>
+                                            <th class="px-4 py-3 text-right">Status</th>
                                         </tr>
                                     </thead>
 
                                     <tbody class="">
                                         <tr class="hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">
-                                            <td class="px-4 py-4 font-medium">UI/UX Design</td>
-                                            <td class="px-4 py-4 text-gray-500">Desain antarmuka modern</td>
+                                            <td class="px-4 py-4 font-medium">Narolin</td>
+                                            <td class="px-4 py-4 text-gray-500">Web Development</td>
                                             <td class="px-4 py-4 text-right space-x-2">
-                                                <div class="flex justify-end gap-2">
+                                                <span
+                                                    class="px-2 py-1 text-xs font-semibold text-white bg-green-600 rounded-full">Diterima</span>
 
-                                                    <!-- Edit -->
-                                                    <button
-                                                        class="group w-9 h-9 flex items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200">
+                                                {{-- <span
+                                                    class="px-2 py-1 text-xs font-semibold text-white bg-yellow-500 rounded-full">Menunggu</span>
 
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="w-4 h-4 transform group-hover:scale-110 transition"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                            stroke-width="2">
-                                                            <path d="M12 20h9" />
-                                                            <path
-                                                                d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-                                                        </svg>
-                                                    </button>
-
-                                                    <!-- Delete -->
-                                                    <button
-                                                        class="group w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 dark:bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-200">
-
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="w-4 h-4 transform group-hover:scale-110 transition"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                            stroke-width="2">
-                                                            <polyline points="3 6 5 6 21 6" />
-                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                                                            <path d="M10 11v6" />
-                                                            <path d="M14 11v6" />
-                                                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-                                                        </svg>
-                                                    </button>
-
-                                                </div>
+                                                <span
+                                                    class="px-2 py-1 text-xs font-semibold text-white bg-red-600 rounded-full">Ditolak</span> --}}
                                             </td>
                                         </tr>
 
                                         <tr class="hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">
-                                            <td class="px-4 py-4 font-medium">Web Development</td>
-                                            <td class="px-4 py-4 text-gray-500">Aplikasi web modern</td>
+                                            <td class="px-4 py-4 font-medium">Nofitri</td>
+                                            <td class="px-4 py-4 text-gray-500">Animasi</td>
                                             <td class="px-4 py-4 text-right space-x-2">
-                                                <div class="flex justify-end gap-2">
-
-                                                    <!-- Edit -->
-                                                    <button
-                                                        class="group w-9 h-9 flex items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200">
-
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="w-4 h-4 transform group-hover:scale-110 transition"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                            stroke-width="2">
-                                                            <path d="M12 20h9" />
-                                                            <path
-                                                                d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-                                                        </svg>
-                                                    </button>
-
-                                                    <!-- Delete -->
-                                                    <button
-                                                        class="group w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 dark:bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-200">
-
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="w-4 h-4 transform group-hover:scale-110 transition"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                            stroke-width="2">
-                                                            <polyline points="3 6 5 6 21 6" />
-                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                                                            <path d="M10 11v6" />
-                                                            <path d="M14 11v6" />
-                                                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-                                                        </svg>
-                                                    </button>
-
-                                                </div>
+                                                <span
+                                                    class="px-2 py-1 text-xs font-semibold text-white bg-red-600 rounded-full">Ditolak</span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -264,19 +206,21 @@
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 flex items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-500/20 text-blue-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                                            <circle cx="9" cy="7" r="4" />
-                                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="lucide lucide-graduation-cap-icon lucide-graduation-cap">
+                                            <path
+                                                d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
+                                            <path d="M22 10v6" />
+                                            <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
                                         </svg>
                                     </div>
                                     <div>
                                         <h3 class="font-semibold text-gray-800 dark:text-white">
-                                            Admin & Instruktur
+                                            Program Microcredential
                                         </h3>
-                                        <p class="text-xs text-gray-500">Manajemen pengguna</p>
+                                        <p class="text-xs text-gray-500">Daftar program microcredential</p>
                                     </div>
                                 </div>
 
@@ -284,100 +228,73 @@
                                     style="background:rgba(108,99,255,0.10)">Lihat Semua</button>
                             </div>
 
-                            <!-- List -->
+                            <!-- Content -->
                             <div class="space-y-3">
-
                                 <!-- Item -->
                                 <div
-                                    class="group flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer">
-                                    <div class="flex items-center gap-3">
-                                        <img src="https://i.pravatar.cc/40?img=1"
-                                            class="w-11 h-11 rounded-full ring-2 ring-pink-500/30">
-
-                                        <div>
-                                            <p class="text-sm font-medium text-gray-800 dark:text-white">
-                                                Admin Microcredential
-                                            </p>
-                                            <p class="text-xs text-gray-500">Kelola sertifikasi</p>
-                                        </div>
+                                    class="flex items-center justify-between p-4 rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                                    <div>
+                                        <p class="font-semibold text-gray-800 dark:text-white">UI/UX Design</p>
+                                        <p class="text-xs text-gray-500 mt-1">Status: Aktif</p>
                                     </div>
-
-                                    <a href="https://wa.me/628123456789?text=Halo%20Admin%20Microcredential%2C%20saya%20ingin%20bertanya"
-                                        target="_blank" rel="noopener noreferrer"
-                                        class="flex items-center justify-center w-9 h-9 rounded-lg bg-green-50 dark:bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-white transition-all duration-200">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="w-4 h-4 transform group-hover:scale-110 transition">
-                                            <path
-                                                d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" />
-                                            <path d="m21.854 2.147-10.94 10.939" />
-                                        </svg>
-                                    </a>
-                                </div>
-
-                                <!-- Item -->
-                                <div
-                                    class="group flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer">
-                                    <div class="flex items-center gap-3">
-                                        <img src="https://i.pravatar.cc/40?img=2"
-                                            class="w-11 h-11 rounded-full ring-2 ring-pink-500/30">
-
-                                        <div>
-                                            <p class="text-sm font-medium text-gray-800 dark:text-white">
-                                                Instruktur
-                                            </p>
-                                            <p class="text-xs text-gray-500">Mentor kursus</p>
-                                        </div>
+                                    <div class="flex gap-2">
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-300">
+                                            Aktif
+                                        </span>
+                                        <button
+                                            class="group w-8 h-8 flex items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 20h9" />
+                                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                                            </svg>
+                                        </button>
+                                        <button
+                                            class="group w-8 h-8 flex items-center justify-center rounded-lg bg-red-50 dark:bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-200">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <polyline points="3 6 5 6 21 6" />
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                                                <path d="M10 11v6" />
+                                                <path d="M14 11v6" />
+                                            </svg>
+                                        </button>
                                     </div>
-
-                                    <a href="https://wa.me/628123456789?text=Halo%20Instruktur%2C%20saya%20mau%20bertanya"
-                                        target="_blank" rel="noopener noreferrer"
-                                        class="flex items-center justify-center w-9 h-9 rounded-lg bg-green-50 dark:bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-white transition-all duration-200">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="w-4 h-4 transform group-hover:scale-110 transition">
-                                            <path
-                                                d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" />
-                                            <path d="m21.854 2.147-10.94 10.939" />
-                                        </svg>
-                                    </a>
                                 </div>
-
                             </div>
                         </div>
 
                     </section>
-                    <!-- New Row: Kursus Table -->
-                    <section class="grid grid-cols-1 gap-6">
-                        <div class="card translate-0 p-4">
+
+                    <!-- Tahun Akademik & Semester Section -->
+                    <section class="">
+
+                        <div class="card translate-0 xl:col-span-2 p-4">
 
                             <!-- Header -->
                             <div class="flex items-center justify-between mb-5">
                                 <div class="flex items-center gap-3">
                                     <div
-                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-green-100 dark:bg-green-500/20 text-green-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-pink-100 dark:bg-pink-500/20 text-pink-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                            stroke-width="2">
+                                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                                         </svg>
                                     </div>
                                     <div>
                                         <h3 class="font-semibold text-gray-800 dark:text-white">
-                                            Daftar Kursus
+                                            Kursus Terbaru
                                         </h3>
-                                        <p class="text-xs text-gray-500">Kelola kursus yang tersedia</p>
+                                        <p class="text-xs text-gray-500">Daftar kursus terbaru</p>
                                     </div>
                                 </div>
 
                                 <div class="flex gap-2">
-                                    <button class="text-xs text-primary font-medium px-3 py-1.5 rounded-lg transition"
+                                    <button class="text-xs text-primary  font-medium px-3 py-1.5 rounded-lg transition"
                                         style="background:rgba(108,99,255,0.10)">Lihat Semua</button>
-                                    <button
-                                        class="bg-primary text-white text-sm px-3 py-1.5 rounded-lg shadow-sm transition">
-                                        + Tambah Kursus
-                                    </button>
                                 </div>
                             </div>
 
@@ -385,61 +302,41 @@
                             <div
                                 class="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 transition-all duration-300">
                                 <table class="w-full text-sm">
-                                    <thead class="text-gray-500 transition-all duration-300">
+
+                                    <!-- HEADER -->
+                                    <thead class="text-gray-500 border-b border-gray-200 dark:border-gray-800">
                                         <tr class="text-left">
-                                            <th class="px-4 py-3">Judul</th>
-                                            <th class="px-4 py-3">Deskripsi</th>
+                                            <th class="px-4 py-3">Nama Kursus</th>
                                             <th class="px-4 py-3">Instruktur</th>
-                                            <th class="px-4 py-3">Jumlah Siswa</th>
+                                            <th class="px-4 py-3">Program Terkait</th>
                                             <th class="px-4 py-3 text-right">Aksi</th>
                                         </tr>
                                     </thead>
 
-                                    <tbody class="">
-                                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">
-                                            <td class="px-4 py-4 font-medium">Pengenalan UI/UX</td>
-                                            <td class="px-4 py-4 text-gray-500">Dasar-dasar desain antarmuka</td>
-                                            <td class="px-4 py-4">John Doe</td>
-                                            <td class="px-4 py-4">150</td>
-                                            <td class="px-4 py-4 text-right space-x-2">
-                                                <div class="flex justify-end gap-2">
-                                                    <!-- Edit -->
-                                                    <button
-                                                        class="group w-9 h-9 flex items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200">
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="w-4 h-4 transform group-hover:scale-110 transition"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                            stroke-width="2">
-                                                            <path d="M12 20h9" />
-                                                            <path
-                                                                d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-                                                        </svg>
-                                                    </button>
-                                                    <!-- Delete -->
-                                                    <button
-                                                        class="group w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 dark:bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-200">
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="w-4 h-4 transform group-hover:scale-110 transition"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                            stroke-width="2">
-                                                            <polyline points="3 6 5 6 21 6" />
-                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                                                            <path d="M10 11v6" />
-                                                            <path d="M14 11v6" />
-                                                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <!-- BODY -->
+                                    <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200">
 
-                                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">
-                                            <td class="px-4 py-4 font-medium">Web Development Basics</td>
-                                            <td class="px-4 py-4 text-gray-500">Belajar HTML, CSS, JS</td>
-                                            <td class="px-4 py-4">Jane Smith</td>
-                                            <td class="px-4 py-4">200</td>
-                                            <td class="px-4 py-4 text-right space-x-2">
-                                                <div class="flex justify-end gap-2">
+                                            <!-- Nama -->
+                                            <td
+                                                class="px-4 py-4 font-medium text-gray-800 dark:text-white align-middle">
+                                                UI/UX Design
+                                            </td>
+
+                                            <!-- Instruktur -->
+                                            <td class="px-4 py-4 text-gray-500 align-middle">
+                                                Arkam Khan
+                                            </td>
+
+                                            <!-- Program -->
+                                            <td class="px-4 py-4 text-gray-500 align-middle">
+                                                Web Development
+                                            </td>
+
+                                            <!-- Aksi -->
+                                            <td class="px-4 py-4 align-middle">
+                                                <div class="flex justify-end items-center gap-2">
+
                                                     <!-- Edit -->
                                                     <button
                                                         class="group w-9 h-9 flex items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200">
@@ -452,6 +349,7 @@
                                                                 d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
                                                         </svg>
                                                     </button>
+
                                                     <!-- Delete -->
                                                     <button
                                                         class="group w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 dark:bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-200">
@@ -466,17 +364,19 @@
                                                             <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
                                                         </svg>
                                                     </button>
+
                                                 </div>
                                             </td>
                                         </tr>
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>
+
                     </section>
+                </div>
 
-
-                </div><!-- end scrollable -->
             </main>
 
             <!-- ===== RIGHT PANEL ===== -->
