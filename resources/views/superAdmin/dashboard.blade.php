@@ -289,7 +289,7 @@
 
                                 <!-- Item -->
                                 <div
-                                    class="group flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer">
+                                    class="group flex items-center justify-between p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                                     <div class="flex items-center gap-3">
                                         <img src="https://i.pravatar.cc/40?img=1"
                                             class="w-11 h-11 rounded-full ring-2 ring-pink-500/30">
@@ -318,7 +318,7 @@
 
                                 <!-- Item -->
                                 <div
-                                    class="group flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer">
+                                    class="group flex items-center justify-between p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                                     <div class="flex items-center gap-3">
                                         <img src="https://i.pravatar.cc/40?img=2"
                                             class="w-11 h-11 rounded-full ring-2 ring-pink-500/30">
@@ -384,7 +384,7 @@
                             <div class="space-y-3">
                                 <!-- Item -->
                                 <div
-                                    class="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                                    class="flex items-center justify-between p-4 rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800">
                                     <div>
                                         <p class="font-semibold text-gray-800 dark:text-white">2024/2025</p>
                                         <p class="text-xs text-gray-500 mt-1">Status: Aktif</p>
@@ -413,7 +413,7 @@
 
                                 <!-- Item -->
                                 <div
-                                    class="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                                    class="flex items-center justify-between p-4 rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800">
                                     <div>
                                         <p class="font-semibold text-gray-800 dark:text-white">2023/2024</p>
                                         <p class="text-xs text-gray-500 mt-1">Status: Tidak Aktif</p>
@@ -473,7 +473,7 @@
                             <div class="space-y-3">
                                 <!-- Item -->
                                 <div
-                                    class="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                                    class="flex items-center justify-between p-4 rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800">
                                     <div>
                                         <p class="font-semibold text-gray-800 dark:text-white">Semester Ganjil
                                             (2024/2025)</p>
