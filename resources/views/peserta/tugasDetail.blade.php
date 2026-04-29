@@ -170,7 +170,7 @@
 
                                 <!-- Submit Button -->
                                 <div class="pt-2">
-                                    <a href="tugasKumpul"
+                                    <a href="tugas-kumpul"
                                         class="bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
                                         Kumpulkan Tugas
                                     </a>

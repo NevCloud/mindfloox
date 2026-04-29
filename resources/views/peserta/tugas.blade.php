@@ -126,7 +126,7 @@
 
                             <!-- Tugas 1 — Overdue -->
                             @foreach ($tugas as $task)
-                                <div onclick="window.location='{{ $task['type'] === 'kuis' ? 'kuisDetail' : 'tugasDetail' }}'"
+                                <div onclick="window.location='{{ $task['type'] === 'kuis' ? 'kuis-detail' : 'tugas-detail' }}'"
                                     class="card p-4 {{ $task['ui']['border'] }}">
 
                                     <div class="flex items-start justify-between mb-2">
@@ -162,7 +162,7 @@
                                             {{ $task['deadline'] }}
                                         </div>
 
-                                        <a href="{{ $task['type'] === 'kuis' ? 'kuisMulai' : 'tugasKumpul' }}"
+                                        <a href="{{ $task['type'] === 'kuis' ? 'kuis-mulai' : 'tugas-kumpul' }}"
                                             class="text-xs px-3 py-1 rounded-lg transition {{ $task['ui']['button'] }}">
 
                                             {{ $task['type'] === 'kuis' ? 'Mulai' : ($task['status'] === 'track' ? 'Kerjakan' : 'Kumpulkan') }}
