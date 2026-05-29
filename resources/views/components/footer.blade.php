@@ -1,5 +1,5 @@
 {{-- FOOTER --}}
-<footer class="bg-gray-100 dark:bg-[#1A1A2E] border-b dark:border-gray-700 mt-10">
+<footer class="bg-white dark:bg-[#1A1A2E] nav-shadow dark:border-gray-700 mt-10">
     <div class="max-w-7xl mx-auto px-4 py-12">
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">

@@ -1,0 +1,38 @@
+Memulai (Getting Started)
+Ikuti langkah-langkah di bawah ini untuk menjalankan proyek di lingkungan lokal kamu:
+
+1. Clone Repositori
+git clone https://github.com/NevCloud/mindfloox.git
+cd repository-name
+
+2. Instal Dependensi PHP
+composer install
+
+3. Instal Dependensi Frontend
+Karena proyek ini menggunakan Tailwind CSS dan Alpine.js, kamu perlu menginstal paket-paket NPM:
+npm install
+
+4. Konfigurasi Environment
+Salin file .env.example menjadi .env dan sesuaikan pengaturan database kamu.
+
+Bash
+cp .env.example .env
+Buka file .env dan sesuaikan bagian DB_DATABASE, DB_USERNAME, dan DB_PASSWORD.
+
+5. Generate Application Key
+php artisan key:generate
+
+6. Migrasi Database & Seeding
+Jalankan migrasi untuk membuat tabel-tabel yang diperlukan:
+php artisan migrate
+
+(Opsional) Jika ada data awal/dummy:
+php artisan db:seed
+
+7. Build Aset Frontend
+Jalankan perintah ini untuk mengompilasi Tailwind CSS:
+npm run dev
+
+8. Jalankan Server
+php artisan serve
+Aplikasi sekarang dapat diakses di http://localhost:8000.
