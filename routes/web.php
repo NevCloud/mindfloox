@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\coursesController;
 use App\Http\Controllers\instructorsController;
-use App\Http\Controllers\authController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\tugasController;
 
 /*
@@ -13,7 +13,10 @@ use App\Http\Controllers\tugasController;
 |--------------------------------------------------------------------------
 */
 Route::get('/login', fn() => view('login'))->name('login');
-Route::post('/login', [authController::class, 'login'])->name('login.process');
+Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+Route::get('/register', function () {
+    return view('register'); // Ganti dengan nama file view Anda
+})->name('register.process');
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +25,7 @@ Route::post('/login', [authController::class, 'login'])->name('login.process');
 */
 Route::get('/', [homeController::class, 'index'])->name('index');
 Route::get('/about', fn() => view('about'))->name('about');
+Route::get('/instructors', [instructorsController::class, 'instructors'])->name('instructors');
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +41,11 @@ Route::prefix('courses')->name('courses.')->group(function () {
 /*
 |--------------------------------------------------------------------------
 | INSTRUCTORS
-|--------------------------------------------------------------------------
+|---------------------------------------------------------------------
+-----
 */
 
-Route::prefix('instructor')->name('instructor.')->group(function () {
+Route::prefix('instructor')->middleware(['auth', 'role:instruktur'])->group(function () {
 
     Route::get('/dashboard', fn() => view('instructor.dashboard'))->name('dashboard');
 
@@ -48,11 +53,11 @@ Route::prefix('instructor')->name('instructor.')->group(function () {
     Route::get('/course', fn() => view('instructor.course'))->name('course');
 
     Route::get('/tugas', [tugasController::class, 'tugas'])->name('tugas');
-    Route::get('/tugas-detail', fn() => view('instructor.tugasDetail'))->name('tugasDetail');
-    Route::get('/tugas-kumpul', fn() => view('instructor.tugasKumpul'))->name('tugasKumpul');
+    Route::get('/tugas-detail', fn() => view('instructor.tugas-detail'))->name('tugas-detail');
+    Route::get('/tugas-kumpul', fn() => view('instructor.tugas-kumpul'))->name('tugas-kumpul');
 
-    Route::get('/kuis-mulai', [tugasController::class, 'kuis'])->name('kuisMulai');
-    Route::get('/kuis-detail', [tugasController::class, 'kuisDetail'])->name('kuisDetail');
+    Route::get('/kuis-mulai', [tugasController::class, 'kuis'])->name('kuis-mulai');
+    Route::get('/kuis-detail', [tugasController::class, 'kuis-detail'])->name('kuis-detail');
 });
 
 /*
@@ -65,14 +70,15 @@ Route::prefix('peserta')->name('peserta.')->group(function () {
     Route::get('/dashboard', fn() => view('peserta.dashboard'))->name('dashboard');
 
     Route::get('/courses', fn() => view('peserta.courses'))->name('courses');
-    Route::get('/course-detail', fn() => view('peserta.courseDetail'))->name('courseDetail');
+    Route::get('/course-detail', fn() => view('peserta.course-detail'))->name('course-detail');
+    Route::get('/profile', fn() => view('peserta.profile'))->name('profile');
 
     Route::get('/tugas', [tugasController::class, 'tugas'])->name('tugas');
-    Route::get('/tugas-detail', fn() => view('peserta.tugasDetail'))->name('tugasDetail');
-    Route::get('/tugas-kumpul', fn() => view('peserta.tugasKumpul'))->name('tugasKumpul');
+    Route::get('/tugas-detail', fn() => view('peserta.tugas-detail'))->name('tugas-detail');
+    Route::get('/tugas-kumpul', fn() => view('peserta.tugas-kumpul'))->name('tugas-kumpul');
 
-    Route::get('/kuis-mulai', [tugasController::class, 'kuis'])->name('kuisMulai');
-    Route::get('/kuis-detail', [tugasController::class, 'kuisDetail'])->name('kuisDetail');
+    Route::get('/kuis-mulai', [tugasController::class, 'kuis'])->name('kuis-mulai');
+    Route::get('/kuis-detail', [tugasController::class, 'kuis-detail'])->name('kuis-detail');
 });
 
 /*

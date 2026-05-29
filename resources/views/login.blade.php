@@ -12,6 +12,11 @@
             document.documentElement.classList.remove('light')
         }
     </script>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body class="">
@@ -24,18 +29,38 @@
 
         {{-- Card login --}}
         <div class="w-full max-w-md p-8 card" x-data="{
-            username: '',
+            email: '',
             password: '',
             role: '',
             showPassword: false,
             errors: {},
+
             validate() {
                 this.errors = {};
-                if (!this.username.trim()) this.errors.username = 'Username wajib diisi.';
-                if (!this.password.trim()) { this.errors.password = 'Password wajib diisi.'; } else if (this.password.length < 6) { this.errors.password = 'Password minimal 6 karakter.'; }
-                if (!this.role) { this.errors.role = 'Role wajib dipilih.'; }
+
+                if (!this.email.trim()) {
+                    this.errors.email = 'Email wajib diisi.';
+                }
+
+                if (!this.password.trim()) {
+                    this.errors.password = 'Password wajib diisi.';
+                }
+
+                if (!this.role) {
+                    this.errors.role = 'Role wajib dipilih.';
+                }
+            },
+
+            handleSubmit() {
+                this.validate();
+
+                if (Object.keys(this.errors).length > 0) {
+                    return; // ❌ stop kalau ada error
+                }
+
+                this.$el.submit(); // ✅ pasti submit form
             }
-        }">
+        }"">
 
             {{-- Icon user --}}
             <div class="flex justify-center mb-5">
@@ -53,23 +78,23 @@
             <p class="text-center text-sm text-gray-400 dark:text-gray-300 mb-6">Masuk ke akun Mindfloox Anda</p>
 
             {{-- Banner error global --}}
-            <div x-show="Object.keys(errors).length > 0" x-transition
+            <div x-show="Object.keys(errors).length > 0" x-cloak x-transition
                 class="bg-red-50 border border-red-300 text-red-500 text-sm p-3 rounded-xl mb-4">
                 Mohon periksa kembali form Anda.
             </div>
 
             {{-- Form --}}
-            <form method="POST" action="{{ route('login.process') }}" class="space-y-4" @submit="validate()">
+            <form method="POST" action="{{ route('login.process') }}" class="space-y-4" @submit.prevent="handleSubmit">
                 @csrf
 
-                {{-- Username --}}
+                {{-- Email --}}
                 <div>
-                    <label class="text-sm font-medium mb-2 block">Username</label>
+                    <label class="text-sm font-medium mb-2 block">Email</label>
                     <div class="relative">
-                        <input type="text" placeholder="Masukkan Username" name="username" x-model="username"
-                            :class="errors.username ? 'input input-error' : 'input'" class="pl-10">
+                        <input type="text" placeholder="Masukkan Email" name="email" x-model="email"
+                            :class="errors.email ? 'input input-error' : 'input'" class="pl-10">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2"
-                            :class="errors.username ? 'text-red-400' : 'text-primary'">
+                            :class="errors.email ? 'text-red-400' : 'text-primary'">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-5"
                                 fill="currentColor">
                                 <path fill-rule="evenodd"
@@ -78,7 +103,7 @@
                             </svg>
                         </span>
                     </div>
-                    <p x-show="errors.username" x-text="errors.username" x-transition class="text-red-400 text-xs mt-1">
+                    <p x-show="errors.email" x-text="errors.email" x-transition class="text-red-400 text-xs mt-1">
                     </p>
                 </div>
 
@@ -86,8 +111,9 @@
                 <div>
                     <label class="text-sm font-medium mb-2 block ">Password</label>
                     <div class="relative">
-                        <input :type="showPassword ? 'text' : 'password'" name="password" placeholder="Masukkan password Anda"
-                            x-model="password" :class="errors.password ? 'input input-error' : 'input'" class="pl-10">
+                        <input :type="showPassword ? 'text' : 'password'" name="password"
+                            placeholder="Masukkan password Anda" x-model="password"
+                            :class="errors.password ? 'input input-error' : 'input'" class="pl-10">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2"
                             :class="errors.password ? 'text-red-400' : 'text-primary'">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -116,49 +142,6 @@
                         </button>
                     </div>
                     <p x-show="errors.password" x-text="errors.password" x-transition class="error-text"></p>
-                </div>
-
-                {{-- Role --}}
-
-                <input type="hidden" name="role" :value="role">
-
-                <div>
-                    <label for="role" class="text-sm font-medium mb-2 block">Login sebagai</label>
-                    <div x-data="{ open: false, selected: 'Pilih Role' }" class="relative">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 "
-                            :class="errors.role ? 'text-red-400' : 'text-primary'">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                class="size-5">
-                                <path fill-rule="evenodd"
-                                    d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </span>
-                        <button @click="open = !open"
-                            :class="errors.role ? 'dropdown-btn dropdown-error pl-10' : 'dropdown-btn pl-10'"
-                            type="button">
-                            <span x-text="selected"></span>
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" :class="open ? 'rotate-180' : ''"
-                                    class="size-4 transition-transform duration-200">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                </svg>
-                            </span>
-                        </button>
-                        <div x-show="open" @click.outside="open = false" class="dropdown-menu">
-                            <div @click="selected = 'Peserta'; role = 'Peserta'; open = false" class="dropdown-item">
-                                Peserta</div>
-                            <div @click="selected = 'Instruktur'; role = 'Instruktur'; open = false"
-                                class="dropdown-item">Instruktur</div>
-                            <div @click="selected = 'Admin'; role = 'Admin'; open = false" class="dropdown-item ">
-                                Admin</div>
-                            <div @click="selected = 'SuperAdmin'; role = 'Super Admin'; open = false"
-                                class="dropdown-item">Super Admin</div>
-                        </div>
-                    </div>
-                    <p x-show="errors.role" x-text="errors.role" class="text-red-400 text-xs mt-1"></p>
                 </div>
 
                 {{-- Tombol submit --}}

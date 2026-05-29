@@ -8,7 +8,7 @@
     <div class="flex items-center justify-end gap-3 pt-1">
         <div class="text-right">
             <p class="text-sm font-semibold dark:text-white">Sara Abraham</p>
-            <p class="text-xs text-primary cursor-pointer hover:underline">Lihat profil</p>
+            <a href="{{ route('peserta.profile') }}" class="text-xs text-primary cursor-pointer hover:underline">Lihat profil</a>
         </div>
         <img src="https://i.pravatar.cc/150?img=47" alt="Sara"
             class="w-10 h-10 rounded-full object-cover flex-shrink-0" style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
