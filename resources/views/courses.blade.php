@@ -81,7 +81,7 @@
                                 </span>
                             </div>
 
-                            <a href="enroll" class="text-center mt-auto w-full bg-primary text-white py-2 rounded-lg">
+                            <a href="/courses/enroll" class="text-center mt-auto w-full bg-primary text-white py-2 rounded-lg">
                                 Enroll Now
                             </a>
                         </div>
