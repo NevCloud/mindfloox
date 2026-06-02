@@ -37,7 +37,7 @@
             <main class="flex-1 min-w-0 flex flex-col overflow-hidden">
 
                 <!-- Topbar -->
-                @include('instructor.partials.topbar')
+                <x-topNav />
 
                 <!-- Scrollable content -->
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">

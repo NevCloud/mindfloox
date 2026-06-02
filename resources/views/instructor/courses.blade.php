@@ -2,7 +2,7 @@
 @section('title', 'Courses')
 @section('content')
 
-<x-banner-instructor />
+<x-banner />
 
 <section>
     <div class="flex items-center justify-between mb-4">

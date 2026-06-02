@@ -47,7 +47,7 @@ class AuthController extends Controller
                 Session::put('user', $user);
 
                 // 🔁 Redirect berdasarkan role
-                switch ($role) {
+                switch ($user['role']) {
                     case 'Peserta':
                         return redirect('/peserta/dashboard');
                     case 'Instruktur':

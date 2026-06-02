@@ -10,7 +10,7 @@
 @section('content')
 
     <!-- Welcome Banner -->
-    <x-banner-instructor />
+    <x-banner />
 
     <!-- Stat Cards -->
     <x-stats-instructor />

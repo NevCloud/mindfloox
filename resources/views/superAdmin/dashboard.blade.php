@@ -94,95 +94,18 @@
             </div>
         </aside>
 
-        <!-- MAIN CONTENT -->
-        <main class="flex-1 flex flex-col overflow-hidden">
+            <!-- MAIN CONTENT -->
+            <main class="flex-1 flex flex-col overflow-hidden">
 
-            <!-- TOP BAR -->
-            <header class="bg-white dark:bg-[#1A1A2E] border-b border-gray-200 dark:border-gray-800 px-5 py-3 flex-shrink-0">
-                <div class="flex items-center justify-between">
-                    <div class="flex-1 max-w-2xl">
-                        <div class="relative">
-                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <circle cx="11" cy="11" r="8" />
-                                <path d="m21 21-4.35-4.35" />
-                            </svg>
-                            <input type="text" placeholder="Cari course, tugas, materi..." class="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-2 ml-4">
-                        <button class="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-                            <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                            </svg>
-                            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </button>
-
-                        <button @click="toggleDark()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-                            <svg x-show="!dark" class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
-                            </svg>
-                            <svg x-show="dark" class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="4" />
-                                <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-                            </svg>
-                        </button>
-
-                        <div class="flex items-center gap-2 ml-2">
-                            <div class="text-right">
-                                <p class="text-sm font-medium text-gray-800 dark:text-white">Sara Abraham</p>
-                                <a href="#" class="text-xs text-purple-600 hover:underline">Lihat profil</a>
-                            </div>
-                            <img src="https://i.pravatar.cc/40?img=1" class="w-9 h-9 rounded-full border-2 border-purple-200" alt="Profile">
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <!-- Top Nav -->
+            <x-topNav/>
 
             <!-- SCROLLABLE CONTENT -->
             <div class="flex-1 overflow-y-auto">
-                <div class="p-5 space-y-5">
+            <div class="p-5 space-y-5">
 
-                    <!-- BANNER -->
-                    <div class="relative bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-7 text-white overflow-hidden">
-                        <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4"></div>
-                        <div class="absolute bottom-0 right-20 w-48 h-48 bg-white/5 rounded-full translate-y-1/2"></div>
-                        
-                        <div class="relative flex items-center justify-between">
-                            <div class="flex-1">
-                                <p class="text-xs font-semibold opacity-90 mb-2 tracking-wide">MICROCREDENTIAL PROGRAM</p>
-                                <h2 class="text-3xl font-bold mb-2">Selamat datang, Sara! 👋</h2>
-                                <p class="text-white/90 mb-1 text-sm">Kamu memiliki <strong>3 tugas</strong> yang mendekati deadline.</p>
-                                <p class="text-white/80 mb-5 text-sm">Yuk selesaikan sebelum terlambat!</p>
-                                
-                                <div class="flex gap-3">
-                                    <button class="px-5 py-2 bg-white text-purple-600 rounded-lg font-medium hover:bg-gray-50 transition text-sm">
-                                        Lihat Tugas
-                                    </button>
-                                    <button class="px-5 py-2 bg-purple-400 text-white rounded-lg font-medium hover:bg-purple-300 transition text-sm">
-                                        Lanjut Belajar
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="flex flex-col items-center">
-                                <div class="relative w-28 h-28">
-                                    <svg class="w-full h-full transform -rotate-90">
-                                        <circle cx="56" cy="56" r="50" stroke="currentColor" stroke-width="7" fill="none" class="text-white/20" />
-                                        <circle cx="56" cy="56" r="50" stroke="currentColor" stroke-width="7" fill="none" class="text-white" 
-                                            stroke-dasharray="314" 
-                                            stroke-dashoffset="94"
-                                            stroke-linecap="round" />
-                                    </svg>
-                                    <div class="absolute inset-0 flex items-center justify-center">
-                                        <span class="text-2xl font-bold">70%</span>
-                                    </div>
-                                </div>
-                                <p class="mt-2 text-sm font-medium">Progress Overall</p>
-                            </div>
-                        </div>
-                    </div>
+            <!-- BANNER -->
+            <x-banner />
 
                     <!-- STAT CARDS -->
                     <div class="grid grid-cols-4 gap-4">
