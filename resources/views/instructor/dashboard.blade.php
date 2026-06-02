@@ -14,7 +14,7 @@
 
     <!-- Stat Cards -->
     <x-stats-instructor />
-
+        
     <!-- Course Saya -->
     <section>
         <div class="flex items-center justify-between mb-4">

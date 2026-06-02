@@ -14,7 +14,6 @@ class AuthController extends Controller
         $password = $request->input('password');
         $role     = $request->input('role');
 
-        // 🔥 Data dummy (simulasi database multi-role)
         $users = [
             [
                 'username' => 'peserta',
@@ -42,8 +41,7 @@ class AuthController extends Controller
         foreach ($users as $user) {
             if (
                 $username === $user['username'] &&
-                $password === $user['password'] &&
-                $role === $user['role']
+                $password === $user['password'] 
             ) {
                 // Simpan session
                 Session::put('user', $user);

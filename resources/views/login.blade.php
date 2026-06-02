@@ -29,25 +29,20 @@
 
         {{-- Card login --}}
         <div class="w-full max-w-md p-8 card" x-data="{
-            email: '',
+            username: '',
             password: '',
-            role: '',
             showPassword: false,
             errors: {},
 
             validate() {
                 this.errors = {};
 
-                if (!this.email.trim()) {
-                    this.errors.email = 'Email wajib diisi.';
+                if (!this.username.trim()) {
+                    this.errors.username = 'username wajib diisi.';
                 }
 
                 if (!this.password.trim()) {
                     this.errors.password = 'Password wajib diisi.';
-                }
-
-                if (!this.role) {
-                    this.errors.role = 'Role wajib dipilih.';
                 }
             },
 
@@ -87,14 +82,14 @@
             <form method="POST" action="{{ route('login.process') }}" class="space-y-4" @submit.prevent="handleSubmit">
                 @csrf
 
-                {{-- Email --}}
+                {{-- username --}}
                 <div>
-                    <label class="text-sm font-medium mb-2 block">Email</label>
+                    <label class="text-sm font-medium mb-2 block">username</label>
                     <div class="relative">
-                        <input type="text" placeholder="Masukkan Email" name="email" x-model="email"
-                            :class="errors.email ? 'input input-error' : 'input'" class="pl-10">
+                        <input type="text" placeholder="Masukkan username" name="username" x-model="username"
+                            :class="errors.username ? 'input input-error' : 'input'" class="pl-10">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2"
-                            :class="errors.email ? 'text-red-400' : 'text-primary'">
+                            :class="errors.username ? 'text-red-400' : 'text-primary'">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-5"
                                 fill="currentColor">
                                 <path fill-rule="evenodd"
@@ -103,7 +98,7 @@
                             </svg>
                         </span>
                     </div>
-                    <p x-show="errors.email" x-text="errors.email" x-transition class="text-red-400 text-xs mt-1">
+                    <p x-show="errors.username" x-text="errors.username" x-transition class="text-red-400 text-xs mt-1">
                     </p>
                 </div>
 
