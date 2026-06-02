@@ -114,135 +114,143 @@
                 <!-- Scrollable content -->
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">
 
-                    <section>
+                    <section x-data="{
+                        files: [],
+                        isDragOver: false,
+
+                        // Tambah file dari input atau drag-drop
+                        addFiles(fileList) {
+                            for (let f of fileList) {
+                                this.files.push({
+                                    name: f.name,
+                                    size: f.size,
+                                    type: f.type,
+                                    preview: f.type.startsWith('image') ? URL.createObjectURL(f) : null
+                                });
+                            }
+                        },
+
+                        // Hapus file dari list
+                        removeFile(index) {
+                            this.files.splice(index, 1);
+                        },
+
+                        // Submit: tandai tugas selesai lalu kembali
+                        submitForm() {
+                            let progress = JSON.parse(localStorage.getItem('courseProgressDemo') || '{}');
+                            let taskId = localStorage.getItem('currentMockTask');
+                            if (taskId) {
+                                progress[taskId] = true;
+                                localStorage.setItem('courseProgressDemo', JSON.stringify(progress));
+                            }
+                            window.location.href = 'course-detail';
+                        }
+                    }">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-base font-semibold dark:text-white">Kumpul Tugas</h3>
                         </div>
-                        <div class="">
-                            <div class="card translate-none rounded-lg p-6 space-y-4">
 
-                                <!-- Task Header -->
-                                <div class="border-b border-gray-200 dark:border-gray-700">
-                                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Analisis Algoritma Sorting</h2>
-                                    <div class="mb-3">
-                                        <span class="inline-block px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-semibold rounded-full">Deadline: 15 Jan 2024</span>
-                                    </div>
+                        <form @submit.prevent="submitForm" class="card translate-none rounded-lg p-6 space-y-4">
+
+                            <!-- Task Header -->
+                            <div class="border-b border-gray-200 dark:border-gray-700">
+                                <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Analisis Algoritma Sorting</h2>
+                                <div class="mb-3">
+                                    <span class="inline-block px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-semibold rounded-full">Deadline: 15 Jan 2024</span>
+                                </div>
+                            </div>
+
+                            <!-- Drag & Drop Upload Area -->
+                            <div>
+                                <label class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2 block uppercase tracking-wide">
+                                    Upload File
+                                </label>
+                                <div @dragover.prevent="isDragOver = true"
+                                    @dragleave.prevent="isDragOver = false"
+                                    @drop.prevent="isDragOver = false; addFiles($event.dataTransfer.files)"
+                                    class="border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-200 cursor-pointer"
+                                    :class="isDragOver ? 'border-primary bg-primary/10 dark:bg-primary/20' : 'border-gray-300 dark:border-gray-600'"
+                                    @click="$refs.fileInput.click()">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="w-12 h-12 mx-auto mb-4 text-gray-400 dark:text-gray-500"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                    <p class="text-gray-600 dark:text-gray-400 mb-2">Drag and drop files here</p>
+                                    <p class="text-sm text-gray-500">or <span class="text-primary underline">browse</span> to choose files</p>
+                                    <input x-ref="fileInput" type="file" class="hidden" multiple
+                                        @change="addFiles($event.target.files)">
                                 </div>
 
-                                <!-- Form Section -->
-                                <form class="space-y-4" x-data="{ files: [], isDragOver: false }" @submit.prevent="submitForm">
-                                    <!-- Drag & Drop Upload Area -->
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <label
-                                                class="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide">
-                                                Upload File
-                                            </label>
-                                        </div>
-                                        <div @dragover.prevent="isDragOver = true"
-                                            @dragleave.prevent="isDragOver = false"
-                                            @drop.prevent="isDragOver = false; handleDrop($event)"
-                                            class="border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-200 cursor-pointer"
-                                            :class="isDragOver ? 'border-primary bg-primary/10 dark:bg-primary/20' :
-                                                'border-gray-300 dark:border-gray-600'"
-                                            @click="$refs.fileInput.click()">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                class="w-12 h-12 mx-auto mb-4 text-gray-400 dark:text-gray-500"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                stroke-width="1">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                            </svg>
-                                            <p class="text-gray-600 dark:text-gray-400 mb-2">Drag and drop files here
-                                            </p>
-                                            <p class="text-sm text-gray-500 dark:text-gray-500">or <span
-                                                    class="text-primary underline">browse</span> to choose files</p>
-                                            <input x-ref="fileInput" type="file" class="hidden" multiple
-                                                @change="handleFileSelect($event)">
-                                        </div>
-                                        <button @click="$refs.fileInput.click()" type="button"
-                                            class="flex items-center gap-2 mt-3 bg-primary hover:bg-primary/90 text-white font-semibold py-1 px-3 rounded-lg transition duration-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M12 4v16m8-8H4" />
-                                            </svg>
-                                            Add More Files
-                                        </button>
+                                <button @click="$refs.fileInput.click()" type="button"
+                                    class="flex items-center gap-2 mt-3 bg-primary hover:bg-primary/90 text-white font-semibold py-1 px-3 rounded-lg transition duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    Add More Files
+                                </button>
 
-                                        <!-- File List with Preview -->
-                                        <div x-show="files.length > 0" class="mt-4 space-y-3">
-                                            <p class="text-sm font-semibold text-gray-600 dark:text-gray-400">Selected
-                                                Files:</p>
-                                            <ul class="space-y-2">
-                                                <li x-for="(file, index) in files"
-                                                    class="flex items-center gap-3 bg-gray-100 dark:bg-gray-800 p-3 rounded">
-                                                    <!-- File Preview Icon -->
-                                                    <div
-                                                        class="relative w-10 h-10 bg-gray-300 dark:bg-gray-700 rounded flex items-center justify-center shrink-0">
-                                                        <svg x-show="!file.type.startsWith('image')"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            class="w-5 h-5 text-gray-600 dark:text-gray-400"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                        </svg>
-                                                        <img x-show="file.type.startsWith('image')"
-                                                            :src="file.preview"
-                                                            class="w-10 h-10 object-cover rounded">
-                                                        <!-- Overlay Remove Button for Images -->
-                                                        <button x-show="file.type.startsWith('image')" @click="files.splice(index, 1)" type="button"
-                                                            class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs hover:bg-red-700">
-                                                            ×
-                                                        </button>
-                                                    </div>
+                                <!-- File List -->
+                                <div x-show="files.length > 0" class="mt-4 space-y-3">
+                                    <p class="text-sm font-semibold text-gray-600 dark:text-gray-400">Selected Files:</p>
+                                    <ul class="space-y-2">
+                                        <template x-for="(file, index) in files" :key="index">
+                                            <li class="flex items-center gap-3 bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                                                <!-- Preview / Icon -->
+                                                <div class="relative w-10 h-10 bg-gray-300 dark:bg-gray-700 rounded flex items-center justify-center shrink-0">
+                                                    <svg x-show="!file.type.startsWith('image')"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        class="w-5 h-5 text-gray-600 dark:text-gray-400"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                    </svg>
+                                                    <img x-show="file.type.startsWith('image')" :src="file.preview"
+                                                        class="w-10 h-10 object-cover rounded">
+                                                </div>
 
-                                                    <!-- File Info -->
-                                                    <div class="flex-1 min-w-0">
-                                                        <p class="text-sm font-medium text-gray-700 dark:text-white truncate"
-                                                            x-text="file.name"></p>
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400"
-                                                            x-text="`${(file.size / 1024).toFixed(2)} KB`"></p>
-                                                    </div>
+                                                <!-- File Info -->
+                                                <div class="flex-1 min-w-0">
+                                                    <p class="text-sm font-medium text-gray-700 dark:text-white truncate" x-text="file.name"></p>
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400" x-text="(file.size / 1024).toFixed(2) + ' KB'"></p>
+                                                </div>
 
-                                                    <!-- Remove Button (for non-images or as fallback) -->
-                                                    <button x-show="!file.type.startsWith('image')" @click="files.splice(index, 1)" type="button"
-                                                        class="text-red-500 hover:text-red-700 shrink-0">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                            stroke-width="2">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M6 18L18 6M6 6l12 12" />
-                                                        </svg>
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <!-- Notes Section -->
-                                    <div>
-                                        <label
-                                            class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2 block uppercase tracking-wide">
-                                            Catatan
-                                        </label>
-                                        <textarea rows="4" class="textarea" placeholder="Tambahkan catatan..."></textarea>
-                                    </div>
-
-                                    <!-- Submit Button -->
-                                    <div class="pt-2 flex gap-2">
-                                        <button type="submit"
-                                            class="bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
-                                            Kumpulkan
-                                        </button>
-                                        <button type="reset"
-                                            class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
-                                            Reset
-                                        </button>
-                                    </div>
-                                </form>
+                                                <!-- Remove Button -->
+                                                <button @click="removeFile(index)" type="button"
+                                                    class="text-red-500 hover:text-red-700 shrink-0">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
+
+                            <!-- Notes Section -->
+                            <div>
+                                <label class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2 block uppercase tracking-wide">
+                                    Catatan
+                                </label>
+                                <textarea rows="4" class="textarea" placeholder="Tambahkan catatan..."></textarea>
+                            </div>
+
+                            <!-- Submit Buttons -->
+                            <div class="pt-2 flex gap-2">
+                                <button type="submit"
+                                    class="bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
+                                    Kumpulkan
+                                </button>
+                                <button type="button" @click="files = []"
+                                    class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
+                                    Reset
+                                </button>
+                            </div>
+                        </form>
                     </section>
 
                 </div><!-- end scrollable -->

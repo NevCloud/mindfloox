@@ -14,7 +14,6 @@ use App\Http\Controllers\tugasController;
 */
 Route::get('/login', fn() => view('login'))->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', function () {
     return view('register'); // Ganti dengan nama file view Anda
 })->name('register.process');
@@ -46,24 +45,19 @@ Route::prefix('courses')->name('courses.')->group(function () {
 -----
 */
 
-Route::prefix('instructor')->name('instructor.')->group(function () {
+Route::prefix('instructor')->middleware(['auth', 'role:instruktur'])->group(function () {
 
     Route::get('/dashboard', fn() => view('instructor.dashboard'))->name('dashboard');
 
     Route::get('/courses', fn() => view('instructor.courses'))->name('courses');
     Route::get('/course', fn() => view('instructor.course'))->name('course');
 
-    Route::get('/tugas', function() {
-        $tugas = config('tugas');
-        return view('instructor.tugas', compact('tugas'));
-    })->name('tugas');
+    Route::get('/tugas', [tugasController::class, 'tugas'])->name('tugas');
     Route::get('/tugas-detail', fn() => view('instructor.tugas-detail'))->name('tugas-detail');
     Route::get('/tugas-kumpul', fn() => view('instructor.tugas-kumpul'))->name('tugas-kumpul');
 
     Route::get('/kuis-mulai', [tugasController::class, 'kuis'])->name('kuis-mulai');
     Route::get('/kuis-detail', [tugasController::class, 'kuis-detail'])->name('kuis-detail');
-
-    Route::get('/upload-materi', fn() => view('instructor.upload-materi'))->name('upload-materi');
 });
 
 /*
@@ -85,6 +79,8 @@ Route::prefix('peserta')->name('peserta.')->group(function () {
 
     Route::get('/kuis-mulai', [tugasController::class, 'kuis'])->name('kuis-mulai');
     Route::get('/kuis-detail', [tugasController::class, 'kuis-detail'])->name('kuis-detail');
+
+    Route::get('/nilai-detail', fn() => view('peserta.nilai-detail'))->name('nilai-detail');
 });
 
 /*
@@ -98,10 +94,13 @@ Route::prefix('super-admin')->name('superAdmin.')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-|ADMIN MICROCREDENTIAL
+| SUPER ADMIN
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
 });
 
+Route::prefix('super-admin')->name('superAdmin.')->group(function () {
+    Route::get('/dashboard', fn() => view('superAdmin.dashboard'))->name('dashboard');
+});

@@ -124,9 +124,15 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
 
-                            <!-- Course 1 -->
-
-                            <div onclick="window.location.href='course-detail'" class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
+                            {{-- Course 1 — Progress tracking via localStorage --}}
+                            <div onclick="window.location.href='course-detail'"
+                                x-data="{ done: 0, total: 56, pct: 0 }"
+                                x-init="
+                                    let p = JSON.parse(localStorage.getItem('courseProgressDemo') || '{}');
+                                    done = Object.keys(p).length;
+                                    pct = Math.round((done / total) * 100);
+                                "
+                                class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
                                 <div class="flex-1 p-4">
                                     <div class="flex items-stretch gap-3">
                                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -139,16 +145,19 @@
                                                 <h4 class="text-sm font-semibold dark:text-white truncate">UI/UX
                                                     Design Specialist</h4>
                                                 <span class="text-xs font-bold flex-shrink-0"
-                                                    style="color:#2196f3">80%</span>
+                                                    style="color:#2196f3"
+                                                    x-text="pct + '%'">0%</span>
                                             </div>
                                             <p class="text-[11px] text-gray-400 mb-2">Instruktur: Sarah Wijaya</p>
                                             <div class="w-full bg-gray-100 dark:bg-white/10 rounded-full h-1.5 mb-2">
-                                                <div class="h-1.5 rounded-full" style="width:80%;background:#2196f3">
+                                                <div class="h-1.5 rounded-full transition-all duration-500"
+                                                    :style="'background:#2196f3; width:' + pct + '%'">
                                                 </div>
                                             </div>
                                             <div class="flex items-center justify-between text-[10px] text-gray-400 mb-3">
-                                                <span>8/10 Modul selesai</span>
-                                                <span class="text-gray-400">Hampir selesai</span>
+                                                <span x-text="done + '/' + total + ' Modul selesai'">0/56 Modul selesai</span>
+                                                <span class="text-gray-400"
+                                                    x-text="pct >= 100 ? 'Selesai ✓' : (pct > 50 ? 'Hampir selesai' : 'Sedang berjalan')">Sedang berjalan</span>
                                             </div>
                                             <button class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded-lg transition">
                                                 Lanjutkan

@@ -17,13 +17,13 @@ class tugasController extends Controller
     {
         $kuis = config('kuis');
 
-        return view('peserta.kuisMulai', compact('kuis'));
+        return view('peserta.kuis-mulai', compact('kuis'));
     }
 
     public function kuisDetail()
     {
         $kuis = config('kuis');
 
-        return view('peserta.kuisDetail', compact('kuis'));
+        return view('peserta.kuis-detail', compact('kuis'));
     }
 }

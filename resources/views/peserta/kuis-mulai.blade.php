@@ -115,77 +115,79 @@
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">
 
                     @foreach ($kuis as $quiz)
-                        <section>
+                        <section x-data="{
+                            submitQuiz() {
+                                let progress = JSON.parse(localStorage.getItem('courseProgressDemo') || '{}');
+                                let quizId = localStorage.getItem('currentMockQuiz');
+                                if (quizId) {
+                                    progress[quizId] = true;
+                                    localStorage.setItem('courseProgressDemo', JSON.stringify(progress));
+                                }
+                                window.location.href = 'course-detail';
+                            }
+                        }">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-base font-semibold dark:text-white">Kerjakan Kuis</h3>
                             </div>
-                            <div class="">
-                                <div class="card translate-none rounded-lg p-6 space-y-4">
 
-                                    <!-- Task Header -->
-                                    <div class="border-b border-gray-200 dark:border-gray-700">
-                                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                                            {{ $quiz['title'] }}</h2>
-                                        <div class="mb-3">
-                                            <span
-                                                class="inline-block px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-semibold rounded-full">Deadline:
-                                                {{ $quiz['deadline'] }}</span>
-                                        </div>
-                                    </div>
+                            <form @submit.prevent="submitQuiz" class="card translate-none rounded-lg p-6 space-y-4">
 
-                                    <!-- Questions Section -->
-                                    <div class="space-y-6">
-                                        @foreach ($quiz['questions'] as $index => $question)
-                                            <div
-                                                class="border-b border-gray-200 dark:border-gray-700 pb-4 last:border-b-0">
-                                                <!-- Question Number and Text -->
-                                                <div class="mb-4">
-                                                    <h4
-                                                        class="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-                                                        <span class="text-primary">{{ $index + 1 }}.</span>
-                                                        {{ $question['question'] }}
-                                                    </h4>
-                                                </div>
-
-                                                <!-- Multiple Choice Options -->
-                                                @if ($question['type'] === 'multiple_choice')
-                                                    <div class="space-y-2 ml-4">
-                                                        @foreach ($question['options'] as $key => $option)
-                                                            <label
-                                                                class="flex items-center gap-3 cursor-pointer p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:border-primary dark:hover:border-primary/50 transition duration-200">
-                                                                <input type="radio"
-                                                                    name="question_{{ $question['id'] }}"
-                                                                    value="{{ $key }}"
-                                                                    class="">
-                                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                                                    <strong class="text-primary">{{ $key }}</strong>.
-                                                                    {{ $option }}
-                                                                </span>
-                                                            </label>
-                                                        @endforeach
-                                                    </div>
-
-                                                    <!-- Essay Input -->
-                                                @elseif($question['type'] === 'essay')
-                                                    <div class="ml-4">
-                                                        <input type="text" placeholder="Masukkan jawaban Anda..."
-                                                            name="question_{{ $question['id'] }}"
-                                                            class="input">
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        @endforeach
-                                    </div>
-
-                                    <!-- Submit Button -->
-                                    <div class="pt-2 flex gap-2">
-                                        <button type="submit"
-                                            class="bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
-                                            Kumpulkan
-                                        </button>
+                                <!-- Quiz Header -->
+                                <div class="border-b border-gray-200 dark:border-gray-700">
+                                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                                        {{ $quiz['title'] }}</h2>
+                                    <div class="mb-3">
+                                        <span
+                                            class="inline-block px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-semibold rounded-full">Deadline:
+                                            {{ $quiz['deadline'] }}</span>
                                     </div>
                                 </div>
-                            </div>
+
+                                <!-- Questions -->
+                                <div class="space-y-6">
+                                    @foreach ($quiz['questions'] as $index => $question)
+                                        <div class="border-b border-gray-200 dark:border-gray-700 pb-4 last:border-b-0">
+                                            <div class="mb-4">
+                                                <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                                                    <span class="text-primary">{{ $index + 1 }}.</span>
+                                                    {{ $question['question'] }}
+                                                </h4>
+                                            </div>
+
+                                            @if ($question['type'] === 'multiple_choice')
+                                                <div class="space-y-2 ml-4">
+                                                    @foreach ($question['options'] as $key => $option)
+                                                        <label
+                                                            class="flex items-center gap-3 cursor-pointer p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:border-primary dark:hover:border-primary/50 transition duration-200">
+                                                            <input type="radio" required
+                                                                name="question_{{ $question['id'] }}"
+                                                                value="{{ $key }}">
+                                                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                                <strong class="text-primary">{{ $key }}</strong>.
+                                                                {{ $option }}
+                                                            </span>
+                                                        </label>
+                                                    @endforeach
+                                                </div>
+                                            @elseif($question['type'] === 'essay')
+                                                <div class="ml-4">
+                                                    <input type="text" placeholder="Masukkan jawaban Anda..." required
+                                                        name="question_{{ $question['id'] }}"
+                                                        class="input">
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <!-- Submit -->
+                                <div class="pt-2 flex gap-2">
+                                    <button type="submit"
+                                        class="bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
+                                        Kumpulkan
+                                    </button>
+                                </div>
+                            </form>
                         </section>
                     @endforeach
 

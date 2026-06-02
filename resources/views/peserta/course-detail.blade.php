@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Peserta</title>
+    <title>Course Detail - Peserta</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
@@ -23,8 +23,6 @@
         document.documentElement.classList.toggle('dark', this.dark);
     }
 }" x-init="document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray-50 dark:bg-[#0F0F1A]">
-
-    <!-- Alpine.js -->
 
     <div class="flex h-screen overflow-hidden">
 
@@ -111,203 +109,239 @@
                     </button>
                 </div>
 
-                <!-- Scrollable content -->
-                <div class="flex-1 overflow-y-auto p-5 space-y-5">
+                <!-- ============================================= -->
+                <!-- SCROLLABLE CONTENT — Alpine data: courseApp   -->
+                <!-- ============================================= -->
+                <div class="flex-1 overflow-y-auto p-5 space-y-5"
+                    x-data="courseApp"
+                    x-init="loadProgress()"
+                >
 
                     <section class="space-y-5">
+                        <!-- Section Header -->
                         <div class="flex items-center justify-between">
                             <div>
                                 <h3 class="text-lg font-bold text-gray-900 dark:text-white">
                                     Materi Kursus
                                 </h3>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                                    Pelajari materi per minggu secara terstruktur
+                                    Pelajari materi per minggu secara terstruktur (Total 14 Minggu)
                                 </p>
                             </div>
                         </div>
 
-                        <!-- WEEK CARD -->
-                        <div class="card translate-0 rounded-2xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700"
-                            x-data="{ open: true }">
+                        <!-- Loop setiap minggu -->
+                        <template x-for="week in weeks" :key="week.id">
+                            <div class="card translate-0 rounded-2xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 mb-5">
 
-                            <!-- HEADER -->
-                            <button @click="open = !open"
-                                class="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-[#1A1A2E] hover:bg-gray-50 dark:hover:bg-[#252541] transition">
+                                <!-- HEADER MINGGU (klik untuk buka/tutup) -->
+                                <button @click="week.open = !week.open"
+                                    class="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-[#1A1A2E] hover:bg-gray-50 dark:hover:bg-[#252541] transition">
 
-                                <div class="flex items-center gap-4">
-                                    <div
-                                        class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold">
-                                        1
-                                    </div>
-
-                                    <div class="text-left">
-                                        <h4 class="font-semibold text-gray-900 dark:text-white">
-                                            Minggu 1: Pengenalan HTML
-                                        </h4>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                                            Dasar struktur halaman web
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="flex items-center gap-3">
-                                    <span
-                                        class="text-xs font-medium px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300">
-                                        3 Materi
-                                    </span>
-
-                                    <svg :class="open ? 'rotate-180' : ''"
-                                        class="w-5 h-5 text-gray-500 transition duration-300"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                                    </svg>
-                                </div>
-                            </button>
-
-                            <!-- CONTENT -->
-                            <div x-show="open" x-transition
-                                class="border-t border-gray-200 dark:border-gray-700 p-5 space-y-4">
-
-                                <!-- ITEM -->
-                                <div
-                                    class="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1A1A2E] hover:shadow-md transition">
-
-                                    <div class="flex items-start gap-4">
-                                        <div
-                                            class="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900/20 flex items-center justify-center shrink-0">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                            </svg>
-                                        </div>
-
-                                        <div class="flex-1">
-                                            <h5 class="font-semibold text-gray-900 dark:text-white">
-                                                Dasar HTML - Panduan Lengkap
-                                            </h5>
-
-                                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                                                Panduan komprehensif tentang struktur HTML, tag dasar,
-                                                dan best practice.
-                                            </p>
-
-                                            <div
-                                                class="flex flex-wrap gap-3 mt-3 text-xs text-gray-500 dark:text-gray-400">
-                                                <span class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
-                                                    </svg>
-                                                    2.4 MB
-                                                </span>
-                                                <span class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                    </svg>
-                                                    15 Jan 2024
-                                                </span>
-                                            </div>
-
-                                            <button
-                                                class="mt-4 px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">
-                                                Download
-                                            </button>
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold"
+                                            x-text="week.id"></div>
+                                        <div class="text-left">
+                                            <h4 class="font-semibold text-gray-900 dark:text-white"
+                                                x-text="week.title"></h4>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400"
+                                                x-text="week.desc"></p>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- VIDEO -->
-                                <div
-                                    class="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1A1A2E] hover:shadow-md transition">
-
-                                    <div class="flex items-start gap-4">
-                                        <div
-                                            class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center shrink-0">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M8 5v14l11-7z" />
-                                            </svg>
-                                        </div>
-
-                                        <div class="flex-1">
-                                            <h5 class="font-semibold text-gray-900 dark:text-white">
-                                                Pengenalan Tag HTML Dasar
-                                            </h5>
-
-                                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                                                Video tutorial tag HTML seperti heading, paragraph,
-                                                list, dan link.
-                                            </p>
-
-                                            <div
-                                                class="flex flex-wrap gap-3 mt-3 text-xs text-gray-500 dark:text-gray-400">
-                                                <span class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                    </svg>
-                                                    12:45
-                                                </span>
-                                                <span class="flex items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                    </svg>
-                                                    234 views
-                                                </span>
-                                            </div>
-
-                                            <button
-                                                class="mt-4 px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">
-                                                Tonton
-                                            </button>
-                                        </div>
+                                    <div class="flex items-center gap-3">
+                                        <!-- Badge jumlah item yang sudah done / total -->
+                                        <span class="text-xs font-medium px-3 py-1 rounded-full"
+                                            :class="weekDoneCount(week) === 4
+                                                ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
+                                                : 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'"
+                                            x-text="weekDoneCount(week) + '/4 Selesai'">
+                                        </span>
+                                        <!-- Arrow icon -->
+                                        <svg :class="week.open ? 'rotate-180' : ''"
+                                            class="w-5 h-5 text-gray-500 transition duration-300"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7" />
+                                        </svg>
                                     </div>
-                                </div>
+                                </button>
 
-                                <!-- TASK -->
-                                <div
-                                    class="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1A1A2E] hover:shadow-md transition">
+                                <!-- CONTENT (item-item di dalam minggu) -->
+                                <div x-show="week.open" x-transition
+                                    class="border-t border-gray-200 dark:border-gray-700 p-5 space-y-4">
 
-                                    <div class="flex items-start gap-4">
-                                        <div
-                                            class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center shrink-0">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                        </div>
+                                    <template x-for="item in week.items" :key="item.id">
+                                        <div class="relative p-4 rounded-xl border transition-all duration-300 hover:shadow-md"
+                                            :class="isDone(item.id)
+                                                ? 'border-green-300 bg-green-50/30 dark:bg-green-900/10 dark:border-green-700'
+                                                : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1A1A2E]'">
 
-                                        <div class="flex-1">
-                                            <div class="flex items-center justify-between">
-                                                <h5 class="font-semibold text-gray-900 dark:text-white">
-                                                    Tugas: Halaman HTML Sederhana
-                                                </h5>
-
-                                                <span
-                                                    class="text-xs px-2 py-1 rounded-full bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400">
-                                                    Belum Dikerjakan
-                                                </span>
-                                            </div>
-
-                                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                                                Buat halaman HTML biodata pribadi dengan minimal 5 tag.
-                                            </p>
-
-                                            <p class="text-xs text-red-500 mt-3 flex items-center gap-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            <!-- ✅ Done Badge (pojok kanan atas) -->
+                                            <div x-show="isDone(item.id)"
+                                                class="absolute top-3 right-3 flex items-center gap-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2.5 py-1 rounded-full text-xs font-bold">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5"
+                                                    viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
-                                                Deadline: 20 Jan 2024
-                                            </p>
+                                                Selesai
+                                            </div>
 
-                                            <button
-                                                class="mt-4 px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">
-                                                Kerjakan
-                                            </button>
+                                            <div class="flex items-start gap-4">
+                                                <!-- Icon berdasarkan type -->
+                                                <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                                                    :class="iconClass(item.type)">
+                                                    <template x-if="item.type === 'materi'">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                            stroke-width="2">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                        </svg>
+                                                    </template>
+                                                    <template x-if="item.type === 'video'">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6"
+                                                            fill="currentColor" viewBox="0 0 24 24">
+                                                            <path d="M8 5v14l11-7z" />
+                                                        </svg>
+                                                    </template>
+                                                    <template x-if="item.type === 'tugas'">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                            stroke-width="2">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                        </svg>
+                                                    </template>
+                                                    <template x-if="item.type === 'kuis'">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                            stroke-width="2">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                    </template>
+                                                </div>
+
+                                                <!-- Info & Actions -->
+                                                <div class="flex-1 pr-16">
+                                                    <h5 class="font-semibold text-gray-900 dark:text-white"
+                                                        x-text="item.title"></h5>
+                                                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-1"
+                                                        x-text="item.desc"></p>
+
+                                                    <!-- Meta info -->
+                                                    <div
+                                                        class="flex flex-wrap gap-3 mt-3 text-xs text-gray-500 dark:text-gray-400">
+                                                        <template x-if="item.type === 'materi'">
+                                                            <span class="flex items-center gap-1">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                                                    stroke="currentColor" stroke-width="2">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                                                                </svg>
+                                                                <span x-text="item.size"></span>
+                                                            </span>
+                                                        </template>
+                                                        <template x-if="item.type === 'video'">
+                                                            <span class="flex items-center gap-1">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                                                    stroke="currentColor" stroke-width="2">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                </svg>
+                                                                <span x-text="item.duration"></span>
+                                                            </span>
+                                                        </template>
+                                                        <template x-if="item.type === 'tugas'">
+                                                            <span class="flex items-center gap-1 text-red-500">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                                                    stroke="currentColor" stroke-width="2">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                                </svg>
+                                                                <span
+                                                                    x-text="'Deadline: ' + item.deadline"></span>
+                                                            </span>
+                                                        </template>
+                                                        <template x-if="item.type === 'kuis'">
+                                                            <span class="flex items-center gap-1 text-orange-500">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                                                    stroke="currentColor" stroke-width="2">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                </svg>
+                                                                <span
+                                                                    x-text="'Durasi: ' + item.duration"></span>
+                                                            </span>
+                                                        </template>
+                                                    </div>
+
+                                                    <!-- Action Buttons -->
+                                                    <div class="mt-4 flex flex-wrap items-center gap-3">
+
+                                                        {{-- Materi: klik = download + auto done --}}
+                                                        <template x-if="item.type === 'materi'">
+                                                            <button @click="markDone(item.id)"
+                                                                class="px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">
+                                                                Download File
+                                                            </button>
+                                                        </template>
+
+                                                        {{-- Video: klik = tonton + auto done --}}
+                                                        <template x-if="item.type === 'video'">
+                                                            <button @click="markDone(item.id)"
+                                                                class="px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">
+                                                                Tonton Video
+                                                            </button>
+                                                        </template>
+
+                                                        {{-- Tugas: harus kumpulkan dulu --}}
+                                                        <template x-if="item.type === 'tugas'">
+                                                            <a href="tugas-detail"
+                                                                @click="localStorage.setItem('currentMockTask', item.id)"
+                                                                class="inline-block px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">
+                                                                Kumpulkan Tugas
+                                                            </a>
+                                                        </template>
+
+                                                        {{-- Kuis: harus kerjakan dulu --}}
+                                                        <template x-if="item.type === 'kuis'">
+                                                            <a href="kuis-mulai"
+                                                                @click="localStorage.setItem('currentMockQuiz', item.id)"
+                                                                class="inline-block px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">
+                                                                Kerjakan Kuis
+                                                            </a>
+                                                        </template>
+
+                                                        {{-- Lihat Nilai (muncul setelah tugas/kuis selesai) --}}
+                                                        <template
+                                                            x-if="isDone(item.id) && (item.type === 'tugas' || item.type === 'kuis')">
+                                                            <a href="nilai-detail"
+                                                                @click="localStorage.setItem('nilaiType', item.type)"
+                                                                class="inline-block px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition font-medium">
+                                                                Lihat Nilai
+                                                            </a>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </template>
                                 </div>
-
                             </div>
-                        </div>
+                        </template>
                     </section>
 
                 </div><!-- end scrollable -->
@@ -319,6 +353,85 @@
         </div><!-- end inner flex -->
 
     </div><!-- end outer flex -->
+
+    {{-- ============================================================
+         ALPINE JS — courseApp
+         Semua logic data & fungsi dipindahkan ke sini agar rapi.
+    ============================================================ --}}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('courseApp', () => ({
+
+                // ---- STATE ----
+                progress: {},   // object: { 'm1': true, 'v1': true, ... }
+                weeks: [],      // array minggu 1-14
+
+                // ---- INIT ----
+                loadProgress() {
+                    // Baca progress dari localStorage
+                    this.progress = JSON.parse(localStorage.getItem('courseProgressDemo')) || {};
+
+                    // Generate data 14 minggu, masing-masing punya 4 item
+                    const topik = [
+                        'Pengenalan HTML', 'CSS Dasar', 'JavaScript Dasar', 'Responsive Design',
+                        'UI Components', 'Layout & Grid', 'Animasi CSS', 'Framework CSS',
+                        'JavaScript Lanjutan', 'API & Fetch', 'State Management', 'Testing',
+                        'Deployment', 'Final Project'
+                    ];
+
+                    this.weeks = Array.from({ length: 14 }, (_, i) => {
+                        const w = i + 1;
+                        return {
+                            id: w,
+                            title: 'Minggu ' + w + ': ' + topik[i],
+                            desc: 'Topik pembelajaran untuk minggu ke-' + w,
+                            open: w === 1, // Hanya minggu 1 yang terbuka
+                            items: [
+                                { id: 'm' + w, type: 'materi', title: 'Materi Panduan ' + w, desc: 'Bahan bacaan minggu ' + w, size: '2.' + w + ' MB' },
+                                { id: 'v' + w, type: 'video', title: 'Video Interaktif ' + w, desc: 'Tutorial video minggu ' + w, duration: (10 + w) + ':30' },
+                                { id: 't' + w, type: 'tugas', title: 'Tugas Praktik ' + w, desc: 'Latihan mandiri minggu ' + w, deadline: (15 + w) + ' Jan 2024' },
+                                { id: 'q' + w, type: 'kuis', title: 'Kuis Evaluasi ' + w, desc: 'Uji pemahaman minggu ' + w, duration: '15 Menit' }
+                            ]
+                        };
+                    });
+                },
+
+                // ---- METHODS ----
+
+                // Tandai item sebagai selesai
+                markDone(itemId) {
+                    this.progress[itemId] = true;
+                    this.saveProgress();
+                },
+
+                // Cek apakah item sudah selesai
+                isDone(itemId) {
+                    return this.progress[itemId] === true;
+                },
+
+                // Hitung berapa item yg sudah done di 1 minggu
+                weekDoneCount(week) {
+                    return week.items.filter(item => this.isDone(item.id)).length;
+                },
+
+                // Simpan progress ke localStorage
+                saveProgress() {
+                    localStorage.setItem('courseProgressDemo', JSON.stringify(this.progress));
+                },
+
+                // Helper: CSS class untuk icon berdasarkan type (light + dark)
+                iconClass(type) {
+                    const map = {
+                        'materi': 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400',
+                        'video': 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
+                        'tugas': 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
+                        'kuis': 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400'
+                    };
+                    return map[type] || 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400';
+                }
+            }));
+        });
+    </script>
 
 </body>
 
