@@ -16,7 +16,7 @@ Route::get('/login', fn() => view('login'))->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', function () {
-    return view('register'); // Ganti dengan nama file view Anda
+    return view('register'); 
 })->name('register.process');
 
 /*
@@ -50,6 +50,7 @@ Route::prefix('instructor')->name('instructor.')->group(function () {
 
 
     Route::get('/dashboard', fn() => view('instructor.dashboard'))->name('dashboard');
+    Route::get('/profile', fn() => view('instructor.profile'))->name('profile');
 
     Route::get('/courses', fn() => view('instructor.courses'))->name('courses');
     Route::get('/course', fn() => view('instructor.course'))->name('course');
@@ -98,6 +99,7 @@ Route::prefix('peserta')->name('peserta.')->group(function () {
 */
 Route::prefix('super-admin')->name('superAdmin.')->group(function () {
     Route::get('/dashboard', fn() => view('superAdmin.dashboard'))->name('dashboard');
+    Route::get('/profile', fn() => view('superAdmin.profile'))->name('profile');
 });
 
 /*
@@ -107,4 +109,5 @@ Route::prefix('super-admin')->name('superAdmin.')->group(function () {
 */
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+    Route::get('/profile', fn() => view('admin.profile'))->name('profile');
 });

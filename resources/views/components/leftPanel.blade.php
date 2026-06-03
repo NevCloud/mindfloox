@@ -148,7 +148,7 @@
                 style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
             <div class="min-w-0">
                 <p class="text-xs font-semibold dark:text-white truncate">P Abraham</p>
-                <p class="text-[10px] text-gray-400 truncate">Peserta Aktif</p>
+                <p class="text-[10px] text-gray-400 truncate">ADMIN MICROCREDENTIAL</p>
             </div>
         </div>
         <form method="POST" action="{{ route('logout') }}" class="w-full">

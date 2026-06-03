@@ -13,8 +13,8 @@
     <!-- Profile -->
     <div class="flex items-center justify-end gap-3 pt-1">
         <div class="text-right">
-            <p class="text-sm font-semibold dark:text-white">Sara Abraham</p>
-            <a href="{{ route('peserta.profile') }}" class="text-xs text-primary cursor-pointer hover:underline">Lihat profil</a>
+            <p class="text-sm font-semibold dark:text-white">SUPER ADMIN</p>
+            <a href="{{ route('superAdmin.profile') }}" class="text-xs text-primary cursor-pointer hover:underline">Lihat profil</a>
         </div>
         <img src="https://i.pravatar.cc/150?img=47" alt="Sara"
             class="w-10 h-10 rounded-full object-cover flex-shrink-0" style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
@@ -162,8 +162,8 @@
     <!-- Profile -->
     <div class="flex items-center justify-end gap-3 pt-1">
         <div class="text-right">
-            <p class="text-sm font-semibold dark:text-white">Sara Abraham</p>
-            <a href="{{ route('peserta.profile') }}" class="text-xs text-primary cursor-pointer hover:underline">Lihat profil</a>
+            <p class="text-sm font-semibold dark:text-white">ADMIN</p>
+            <a href="{{ route('admin.profile') }}" class="text-xs text-primary cursor-pointer hover:underline">Lihat profil</a>
         </div>
         <img src="https://i.pravatar.cc/150?img=47" alt="Sara"
             class="w-10 h-10 rounded-full object-cover flex-shrink-0" style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
@@ -311,10 +311,10 @@
     <!-- Profile -->
     <div class="flex items-center justify-end gap-3 pt-1">
         <div class="text-right">
-            <p class="text-sm font-semibold dark:text-white">Sarah Wijaya</p>
-            <a href="#" class="text-xs text-primary cursor-pointer hover:underline">Lihat profil</a>
+            <p class="text-sm font-semibold dark:text-white">Instruktur</p>
+            <a href="{{ route('instructor.profile') }}" class="text-xs text-primary cursor-pointer hover:underline">Lihat profil</a>
         </div>
-        <img src="https://i.pravatar.cc/150?img=12" alt="Sarah"
+        <img src="https://i.pravatar.cc/150?img=47" alt="Sara"
             class="w-10 h-10 rounded-full object-cover flex-shrink-0" style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
     </div>
 
@@ -360,11 +360,11 @@
         <div class="mt-3 flex flex-wrap gap-x-3 gap-y-1.5">
             <div class="flex items-center gap-1">
                 <div class="w-2 h-2 rounded-full bg-red-500"></div><span
-                    class="text-[9px] text-gray-400">Terlambat Evaluasi</span>
+                    class="text-[9px] text-gray-400">Terlambat</span>
             </div>
             <div class="flex items-center gap-1">
                 <div class="w-2 h-2 rounded-full bg-yellow-500"></div><span
-                    class="text-[9px] text-gray-400">Perlu Penilaian</span>
+                    class="text-[9px] text-gray-400">Segera</span>
             </div>
             <div class="flex items-center gap-1">
                 <div class="w-2 h-2 rounded-full" style="background:#6C63FF"></div><span
@@ -372,16 +372,16 @@
             </div>
             <div class="flex items-center gap-1">
                 <div class="w-2 h-2 rounded-full bg-green-500"></div><span class="text-[9px] text-gray-400">Tugas
-                    Baru</span>
+                    baru</span>
             </div>
         </div>
     </div>
 
-    <!-- Aktivitas Terkini -->
-    <div class="mt-8">
+    <!-- Daftar Tugas -->
+    <div>
         <div class="flex items-center justify-between mb-3">
-            <h4 class="text-sm font-semibold dark:text-white">Tugas Perlu Dinilai</h4>
-            <button class="text-xs text-primary hover:underline">Semua</button>
+            <h4 class="text-sm font-semibold dark:text-white">Semua Tugas</h4>
+            <button class="text-xs text-primary hover:underline">Filter</button>
         </div>
         <div class="space-y-2">
             <div class="rounded-xl p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20">
@@ -389,9 +389,9 @@
                     <p class="text-xs font-semibold text-red-700 dark:text-red-400 leading-tight">UI/UX
                         Case Study</p>
                     <span
-                        class="text-[9px] font-bold bg-red-500 text-white px-1.5 py-0.5 rounded-full flex-shrink-0">15 Peserta</span>
+                        class="text-[9px] font-bold bg-red-500 text-white px-1.5 py-0.5 rounded-full flex-shrink-0">Terlambat</span>
                 </div>
-                <p class="text-[10px] text-red-500/80 dark:text-red-400/70">UI/UX Design · Melewati Batas</p>
+                <p class="text-[10px] text-red-500/80 dark:text-red-400/70">UI/UX Design · 19 Apr</p>
             </div>
             <div
                 class="rounded-xl p-3 bg-yellow-50 dark:bg-yellow-500/10 border border-yellow-200 dark:border-yellow-500/20">
@@ -399,27 +399,47 @@
                     <p class="text-xs font-semibold text-yellow-700 dark:text-yellow-400 leading-tight">
                         Analisis Sorting</p>
                     <span
-                        class="text-[9px] font-bold bg-yellow-400 text-white px-1.5 py-0.5 rounded-full flex-shrink-0">8 Peserta</span>
+                        class="text-[9px] font-bold bg-yellow-400 text-white px-1.5 py-0.5 rounded-full flex-shrink-0">Segera</span>
                 </div>
-                <p class="text-[10px] text-yellow-600/70 dark:text-yellow-400/70">DSA · Menunggu Penilaian</p>
+                <p class="text-[10px] text-yellow-600/70 dark:text-yellow-400/70">DSA · 22 Apr</p>
             </div>
             <div class="rounded-xl p-3 border"
                 style="background:rgba(108,99,255,0.05);border-color:rgba(108,99,255,0.20)">
                 <div class="flex items-start justify-between gap-2 mb-1">
                     <p class="text-xs font-semibold text-primary leading-tight">Business Model Canvas</p>
                     <span class="text-[9px] font-bold text-white px-1.5 py-0.5 rounded-full flex-shrink-0"
-                        style="background:#6C63FF">32/40 Terkumpul</span>
+                        style="background:#6C63FF">On Track</span>
                 </div>
-                <p class="text-[10px] text-primary/70">Entrepreneurship · Berlangsung</p>
+                <p class="text-[10px] text-primary/70">Entrepreneurship · 25 Apr</p>
+            </div>
+            <div
+                class="rounded-xl p-3 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20">
+                <div class="flex items-start justify-between gap-2 mb-1">
+                    <p class="text-xs font-semibold text-green-700 dark:text-green-400 leading-tight">SEO
+                        Content Strategy</p>
+                    <span
+                        class="text-[9px] font-bold bg-green-500 text-white px-1.5 py-0.5 rounded-full flex-shrink-0">Baru</span>
+                </div>
+                <p class="text-[10px] text-green-600/70 dark:text-green-400/70">Digital Marketing · 28 Apr
+                </p>
             </div>
             <div class="rounded-xl p-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10">
                 <div class="flex items-start justify-between gap-2 mb-1">
                     <p class="text-xs font-semibold text-gray-400 line-through leading-tight">Wireframe
                         Prototype</p>
                     <span
-                        class="text-[9px] font-bold bg-gray-300 dark:bg-white/20 text-gray-600 dark:text-white/60 px-1.5 py-0.5 rounded-full flex-shrink-0">Selesai Dinilai</span>
+                        class="text-[9px] font-bold bg-gray-300 dark:bg-white/20 text-gray-600 dark:text-white/60 px-1.5 py-0.5 rounded-full flex-shrink-0">Selesai</span>
                 </div>
                 <p class="text-[10px] text-gray-400">UI/UX Design · 15 Apr</p>
+            </div>
+            <div class="rounded-xl p-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+                <div class="flex items-start justify-between gap-2 mb-1">
+                    <p class="text-xs font-semibold text-gray-400 line-through leading-tight">Array &
+                        Linked List Quiz</p>
+                    <span
+                        class="text-[9px] font-bold bg-gray-300 dark:bg-white/20 text-gray-600 dark:text-white/60 px-1.5 py-0.5 rounded-full flex-shrink-0">Selesai</span>
+                </div>
+                <p class="text-[10px] text-gray-400">DSA · 10 Apr</p>
             </div>
         </div>
     </div>
@@ -572,7 +592,6 @@
             </div>
         </div>
     </div>
-
 </aside>
 @else
     <!-- Tampilkan sesuatu yang default atau kosongkan jika tidak ada stats khusus -->
