@@ -29,7 +29,7 @@
     <div class="flex h-screen overflow-hidden">
 
         <!-- ===== LEFT PANEL ===== -->
-        <x-leftPanel-instructor />
+        <x-leftPanel />
 
         <!-- ===== MAIN CONTENT ===== -->
         <div class="flex flex-1 min-w-0 overflow-hidden">
@@ -47,7 +47,7 @@
             </main>
 
             <!-- ===== RIGHT PANEL ===== -->
-            <x-rightPanel-instructor />
+            <x-rightPanel/>
 
         </div>
 

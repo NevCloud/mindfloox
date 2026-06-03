@@ -15,6 +15,9 @@
     <!-- LEFT PANEL -->
     <x-leftPanel />
 
+    <!--right panel-->
+    <x-rightPanel />
+
     <!-- MAIN -->
     <div class="flex-1 overflow-y-auto">
 

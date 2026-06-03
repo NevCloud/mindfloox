@@ -42,14 +42,14 @@
                 <!-- Scrollable content -->
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">
 
-                    <!-- Welcome Banner -->
-                    <x-banner />
+                <!-- Welcome Banner -->
+                <x-banner />
 
-                    <!-- Stat Cards -->
-                    <x-stats />
+                <!-- Stat Cards -->
+                <x-stats />
 
-                    <!-- Main Grid -->
-                    <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                <!-- Main Grid -->
+                <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
                         <!-- LEFT: TABLE -->
                         <div class="card translate-0 xl:col-span-2 p-4">

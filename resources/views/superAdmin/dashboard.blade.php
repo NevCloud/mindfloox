@@ -5,94 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>Dashboard - Super Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#6C63FF',
-                        purple: {
-                            500: '#6C63FF',
-                            600: '#5B54E6',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         [x-cloak] { display: none !important; }
         .modal-backdrop { backdrop-filter: blur(4px); }
-        
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
-        
-        .dark ::-webkit-scrollbar-track { background: #1a1a2e; }
-        .dark ::-webkit-scrollbar-thumb { background: #4a4a6a; }
     </style>
 </head>
 
-<body x-data="dashboardApp()" class="bg-gray-100 dark:bg-[#0F0F1A] font-sans">
+<body x-data="dashboardApp()" x-init="initApp()" class="relative bg-gray-50 dark:bg-[#0F0F1A]">
 
-    <div class="flex h-screen overflow-hidden" x-init="init()">
+    <div class="flex h-screen overflow-hidden">
 
         <!-- SIDEBAR -->
-        <aside class="w-56 bg-white dark:bg-[#1A1A2E] border-r border-gray-200 dark:border-gray-800 flex flex-col flex-shrink-0">
-            <div class="p-5 pb-4">
-                <div class="text-2xl font-bold">
-                    <span class="text-purple-600">FL</span><span class="text-purple-600">OOX</span>
-                </div>
-            </div>
-
-            <nav class="flex-1 px-3 space-y-1">
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 font-medium text-sm">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <rect x="3" y="3" width="7" height="7" />
-                        <rect x="14" y="3" width="7" height="7" />
-                        <rect x="14" y="14" width="7" height="7" />
-                        <rect x="3" y="14" width="7" height="7" />
-                    </svg>
-                    Dashboard
-                </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition text-sm">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                    Courses
-                </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition text-sm">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                    Tugas
-                </a>
-            </nav>
-
-            <div class="p-3 border-t border-gray-200 dark:border-gray-800">
-                <div class="flex items-center gap-2 mb-2">
-                    <img src="https://i.pravatar.cc/32?img=5" class="w-8 h-8 rounded-full" alt="User">
-                    <div class="flex-1 min-w-0">
-                        <p class="text-xs font-medium text-gray-800 dark:text-white truncate">P Abraham</p>
-                        <p class="text-xs text-gray-500">Peserta Aktif</p>
-                    </div>
-                </div>
-                <button class="w-full flex items-center gap-2 px-3 py-2 text-xs text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                    Logout
-                </button>
-            </div>
-        </aside>
+        <x-leftPanel />
 
             <!-- MAIN CONTENT -->
             <main class="flex-1 flex flex-col overflow-hidden">
@@ -114,7 +39,7 @@
                     <div class="grid grid-cols-2 gap-5">
 
                         <!-- 1. JENIS MICROCREDENTIAL -->
-                        <div class="bg-white dark:bg-[#1A1A2E] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+                        <div class="card translate-0">
                             <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 bg-pink-100 dark:bg-pink-500/10 rounded-lg flex items-center justify-center">
@@ -123,7 +48,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="text-sm font-semibold text-gray-800 dark:text-white">Jenis Microcredential</h3>
+                                        <h3 class="font-semibold text-gray-800 dark:text-white">Jenis Microcredential</h3>
                                         <p class="text-xs text-gray-500">Kelola kategori sertifikasi</p>
                                     </div>
                                 </div>
@@ -173,7 +98,7 @@
                         </div>
 
                         <!-- 2. ADMIN & INSTRUKTUR -->
-                        <div class="bg-white dark:bg-[#1A1A2E] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+                        <div class="card translate-0">
                             <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 bg-blue-100 dark:bg-blue-500/10 rounded-lg flex items-center justify-center">
@@ -182,7 +107,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="text-sm font-semibold text-gray-800 dark:text-white">Admin & Instruktur</h3>
+                                        <h3 class="font-semibold text-gray-800 dark:text-white">Admin & Instruktur</h3>
                                         <p class="text-xs text-gray-500">Manajemen pengguna</p>
                                     </div>
                                 </div>
@@ -202,7 +127,7 @@
                                         <div class="flex items-center gap-3">
                                             <img :src="'https://i.pravatar.cc/40?img=' + (index + 3)" class="w-10 h-10 rounded-full" alt="User">
                                             <div>
-                                                <p class="text-sm font-medium text-gray-800 dark:text-white" x-text="user.name"></p>
+                                                <p class="font-medium text-gray-800 dark:text-white" x-text="user.name"></p>
                                                 <p class="text-xs text-gray-500" x-text="user.role"></p>
                                             </div>
                                         </div>
@@ -224,7 +149,7 @@
                         </div>
 
                         <!-- 3. TAHUN AKADEMIK -->
-                        <div class="bg-white dark:bg-[#1A1A2E] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+                        <div class="card translate-0">
                             <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 bg-amber-100 dark:bg-amber-500/10 rounded-lg flex items-center justify-center">
@@ -233,7 +158,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="text-sm font-semibold text-gray-800 dark:text-white">Periode Akademik</h3>
+                                        <h3 class="font-semibold text-gray-800 dark:text-white">Periode Akademik</h3>
                                         <p class="text-xs text-gray-500">Kalender tahun akademik</p>
                                     </div>
                                 </div>
@@ -246,7 +171,7 @@
                                 <template x-for="(year, index) in academicYears" :key="index">
                                     <div class="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                                         <div>
-                                            <p class="text-sm font-semibold text-gray-800 dark:text-white" x-text="year.year"></p>
+                                            <p class="font-semibold text-gray-800 dark:text-white" x-text="year.year"></p>
                                             <p class="text-xs text-gray-500 mt-0.5">Status: <span x-text="year.status"></span></p>
                                         </div>
                                         <div class="flex gap-1">
@@ -267,7 +192,7 @@
                         </div>
 
                         <!-- 4. SEMESTER -->
-                        <div class="bg-white dark:bg-[#1A1A2E] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+                        <div class="card translate-0">
                             <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 bg-purple-100 dark:bg-purple-500/10 rounded-lg flex items-center justify-center">
@@ -276,7 +201,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="text-sm font-semibold text-gray-800 dark:text-white">Semester</h3>
+                                        <h3 class="font-semibold text-gray-800 dark:text-white">Semester</h3>
                                         <p class="text-xs text-gray-500">Manajemen semester (ganjil/genap)</p>
                                     </div>
                                 </div>
@@ -289,7 +214,7 @@
                                 <template x-for="(semester, index) in semesters" :key="index">
                                     <div class="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                                         <div class="flex-1">
-                                            <p class="text-sm font-semibold text-gray-800 dark:text-white" x-text="semester.name"></p>
+                                            <p class="font-semibold text-gray-800 dark:text-white" x-text="semester.name"></p>
                                             <p class="text-xs text-gray-500 mt-0.5" x-text="'Status: ' + semester.status + ' • ' + semester.period"></p>
                                         </div>
                                         <div class="flex items-center gap-1">
@@ -319,126 +244,10 @@
 
         </main>
 
-        <!-- RIGHT SIDEBAR - Kalender -->
-        <aside class="w-72 bg-white dark:bg-[#1A1A2E] border-l border-gray-200 dark:border-gray-800 overflow-y-auto flex-shrink-0">
-            <div class="p-5 space-y-5">
-                <div>
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-sm font-semibold text-gray-800 dark:text-white">Kalender</h3>
-                        <div class="flex items-center gap-2 text-xs text-gray-500">
-                            <button @click="prevMonth()" class="hover:text-gray-800 dark:hover:text-white">&lt;</button>
-                            <span x-text="monthYear"></span>
-                            <button @click="nextMonth()" class="hover:text-gray-800 dark:hover:text-white">&gt;</button>
-                        </div>
-                    </div>
+                <!--right panel-->
+                <x-rightPanel />
+ 
 
-                    <div class="grid grid-cols-7 gap-1 text-center text-xs mb-2">
-                        <div class="text-gray-500 font-medium py-1">Sen</div>
-                        <div class="text-gray-500 font-medium py-1">Sel</div>
-                        <div class="text-gray-500 font-medium py-1">Rab</div>
-                        <div class="text-gray-500 font-medium py-1">Kam</div>
-                        <div class="text-gray-500 font-medium py-1">Jum</div>
-                        <div class="text-gray-500 font-medium py-1">Sab</div>
-                        <div class="text-gray-500 font-medium py-1">Min</div>
-                    </div>
-
-                    <div class="grid grid-cols-7 gap-1 text-center text-xs">
-                        <template x-for="(day, idx) in calendarDays" :key="idx">
-                            <div class="aspect-square flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition"
-                                 :class="{
-                                    'bg-purple-600 text-white font-semibold': day === today && !isOtherMonth(idx),
-                                    'bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-400 font-medium': day === 22 && !isOtherMonth(idx),
-                                    'text-red-600 font-medium': day === 19 && !isOtherMonth(idx),
-                                    'bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400': day === 28 && !isOtherMonth(idx),
-                                    'text-purple-600 font-medium': day === 25 && !isOtherMonth(idx),
-                                    'text-gray-400': isOtherMonth(idx),
-                                    'text-gray-800 dark:text-gray-300': !isOtherMonth(idx) && day !== today && day !== 22 && day !== 19 && day !== 28 && day !== 25
-                                 }"
-                                 x-text="day">
-                            </div>
-                        </template>
-                    </div>
-
-                    <div class="mt-4 space-y-2 text-xs">
-                        <div class="flex items-center gap-2">
-                            <div class="w-2.5 h-2.5 bg-red-500 rounded-full"></div>
-                            <span class="text-gray-600 dark:text-gray-400">Terlambat</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <div class="w-2.5 h-2.5 bg-yellow-500 rounded-full"></div>
-                            <span class="text-gray-600 dark:text-gray-400">Segera</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <div class="w-2.5 h-2.5 bg-purple-500 rounded-full"></div>
-                            <span class="text-gray-600 dark:text-gray-400">Deadline</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <div class="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
-                            <span class="text-gray-600 dark:text-gray-400">Tugas baru</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-sm font-semibold text-gray-800 dark:text-white">Semua Tugas</h3>
-                        <button class="text-xs text-purple-600 hover:underline font-medium">Filter</button>
-                    </div>
-
-                    <div class="space-y-2">
-                        <div class="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                            <div class="flex items-start justify-between mb-1">
-                                <h4 class="text-xs font-medium text-gray-800 dark:text-white">UI/UX Case Study</h4>
-                                <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs rounded font-medium">Terlambat</span>
-                            </div>
-                            <p class="text-xs text-gray-500">UI/UX Design · 19 Apr</p>
-                        </div>
-
-                        <div class="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                            <div class="flex items-start justify-between mb-1">
-                                <h4 class="text-xs font-medium text-gray-800 dark:text-white">Analisis Sorting</h4>
-                                <span class="px-1.5 py-0.5 bg-yellow-100 dark:bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 text-xs rounded font-medium">Segera</span>
-                            </div>
-                            <p class="text-xs text-gray-500">DSA · 22 Apr</p>
-                        </div>
-
-                        <div class="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                            <div class="flex items-start justify-between mb-1">
-                                <h4 class="text-xs font-medium text-gray-800 dark:text-white">Business Model Canvas</h4>
-                                <span class="px-1.5 py-0.5 bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs rounded font-medium">On Track</span>
-                            </div>
-                            <p class="text-xs text-gray-500">Entrepreneurship · 25 Apr</p>
-                        </div>
-
-                        <div class="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                            <div class="flex items-start justify-between mb-1">
-                                <h4 class="text-xs font-medium text-gray-800 dark:text-white">SEO Content Strategy</h4>
-                                <span class="px-1.5 py-0.5 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-xs rounded font-medium">Baru</span>
-                            </div>
-                            <p class="text-xs text-gray-500">Digital Marketing · 28 Apr</p>
-                        </div>
-
-                        <div class="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                            <div class="flex items-start justify-between mb-1">
-                                <h4 class="text-xs font-medium text-gray-800 dark:text-white">Wireframe Prototype</h4>
-                                <span class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded font-medium">Selesai</span>
-                            </div>
-                            <p class="text-xs text-gray-500">UI/UX Design · 15 Apr</p>
-                        </div>
-
-                        <div class="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                            <div class="flex items-start justify-between mb-1">
-                                <h4 class="text-xs font-medium text-gray-800 dark:text-white">Array & Linked List Quiz</h4>
-                                <span class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded font-medium">Selesai</span>
-                            </div>
-                            <p class="text-xs text-gray-500">DSA · 10 Apr</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-    </div>
 
     <!-- UNIVERSAL MODAL -->
     <div x-show="modal.show" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop" style="background: rgba(0,0,0,0.5);">
@@ -560,13 +369,12 @@
     <script>
         function dashboardApp() {
             return {
-                dark: false,
-                
-                // Calendar properties
-                currentDate: new Date(),
-                today: new Date().getDate(),
-                monthYear: '',
-                calendarDays: [],
+                dark: localStorage.getItem('theme') === 'dark',
+                toggleDark() {
+                    this.dark = !this.dark;
+                    localStorage.setItem('theme', this.dark ? 'dark' : 'light');
+                    document.documentElement.classList.toggle('dark', this.dark);
+                },
                 
                 microcredentials: [
                     { name: 'UI/UX Design', description: 'Desain antarmuka modern' },
@@ -607,71 +415,10 @@
                     index: null
                 },
 
-                init() {
-                    this.updateCalendar();
-                },
-
-                updateCalendar() {
-                    const year = this.currentDate.getFullYear();
-                    const month = this.currentDate.getMonth();
-                    
-                    // Update month year display
-                    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
-                                      'July', 'August', 'September', 'October', 'November', 'December'];
-                    this.monthYear = monthNames[month] + ' ' + year;
-                    
-                    // Get first day of month
-                    const firstDay = new Date(year, month, 1).getDay();
-                    const daysInMonth = new Date(year, month + 1, 0).getDate();
-                    const daysInPrevMonth = new Date(year, month, 0).getDate();
-                    
-                    this.calendarDays = [];
-                    
-                    // Add previous month days
-                    for (let i = firstDay - 1; i >= 0; i--) {
-                        this.calendarDays.push(daysInPrevMonth - i);
-                    }
-                    
-                    // Add current month days
-                    for (let i = 1; i <= daysInMonth; i++) {
-                        this.calendarDays.push(i);
-                    }
-                    
-                    // Add next month days
-                    const remainingDays = 42 - this.calendarDays.length;
-                    for (let i = 1; i <= remainingDays; i++) {
-                        this.calendarDays.push(i);
-                    }
-
-                    // Update today if in current month
-                    const todayDate = new Date();
-                    if (todayDate.getFullYear() === year && todayDate.getMonth() === month) {
-                        this.today = todayDate.getDate();
-                    } else {
-                        this.today = -1;
-                    }
-                },
-
-                isOtherMonth(index) {
-                    const firstDay = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1).getDay();
-                    const daysInMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0).getDate();
-                    return index < firstDay || index >= firstDay + daysInMonth;
-                },
-
-                prevMonth() {
-                    this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1);
-                    this.updateCalendar();
-                },
-
-                nextMonth() {
-                    this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1);
-                    this.updateCalendar();
-                },
-
-                toggleDark() {
-                    this.dark = !this.dark;
+                initApp() {
                     document.documentElement.classList.toggle('dark', this.dark);
                 },
+
 
                 editMicrocredential(index) {
                     const item = this.microcredentials[index];
