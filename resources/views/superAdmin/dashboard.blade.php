@@ -107,60 +107,8 @@
             <!-- BANNER -->
             <x-banner />
 
-                    <!-- STAT CARDS -->
-                    <div class="grid grid-cols-4 gap-4">
-                        <div class="bg-white dark:bg-[#1A1A2E] rounded-xl p-4 border border-gray-200 dark:border-gray-800">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="w-10 h-10 bg-purple-100 dark:bg-purple-500/10 rounded-lg flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                    </svg>
-                                </div>
-                                <span class="px-2 py-0.5 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-medium rounded">Aktif</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-1">4</h3>
-                            <p class="text-xs text-gray-500">Course Diambil</p>
-                        </div>
-
-                        <div class="bg-white dark:bg-[#1A1A2E] rounded-xl p-4 border border-gray-200 dark:border-gray-800">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="w-10 h-10 bg-orange-100 dark:bg-orange-500/10 rounded-lg flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                    </svg>
-                                </div>
-                                <span class="px-2 py-0.5 bg-orange-100 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-medium rounded">3 pending</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-1">12</h3>
-                            <p class="text-xs text-gray-500">Total Tugas</p>
-                        </div>
-
-                        <div class="bg-white dark:bg-[#1A1A2E] rounded-xl p-4 border border-gray-200 dark:border-gray-800">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="w-10 h-10 bg-green-100 dark:bg-green-500/10 rounded-lg flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                    </svg>
-                                </div>
-                                <span class="px-2 py-0.5 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-medium rounded">1 Baik</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-1">87.5</h3>
-                            <p class="text-xs text-gray-500">Rata-rata Nilai</p>
-                        </div>
-
-                        <div class="bg-white dark:bg-[#1A1A2E] rounded-xl p-4 border border-gray-200 dark:border-gray-800">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="w-10 h-10 bg-pink-100 dark:bg-pink-500/10 rounded-lg flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                                    </svg>
-                                </div>
-                                <span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs font-medium rounded">2 baru</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-1">5</h3>
-                            <p class="text-xs text-gray-500">Sertifikat</p>
-                        </div>
-                    </div>
+            <!-- STATS -->
+            <x-stats />
 
                     <!-- CRUD SECTIONS IN GRID -->
                     <div class="grid grid-cols-2 gap-5">

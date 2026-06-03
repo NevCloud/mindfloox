@@ -15,78 +15,45 @@
     </div>
 
     <!-- Kalender -->
-    <div>
-        <div class="flex items-center justify-between mb-3">
-            <h4 class="text-sm font-semibold dark:text-white">Kalender Akademik</h4>
-            <div class="flex items-center gap-1 text-xs text-gray-400">
-                <button class="hover:text-primary transition px-1">&lt;</button>
-                <span>April 2025</span>
-                <button class="hover:text-primary transition px-1">&gt;</button>
-            </div>
-        </div>
-        <div class="grid grid-cols-7 gap-0.5 text-center mb-1">
-            <div class="text-[9px] text-gray-400 font-medium">Sen</div>
-            <div class="text-[9px] text-gray-400 font-medium">Sel</div>
-            <div class="text-[9px] text-gray-400 font-medium">Rab</div>
-            <div class="text-[9px] text-gray-400 font-medium">Kam</div>
-            <div class="text-[9px] text-gray-400 font-medium">Jum</div>
-            <div class="text-[9px] text-gray-400 font-medium">Sab</div>
-            <div class="text-[9px] text-gray-400 font-medium">Min</div>
-        </div>
-        <div class="grid grid-cols-7 gap-0.5 text-center">
-            <div class="py-1.5 text-[11px] text-gray-300 dark:text-gray-600">31</div>
-            <div class="py-1.5 text-[11px] text-gray-300 dark:text-gray-600">1</div>
-            <div class="py-1.5 text-[11px] text-gray-300 dark:text-gray-600">2</div>
-            <div class="py-1.5 text-[11px] text-gray-300 dark:text-gray-600">3</div>
-            <div class="py-1.5 text-[11px] text-gray-300 dark:text-gray-600">4</div>
-            <div class="py-1.5 text-[11px] text-gray-300 dark:text-gray-600">5</div>
-            <div class="py-1.5 text-[11px] text-gray-300 dark:text-gray-600">6</div>
-            <div class="py-1.5 text-[11px] dark:text-white">7</div>
-            <div class="py-1.5 text-[11px] dark:text-white">8</div>
-            <div class="py-1.5 text-[11px] dark:text-white">9</div>
-            <div class="py-1.5 text-[11px] dark:text-white">10</div>
-            <div class="py-1.5 text-[11px] dark:text-white">11</div>
-            <div class="py-1.5 text-[11px] dark:text-white">12</div>
-            <div class="py-1.5 text-[11px] dark:text-white">13</div>
-            <div class="py-1.5 text-[11px] dark:text-white">14</div>
-            <div class="py-1.5 text-[11px] dark:text-white">15</div>
-            <div class="py-1.5 text-[11px] dark:text-white">16</div>
-            <div class="py-1.5 text-[11px] dark:text-white">17</div>
-            <div class="py-1.5 text-[11px] dark:text-white">18</div>
-            <div
-                class="py-1.5 text-[11px] rounded-md bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 font-bold relative">
-                19<div class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-red-500">
-                </div>
-            </div>
-            <div class="py-1.5 text-[11px] dark:text-white">20</div>
-            <div class="py-1.5 text-[11px] rounded-md text-white font-bold" style="background:#6C63FF">21
-            </div>
-            <div
-                class="py-1.5 text-[11px] rounded-md bg-yellow-100 dark:bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 font-bold relative">
-                22<div class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-yellow-500">
-                </div>
-            </div>
-            <div class="py-1.5 text-[11px] dark:text-white">23</div>
-            <div class="py-1.5 text-[11px] dark:text-white">24</div>
-            <div class="py-1.5 text-[11px] rounded-md text-primary font-bold relative"
-                style="background:rgba(108,99,255,0.10)">25<div
-                    class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary">
-                </div>
-            </div>
-            <div class="py-1.5 text-[11px] dark:text-white">26</div>
-            <div class="py-1.5 text-[11px] dark:text-white">27</div>
-            <div
-                class="py-1.5 text-[11px] rounded-md bg-green-100 dark:bg-green-500/20 text-green-600 dark:text-green-400 font-medium relative">
-                28<div class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-green-500">
-                </div>
-            </div>
-            <div class="py-1.5 text-[11px] dark:text-white">29</div>
-            <div class="py-1.5 text-[11px] dark:text-white">30</div>
-            <div class="py-1.5 text-[11px] text-gray-300 dark:text-gray-600">1</div>
-            <div class="py-1.5 text-[11px] text-gray-300 dark:text-gray-600">2</div>
-            <div class="py-1.5 text-[11px] text-gray-300 dark:text-gray-600">3</div>
-            <div class="py-1.5 text-[11px] text-gray-300 dark:text-gray-600">4</div>
-        </div>
+        <aside class="w-72 bg-white dark:bg-[#1A1A2E] border-l border-gray-200 dark:border-gray-800 overflow-y-auto flex-shrink-0">
+            <div class="p-5 space-y-5">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-semibold text-gray-800 dark:text-white">Kalender</h3>
+                        <div class="flex items-center gap-2 text-xs text-gray-500">
+                            <button @click="prevMonth()" class="hover:text-gray-800 dark:hover:text-white">&lt;</button>
+                            <span x-text="monthYear"></span>
+                            <button @click="nextMonth()" class="hover:text-gray-800 dark:hover:text-white">&gt;</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-7 gap-1 text-center text-xs mb-2">
+                        <div class="text-gray-500 font-medium py-1">Sen</div>
+                        <div class="text-gray-500 font-medium py-1">Sel</div>
+                        <div class="text-gray-500 font-medium py-1">Rab</div>
+                        <div class="text-gray-500 font-medium py-1">Kam</div>
+                        <div class="text-gray-500 font-medium py-1">Jum</div>
+                        <div class="text-gray-500 font-medium py-1">Sab</div>
+                        <div class="text-gray-500 font-medium py-1">Min</div>
+                    </div>
+
+                    <div class="grid grid-cols-7 gap-1 text-center text-xs">
+                        <template x-for="(day, idx) in calendarDays" :key="idx">
+                            <div class="aspect-square flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition"
+                                 :class="{
+                                    'bg-purple-600 text-white font-semibold': day === today && !isOtherMonth(idx),
+                                    'bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-400 font-medium': day === 22 && !isOtherMonth(idx),
+                                    'text-red-600 font-medium': day === 19 && !isOtherMonth(idx),
+                                    'bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400': day === 28 && !isOtherMonth(idx),
+                                    'text-purple-600 font-medium': day === 25 && !isOtherMonth(idx),
+                                    'text-gray-400': isOtherMonth(idx),
+                                    'text-gray-800 dark:text-gray-300': !isOtherMonth(idx) && day !== today && day !== 22 && day !== 19 && day !== 28 && day !== 25
+                                 }"
+                                 x-text="day">
+                            </div>
+                        </template>
+                    </div>
+
         <div class="mt-3 flex flex-wrap gap-x-3 gap-y-1.5">
             <div class="flex items-center gap-1">
                 <div class="w-2 h-2 rounded-full bg-red-500"></div><span

@@ -13,7 +13,7 @@
     <x-banner />
 
     <!-- Stat Cards -->
-    <x-stats-instructor />
+    <x-stats />
         
     <!-- Course Saya -->
     <section>
