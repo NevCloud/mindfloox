@@ -15,7 +15,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
         @foreach ($tugas as $task)
-            <div onclick="window.location='/instructor/tugas-detail'"
+            <div onclick="window.location='/instructor/tugas-kumpul'"
                 class="card p-4 {{ $task['ui']['border'] }}">
 
                 <div class="flex items-start justify-between mb-2">

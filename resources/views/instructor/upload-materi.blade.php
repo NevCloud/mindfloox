@@ -443,7 +443,7 @@
             </main>
 
             <!-- ===== RIGHT PANEL ===== -->
-            <x-rightPanel-instructor />
+            <x-rightPanel />
 
         </div><!-- end inner flex -->
 

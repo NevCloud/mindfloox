@@ -111,7 +111,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
     Route::get('/profile', fn() => view('admin.profile'))->name('profile');
 
-    Route::get('/program', fn() => view('admin.programIndex'))->name('program.index');
+    Route::get('/program', fn() => view('admin.programIndex', ['programs' => []]))->name('program.index');
     Route::get('/program/create', fn() => view('admin.programCreate'))->name('program.create');
     Route::get('/program/{id}/edit', fn() => view('admin.programEdit'))->name('program.edit');
 
@@ -119,5 +119,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/program/{id}/kursus/create', fn() => view('admin.kursusCreate'))->name('program.kursus.create');
     Route::get('/program/{id}/kursus/{course}/edit', fn() => view('admin.kursusEdit'))->name('program.kursus.edit');
 
-    Route::get('/verifikasi', fn() => view('admin.verifikasiIndex'))->name('verifikasi.index');
+    Route::get('/verifikasi', fn() => view('admin.verifikasiIndex', ['registrations' => []]))->name('verifikasi.index');
 });

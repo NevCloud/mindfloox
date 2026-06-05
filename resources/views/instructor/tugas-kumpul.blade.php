@@ -254,13 +254,6 @@
                                     </button>
                                 </div>
                             </div>
-
-                            <!-- Catatan -->
-                            <div>
-                                <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Catatan Peserta</p>
-                                <div class="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1A1A2E] text-sm text-gray-700 dark:text-gray-300" x-html="activeStudent.note">
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Form Penilaian -->

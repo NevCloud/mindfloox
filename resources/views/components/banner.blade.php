@@ -131,5 +131,5 @@
         </div>
     </div>
 @else
-    @php abort(404) @endphp
+    <!-- Tampilkan sesuatu yang default atau kosongkan jika tidak ada stats khusus -->
 @endif
