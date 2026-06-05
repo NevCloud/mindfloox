@@ -58,8 +58,8 @@
                     </div>
 
                     <!-- Form -->
-                    <div class="card translate-0 p-6 max-w-2xl">
-                        <form action="{{ route('admin.program.store') }}" method="POST" class="space-y-5">
+                    <div class="card translate-0 p-6 max-w-2x2">
+                        <form action="{{ route('admin.program.create') }}" method="POST" class="space-y-5">
                             @csrf
 
                             <!-- Nama Program -->
