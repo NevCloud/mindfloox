@@ -1,4 +1,4 @@
-{{-- Course Card Partial --}}
+{{-- Course Card Component --}}
 <div onclick="window.location.href='{{ $href }}'" class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
     <div class="flex-1 p-4">
         <div class="flex items-stretch gap-3">
@@ -12,7 +12,7 @@
                 </div>
                 <p class="text-[11px] text-gray-400 mb-2">Instruktur: {{ $instructor }}</p>
                 <div class="w-full bg-gray-100 dark:bg-white/10 rounded-full h-1.5 mb-2">
-                    <div class="h-1.5 rounded-full" style="width:{{ $width }};background:{{ $color }}"></div>
+                    <div class="h-1.5 rounded-full transition-all duration-500" style="background:{{ $color }}; width:{{ $width }}"></div>
                 </div>
                 <div class="flex items-center justify-between text-[10px] text-gray-400 mb-3">
                     <span>{{ $modul }}</span>
