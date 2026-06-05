@@ -16,7 +16,7 @@ Route::get('/login', fn() => view('login'))->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', function () {
-    return view('register'); 
+    return view('register');
 })->name('register.process');
 
 /*
@@ -110,4 +110,14 @@ Route::prefix('super-admin')->name('superAdmin.')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
     Route::get('/profile', fn() => view('admin.profile'))->name('profile');
+
+    Route::get('/program', fn() => view('admin.programIndex'))->name('program.index');
+    Route::get('/program/create', fn() => view('admin.programCreate'))->name('program.create');
+    Route::get('/program/{id}/edit', fn() => view('admin.programEdit'))->name('program.edit');
+
+    Route::get('/program/{id}/kursus', fn() => view('admin.kursusIndex'))->name('program.kursus.index');
+    Route::get('/program/{id}/kursus/create', fn() => view('admin.kursusCreate'))->name('program.kursus.create');
+    Route::get('/program/{id}/kursus/{course}/edit', fn() => view('admin.kursusEdit'))->name('program.kursus.edit');
+
+    Route::get('/verifikasi', fn() => view('admin.verifikasiIndex'))->name('verifikasi.index');
 });
