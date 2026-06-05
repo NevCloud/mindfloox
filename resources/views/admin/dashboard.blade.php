@@ -57,10 +57,10 @@
                             <h2 class="text-2xl font-bold text-white mb-1">Selamat datang, Admin! 👋</h2>
                             <p class="text-white/80 text-sm">Kelola program, kursus, dan verifikasi pendaftaran peserta.</p>
                             <div class="flex gap-3 mt-4">
-                                <a href="{{ route('admin.program.create') }}" class="px-4 py-2 bg-white text-primary font-semibold text-sm rounded-xl hover:bg-gray-100 transition">
+                                <a href="#" class="px-4 py-2 bg-white text-primary font-semibold text-sm rounded-xl hover:bg-gray-100 transition">
                                     Tambah Program
                                 </a>
-                                <a href="{{ route('admin.verifikasi.index') }}" class="px-4 py-2 bg-white/20 text-white font-semibold text-sm rounded-xl hover:bg-white/30 transition">
+                                <a href="#" class="px-4 py-2 bg-white/20 text-white font-semibold text-sm rounded-xl hover:bg-white/30 transition">
                                     Lihat Verifikasi
                                 </a>
                             </div>
@@ -77,7 +77,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ \App\Models\Program::count() }}</p>
+                                <p class="text-2xl font-bold text-gray-800 dark:text-white">0</p>
                                 <p class="text-sm text-gray-500">Total Program</p>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ \App\Models\Course::count() }}</p>
+                                <p class="text-2xl font-bold text-gray-800 dark:text-white">0</p>
                                 <p class="text-sm text-gray-500">Total Kursus</p>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ \App\Models\ProgramRegistration::where('status', 'pending')->count() }}</p>
+                                <p class="text-2xl font-bold text-gray-800 dark:text-white">0</p>
                                 <p class="text-sm text-gray-500">Pending Verifikasi</p>
                             </div>
                         </div>
@@ -124,30 +124,11 @@
                                         <p class="text-xs text-gray-500">Daftar program microcredential</p>
                                     </div>
                                 </div>
-                                <a href="{{ route('admin.program.index') }}" class="text-xs text-primary font-medium px-3 py-1.5 rounded-lg transition" style="background:rgba(108,99,255,0.10)">Lihat Semua</a>
+                                <a href="#" class="text-xs text-primary font-medium px-3 py-1.5 rounded-lg transition" style="background:rgba(108,99,255,0.10)">Lihat Semua</a>
                             </div>
 
                             <div class="space-y-3">
-                                @forelse(\App\Models\Program::latest()->take(5)->get() as $program)
-                                <div class="flex items-center justify-between p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-                                    <div>
-                                        <p class="font-semibold text-gray-800 dark:text-white text-sm">{{ $program->name }}</p>
-                                        <p class="text-xs text-gray-500 mt-0.5">{{ $program->courses_count ?? $program->courses()->count() }} Kursus</p>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full {{ $program->status === 'aktif' ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-300' : 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300' }}">
-                                            {{ ucfirst($program->status) }}
-                                        </span>
-                                        <a href="{{ route('admin.program.edit', $program) }}" class="w-7 h-7 flex items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                                @empty
                                 <p class="text-center text-gray-400 text-sm py-4">Belum ada program</p>
-                                @endforelse
                             </div>
                         </div>
 
@@ -165,7 +146,7 @@
                                         <p class="text-xs text-gray-500">Menunggu verifikasi</p>
                                     </div>
                                 </div>
-                                <a href="{{ route('admin.verifikasi.index') }}" class="text-xs text-primary font-medium px-3 py-1.5 rounded-lg transition" style="background:rgba(108,99,255,0.10)">Lihat Semua</a>
+                                <a href="#" class="text-xs text-primary font-medium px-3 py-1.5 rounded-lg transition" style="background:rgba(108,99,255,0.10)">Lihat Semua</a>
                             </div>
 
                             <div class="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800">
@@ -178,25 +159,9 @@
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                                        @forelse(\App\Models\ProgramRegistration::with(['user','program'])->latest()->take(5)->get() as $reg)
-                                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-                                            <td class="px-3 py-3 font-medium text-gray-800 dark:text-white">{{ $reg->user->name ?? '-' }}</td>
-                                            <td class="px-3 py-3 text-gray-500">{{ $reg->program->name ?? '-' }}</td>
-                                            <td class="px-3 py-3 text-right">
-                                                @if($reg->status === 'pending')
-                                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-300">Pending</span>
-                                                @elseif($reg->status === 'diterima')
-                                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-300">Diterima</span>
-                                                @else
-                                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300">Ditolak</span>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        @empty
                                         <tr>
                                             <td colspan="3" class="px-3 py-6 text-center text-gray-400">Belum ada pendaftaran</td>
                                         </tr>
-                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
