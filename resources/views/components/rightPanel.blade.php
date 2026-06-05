@@ -108,7 +108,6 @@
 
     <!-- Tugas tiap role -->
         @php
-            // Status presets — reusable styling per status type
             $status = [
                 'terlambat' => [
                     'badge_text' => 'Terlambat',
@@ -148,14 +147,6 @@
                     'subtext_class' => 'text-gray-400',
                 ],
             ];
-            // Override teks badge "terlambat" per role jika diperlukan
-            if (request()->is('super-admin/*')) {
-                $status['terlambat']['badge_text'] = 'Terlambat (super admin)';
-            } elseif (request()->is('admin/*')) {
-                $status['terlambat']['badge_text'] = 'Terlambat (admin)';
-            } elseif (request()->is('instructor/*')) {
-                $status['terlambat']['badge_text'] = 'Terlambat (instruktur)';
-            }
 
             // Daftar tugas berdasarkan role
             $tasks = [];
