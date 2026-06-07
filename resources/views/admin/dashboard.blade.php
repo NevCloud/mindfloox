@@ -33,23 +33,8 @@
                 <!-- Scrollable content -->
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">
 
-                    <!-- Welcome Banner -->
-                    <div class="rounded-2xl p-6 flex items-center justify-between" style="background: linear-gradient(135deg, #6C63FF 0%, #9B59B6 100%)">
-                        <div>
-                            <p class="text-white/70 text-sm font-medium uppercase tracking-wider mb-1">Admin Microcredential</p>
-                            <h2 class="text-2xl font-bold text-white mb-1">Selamat datang, Admin! 👋</h2>
-                            <p class="text-white/80 text-sm">Kelola program, kursus, dan verifikasi pendaftaran peserta.</p>
-                            <div class="flex gap-3 mt-4">
-                                <a href="#" class="px-4 py-2 bg-white text-primary font-semibold text-sm rounded-xl hover:bg-gray-100 transition">
-                                    Tambah Program
-                                </a>
-                                <a href="#" class="px-4 py-2 bg-white/20 text-white font-semibold text-sm rounded-xl hover:bg-white/30 transition">
-                                    Lihat Verifikasi
-                                </a>
-                            </div>
-                        </div>
-                        <div class="hidden md:block text-white/20 text-9xl font-bold">MC</div>
-                    </div>
+        <!--banner admin-->
+        <x-banner />
 
                     <!-- Stat Cards -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">

@@ -46,7 +46,7 @@
                 <a href="/instructor/tugas" class="bg-white font-semibold text-sm px-5 py-2 rounded-lg hover:-translate-y-0.5 transition duration-200" style="color:#6C63FF">
                     Mulai Menilai
                 </a>
-                <a href="/instructor/upload-materi" class="border border-white/40 text-white font-medium text-sm px-5 py-2 rounded-lg hover:bg-white/10 transition duration-200 inline-block">
+                <a href="/instructor/courses" class="border border-white/40 text-white font-medium text-sm px-5 py-2 rounded-lg hover:bg-white/10 transition duration-200 inline-block">
                     Upload Materi
                 </a>
             </div>
