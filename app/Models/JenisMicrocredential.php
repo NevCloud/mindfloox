@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class JenisMicrocredential extends Model
+{
+    protected $table = "jenis_microcredential";
+
+    const CREATED_AT = "dibuat_pada";
+    const UPDATED_AT = "diperbarui_pada";
+
+    protected $fillable = [
+        "nama",
+        "deskripsi"
+    ];
+
+}
