@@ -6,20 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kuis extends Model
 {
-    protected $table = "kuis";
+    protected $table = 'kuis';
 
-    const CREATED_AT = "dibuat_pada";
-    const UPDATED_AT = "diperbarui_pada";
+    const CREATED_AT = 'dibuat_pada';
+    const UPDATED_AT = 'diperbarui_pada';
 
     protected $fillable = [
-        "id_materi_pembelajaran",
-        "judul",
-        "deskripsi",
-        "nilai",
-        "batas_waktu_menit",
+        'id_kursus',
+        'id_kursus_instruktur',
+        'judul',
+        'deskripsi',
+        'id_minggu',
+        'nilai',
+        'batas_waktu_menit',
     ];
 
     protected $casts = [
-        "nilai" => "decimal:2",
+        'nilai' => 'decimal:2',
     ];
 }

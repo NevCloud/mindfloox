@@ -20,6 +20,7 @@ class Peserta extends Model
 
     protected $casts = [
         "akses_aktif" => "boolean",
+        'diaktifkan_pada' => 'datetime',
     ];
 
 }

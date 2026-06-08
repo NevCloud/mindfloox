@@ -8,6 +8,7 @@ class SertifikatKursus extends Model
 {
     protected $table = "sertifikat_kursus";
 
+    const CREATED_AT = 'dibuat_pada';
     const UPDATED_AT = null;
 
     protected $fillable = [

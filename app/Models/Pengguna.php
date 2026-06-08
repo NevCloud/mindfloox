@@ -12,20 +12,20 @@ class Pengguna extends Model
     const UPDATED_AT = "diperbarui_pada";
 
     protected $fillable = [
-        "nama",
-        "username",
-        "email",
-        "kata_sandi",
-        "role",
-        "aktif",
-        "foto_profil",
-        "nomor_telepon",
-        "alamat",
-        "tanggal_lahir",
-        "x",
-        "facebook",
-        "linkedin",
-        "instagram"
+        'nama',
+        'username',
+        'email',
+        'kata_sandi',
+        'role',
+        'aktif',
+        'foto_profil',
+        'nomor_telepon',
+        'alamat',
+        'tanggal_lahir',
+        'x',
+        'facebook',
+        'linkedin',
+        'instagram',
     ];
 
     protected $casts = [

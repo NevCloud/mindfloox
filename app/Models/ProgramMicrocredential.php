@@ -12,11 +12,12 @@ class ProgramMicrocredential extends Model
     const UPDATED_AT = "diperbarui_pada";
 
     protected $fillable = [
-        "id_jenis_microcredential",
-        "id_semester",
-        "nama",
-        "deskripsi",
-        "status_pendaftaran",
+        'id_jenis_microcredential',
+        'id_semester',
+        'nama',
+        'deskripsi',
+        'foto_program',
+        'status_pendaftaran',
     ];
 
 }
