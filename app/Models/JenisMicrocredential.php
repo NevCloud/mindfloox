@@ -16,4 +16,13 @@ class JenisMicrocredential extends Model
         "deskripsi"
     ];
 
+    public function adminMicrocredential()
+    {
+        return $this->hasMany(AdminMicrocredential::class, 'id_jenis_microcredential');
+    }
+
+    public function programMicrocredential()
+    {
+        return $this->hasMany(ProgramMicrocredential::class, 'id_jenis_microcredential');
+    }
 }

@@ -15,4 +15,18 @@ class SuperAdmin extends Model
         "id_pengguna"
     ];
 
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class, 'id_pengguna');
+    }
+
+    public function adminYangDibuat()
+    {
+        return $this->hasMany(AdminMicrocredential::class, 'id_dibuat_oleh');
+    }
+
+    public function instrukturYangDibuat()
+    {
+        return $this->hasMany(Instruktur::class, 'id_dibuat_oleh');
+    }
 }

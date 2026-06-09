@@ -22,4 +22,8 @@ class SertifikatKursus extends Model
         "tanggal_terbit" => "date",
     ];
 
+    public function pendaftaran()
+    {
+        return $this->belongsTo(Pendaftaran::class, 'id_pendaftaran');
+    }
 }

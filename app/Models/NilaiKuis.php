@@ -22,4 +22,8 @@ class NilaiKuis extends Model
         "dihitung_pada" => "datetime",
     ];
 
+    public function sesiKuis()
+    {
+        return $this->belongsTo(SesiKuis::class, 'id_sesi_kuis');
+    }
 }

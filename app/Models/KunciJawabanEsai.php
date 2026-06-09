@@ -21,4 +21,8 @@ class KunciJawabanEsai extends Model
         "case_sensitive" => "boolean",
     ];
 
+    public function pertanyaanKuis()
+    {
+        return $this->belongsTo(PertanyaanKuis::class, 'id_pertanyaan');
+    }
 }

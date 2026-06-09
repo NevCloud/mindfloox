@@ -23,4 +23,8 @@ class Semester extends Model
         "tanggal_selesai" => "date",
     ];
 
+    public function programMicrocredential()
+    {
+        return $this->hasMany(ProgramMicrocredential::class, 'id_semester');
+    }
 }

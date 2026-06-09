@@ -20,4 +20,13 @@ class PilihanJawaban extends Model
         "adalah_benar" => "boolean",
     ];
 
+    public function pertanyaanKuis()
+    {
+        return $this->belongsTo(PertanyaanKuis::class, 'id_pertanyaan');
+    }
+
+    public function jawabanKuis()
+    {
+        return $this->hasMany(JawabanKuis::class, 'id_pilihan_jawaban');
+    }
 }

@@ -16,5 +16,14 @@ class Minggu extends Model
         'nomor_minggu',
         'status',
     ];
-    
+
+    public function materiPembelajaran()
+    {
+        return $this->hasMany(MateriPembelajaran::class, 'id_minggu');
+    }
+
+    public function kuis()
+    {
+        return $this->hasMany(Kuis::class, 'id_minggu');
+    }
 }

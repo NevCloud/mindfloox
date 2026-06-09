@@ -31,4 +31,24 @@ class Pengguna extends Model
     protected $casts = [
         "tanggal_lahir" => "date"
     ];
+
+    public function superAdmin()
+    {
+        return $this->hasOne(SuperAdmin::class, 'id_pengguna');
+    }
+
+    public function adminMicrocredential()
+    {
+        return $this->hasOne(AdminMicrocredential::class, 'id_pengguna');
+    }
+
+    public function instruktur()
+    {
+        return $this->hasOne(Instruktur::class, 'id_pengguna');
+    }
+
+    public function peserta()
+    {
+        return $this->hasOne(Peserta::class, 'id_pengguna');
+    }
 }

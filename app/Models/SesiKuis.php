@@ -23,4 +23,23 @@ class SesiKuis extends Model
         "diselesaikan_pada" => "datetime",
     ];
 
+    public function pendaftaran()
+    {
+        return $this->belongsTo(Pendaftaran::class, 'id_pendaftaran');
+    }
+
+    public function kuis()
+    {
+        return $this->belongsTo(Kuis::class, 'id_kuis');
+    }
+
+    public function jawabanKuis()
+    {
+        return $this->hasMany(JawabanKuis::class, 'id_sesi_kuis');
+    }
+
+    public function nilaiKuis()
+    {
+        return $this->hasOne(NilaiKuis::class, 'id_sesi_kuis');
+    }
 }

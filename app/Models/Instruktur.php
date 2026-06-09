@@ -17,4 +17,33 @@ class Instruktur extends Model
         "keahlian",
     ];
 
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class, 'id_pengguna');
+    }
+
+    public function pembuat()
+    {
+        return $this->belongsTo(SuperAdmin::class, 'id_dibuat_oleh');
+    }
+
+    public function kursus()
+    {
+        return $this->belongsToMany(Kursus::class, 'kursus_instruktur', 'id_instruktur', 'id_kursus');
+    }
+
+    public function kursusInstruktur()
+    {
+        return $this->hasMany(KursusInstruktur::class, 'id_instruktur');
+    }
+
+    public function nilaiKursusYangDitentukan()
+    {
+        return $this->hasMany(NilaiKursus::class, 'ditentukan_oleh');
+    }
+
+    public function tugasYangDinilai()
+    {
+        return $this->hasMany(NilaiTugas::class, 'dinilai_oleh');
+    }
 }

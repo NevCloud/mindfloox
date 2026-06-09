@@ -27,4 +27,18 @@ class NilaiKursus extends Model
         "dihitung_pada" => "datetime",
     ];
 
+    public function pendaftaran()
+    {
+        return $this->belongsTo(Pendaftaran::class, 'id_pendaftaran');
+    }
+
+    public function kursus()
+    {
+        return $this->belongsTo(Kursus::class, 'id_kursus');
+    }
+
+    public function ditentukanOleh()
+    {
+        return $this->belongsTo(Instruktur::class, 'ditentukan_oleh');
+    }
 }

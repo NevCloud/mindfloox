@@ -18,4 +18,18 @@ class JawabanKuis extends Model
         "teks_jawaban",
     ];
 
+    public function sesiKuis()
+    {
+        return $this->belongsTo(SesiKuis::class, 'id_sesi_kuis');
+    }
+
+    public function pertanyaanKuis()
+    {
+        return $this->belongsTo(PertanyaanKuis::class, 'id_pertanyaan');
+    }
+
+    public function pilihanJawaban()
+    {
+        return $this->belongsTo(PilihanJawaban::class, 'id_pilihan_jawaban');
+    }
 }

@@ -21,4 +21,18 @@ class UlasanKursus extends Model
         "rating_instruktur",
     ];
 
+    public function pendaftaran()
+    {
+        return $this->belongsTo(Pendaftaran::class, 'id_pendaftaran');
+    }
+
+    public function kursus()
+    {
+        return $this->belongsTo(Kursus::class, 'id_kursus');
+    }
+
+    public function kursusInstruktur()
+    {
+        return $this->belongsTo(KursusInstruktur::class, 'id_kursus_instruktur');
+    }
 }

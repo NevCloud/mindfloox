@@ -17,4 +17,23 @@ class PertanyaanKuis extends Model
         "tipe_pertanyaan",
     ];
 
+    public function kuis()
+    {
+        return $this->belongsTo(Kuis::class, 'id_kuis');
+    }
+
+    public function pilihanJawaban()
+    {
+        return $this->hasMany(PilihanJawaban::class, 'id_pertanyaan');
+    }
+
+    public function kunciJawabanEsai()
+    {
+        return $this->hasMany(KunciJawabanEsai::class, 'id_pertanyaan');
+    }
+
+    public function jawabanKuis()
+    {
+        return $this->hasMany(JawabanKuis::class, 'id_pertanyaan');
+    }
 }

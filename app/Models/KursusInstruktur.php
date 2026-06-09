@@ -16,4 +16,33 @@ class KursusInstruktur extends Model
         "id_instruktur",
     ];
 
+    public function kursus()
+    {
+        return $this->belongsTo(Kursus::class, 'id_kursus');
+    }
+
+    public function instruktur()
+    {
+        return $this->belongsTo(Instruktur::class, 'id_instruktur');
+    }
+
+    public function materiPembelajaran()
+    {
+        return $this->hasMany(MateriPembelajaran::class, 'id_kursus_instruktur');
+    }
+
+    public function kuis()
+    {
+        return $this->hasMany(Kuis::class, 'id_kursus_instruktur');
+    }
+
+    public function tugas()
+    {
+        return $this->hasMany(Tugas::class, 'id_kursus_instruktur');
+    }
+
+    public function ulasanKursus()
+    {
+        return $this->hasMany(UlasanKursus::class, 'id_kursus_instruktur');
+    }
 }

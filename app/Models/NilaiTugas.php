@@ -24,4 +24,18 @@ class NilaiTugas extends Model
         "dinilai_pada" => "datetime",
     ];
 
+    public function pendaftaran()
+    {
+        return $this->belongsTo(Pendaftaran::class, 'id_pendaftaran');
+    }
+
+    public function tugas()
+    {
+        return $this->belongsTo(Tugas::class, 'id_tugas');
+    }
+
+    public function dinilaiOleh()
+    {
+        return $this->belongsTo(Instruktur::class, 'dinilai_oleh');
+    }
 }

@@ -24,4 +24,29 @@ class Kuis extends Model
     protected $casts = [
         'nilai' => 'decimal:2',
     ];
+
+    public function kursus()
+    {
+        return $this->belongsTo(Kursus::class, 'id_kursus');
+    }
+
+    public function minggu()
+    {
+        return $this->belongsTo(Minggu::class, 'id_minggu');
+    }
+
+    public function kursusInstruktur()
+    {
+        return $this->belongsTo(KursusInstruktur::class, 'id_kursus_instruktur');
+    }
+
+    public function pertanyaanKuis()
+    {
+        return $this->hasMany(PertanyaanKuis::class, 'id_kuis');
+    }
+
+    public function sesiKuis()
+    {
+        return $this->hasMany(SesiKuis::class, 'id_kuis');
+    }
 }

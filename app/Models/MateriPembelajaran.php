@@ -22,4 +22,18 @@ class MateriPembelajaran extends Model
         'url_file',
     ];
 
+    public function kursus()
+    {
+        return $this->belongsTo(Kursus::class, 'id_kursus');
+    }
+
+    public function minggu()
+    {
+        return $this->belongsTo(Minggu::class, 'id_minggu');
+    }
+
+    public function kursusInstruktur()
+    {
+        return $this->belongsTo(KursusInstruktur::class, 'id_kursus_instruktur');
+    }
 }

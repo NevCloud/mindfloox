@@ -20,4 +20,23 @@ class ProgramMicrocredential extends Model
         'status_pendaftaran',
     ];
 
+    public function jenisMicrocredential()
+    {
+        return $this->belongsTo(JenisMicrocredential::class, 'id_jenis_microcredential');
+    }
+
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class, 'id_semester');
+    }
+
+    public function kursus()
+    {
+        return $this->hasMany(Kursus::class, 'id_program_microcredential');
+    }
+
+    public function pendaftaran()
+    {
+        return $this->hasMany(Pendaftaran::class, 'id_program_microcredential');
+    }
 }

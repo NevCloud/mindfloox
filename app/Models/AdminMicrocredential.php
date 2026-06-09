@@ -16,4 +16,29 @@ class AdminMicrocredential extends Model
         "id_dibuat_oleh",
         "id_pengguna",
     ];
+    
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class, 'id_pengguna');
+    }
+
+    public function pembuat()
+    {
+        return $this->belongsTo(SuperAdmin::class, 'id_dibuat_oleh');
+    }
+
+    public function jenisMicrocredential()
+    {
+        return $this->belongsTo(JenisMicrocredential::class, 'id_jenis_microcredential');
+    }
+
+    public function pendaftaranYangDiverifikasi()
+    {
+        return $this->hasMany(Pendaftaran::class, 'diverifikasi_oleh');
+    }
+
+    public function pesertaYangDiaktifkan()
+    {
+        return $this->hasMany(Peserta::class, 'diaktifkan_oleh');
+    }
 }

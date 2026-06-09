@@ -23,4 +23,18 @@ class Peserta extends Model
         'diaktifkan_pada' => 'datetime',
     ];
 
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class, 'id_pengguna');
+    }
+
+    public function diaktifkanOleh()
+    {
+        return $this->belongsTo(AdminMicrocredential::class, 'diaktifkan_oleh');
+    }
+
+    public function pendaftaran()
+    {
+        return $this->hasMany(Pendaftaran::class, 'id_peserta');
+    }
 }

@@ -23,4 +23,13 @@ class JawabanTugas extends Model
         "disubmit_pada" => "datetime",
     ];
 
+    public function pendaftaran()
+    {
+        return $this->belongsTo(Pendaftaran::class, 'id_pendaftaran');
+    }
+
+    public function tugas()
+    {
+        return $this->belongsTo(Tugas::class, 'id_tugas');
+    }
 }
