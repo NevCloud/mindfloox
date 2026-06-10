@@ -434,7 +434,7 @@
             </main>
 
             <!-- ===== RIGHT PANEL ===== -->
-            <x-rightPanel />
+
 
         </div><!-- end inner flex -->
 

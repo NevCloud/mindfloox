@@ -36,7 +36,7 @@
             <x-stats />
 
                     <!-- CRUD SECTIONS IN GRID -->
-                    <div class="grid grid-cols-2 gap-5">
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
 
                         <!-- 1. JENIS MICROCREDENTIAL -->
                         <div class="card translate-0">
@@ -53,11 +53,12 @@
                                     </div>
                                 </div>
                                 <div class="flex gap-2">
-                                    <button @click="openModal('microcredential', 'view')" class="px-3 py-1.5 text-xs text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-500/10 rounded-lg transition font-medium">
+                                    <a href="{{ url('/super-admin/jenis-microcredential') }}" class="px-3 py-1.5 text-xs text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-500/10 rounded-lg transition font-medium">
                                         Lihat Semua
-                                    </button>
-                                    <button @click="openModal('microcredential', 'create')" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-medium transition">
-                                        + Tambah
+                                    </a>
+                                    <button @click="openModal('microcredential', 'create')" class="flex items-center justify-center w-8 h-8 lg:w-auto lg:h-auto lg:px-3 lg:py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-medium transition" title="Tambah">
+                                        <span class="hidden lg:inline">+ Tambah</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 lg:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                                     </button>
                                 </div>
                             </div>
@@ -112,11 +113,12 @@
                                     </div>
                                 </div>
                                 <div class="flex gap-2">
-                                    <button @click="openModal('admin', 'view')" class="px-3 py-1.5 text-xs text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-500/10 rounded-lg transition font-medium">
+                                    <a href="{{ url('/super-admin/admin-instruktur') }}" class="px-3 py-1.5 text-xs text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-500/10 rounded-lg transition font-medium">
                                         Lihat Semua
-                                    </button>
-                                    <button @click="openModal('admin', 'create')" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-medium transition">
-                                        + Tambah
+                                    </a>
+                                    <button @click="openModal('admin', 'create')" class="flex items-center justify-center w-8 h-8 lg:w-auto lg:h-auto lg:px-3 lg:py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-medium transition" title="Tambah">
+                                        <span class="hidden lg:inline">+ Tambah</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 lg:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                                     </button>
                                 </div>
                             </div>
@@ -148,7 +150,7 @@
                             </div>
                         </div>
 
-                        <!-- 3. TAHUN AKADEMIK -->
+                        <!-- 3. PERIODE AKADEMIK -->
                         <div class="card translate-0">
                             <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
                                 <div class="flex items-center gap-3">
@@ -162,9 +164,15 @@
                                         <p class="text-xs text-gray-500">Kalender tahun akademik</p>
                                     </div>
                                 </div>
-                                <button @click="openModal('academic', 'create')" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-medium transition">
-                                    + Tambah
-                                </button>
+                                <div class="flex gap-2">
+                                    <a href="{{ url('/super-admin/periode-akademik') }}" class="px-3 py-1.5 text-xs text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-500/10 rounded-lg transition font-medium">
+                                        Lihat Semua
+                                    </a>
+                                    <button @click="openModal('academic', 'create')" class="flex items-center justify-center w-8 h-8 lg:w-auto lg:h-auto lg:px-3 lg:py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-medium transition" title="Tambah">
+                                        <span class="hidden lg:inline">+ Tambah</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 lg:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="p-5 space-y-3">
@@ -181,52 +189,6 @@
                                                 </svg>
                                             </button>
                                             <button @click="openDeleteModal('academic', index)" class="p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded transition">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-
-                        <!-- 4. SEMESTER -->
-                        <div class="card translate-0">
-                            <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-purple-100 dark:bg-purple-500/10 rounded-lg flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-semibold text-gray-800 dark:text-white">Semester</h3>
-                                        <p class="text-xs text-gray-500">Manajemen semester (ganjil/genap)</p>
-                                    </div>
-                                </div>
-                                <button @click="openModal('semester', 'create')" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-medium transition">
-                                    + Tambah
-                                </button>
-                            </div>
-
-                            <div class="p-5 space-y-3">
-                                <template x-for="(semester, index) in semesters" :key="index">
-                                    <div class="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                                        <div class="flex-1">
-                                            <p class="font-semibold text-gray-800 dark:text-white" x-text="semester.name"></p>
-                                            <p class="text-xs text-gray-500 mt-0.5" x-text="'Status: ' + semester.status + ' • ' + semester.period"></p>
-                                        </div>
-                                        <div class="flex items-center gap-1">
-                                            <span x-show="semester.status === 'Aktif'" class="px-2 py-0.5 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-medium rounded mr-1">
-                                                Aktif
-                                            </span>
-                                            <button @click="openModal('semester', 'edit', semester, index)" class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded transition">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                            </button>
-                                            <button @click="openDeleteModal('semester', index)" class="p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded transition">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
@@ -386,10 +348,6 @@
                     { year: '2024/2025', status: 'Aktif' },
                     { year: '2023/2024', status: 'Tidak Aktif' }
                 ],
-                
-                semesters: [
-                    { name: 'Semester Ganjil (2024/2025)', status: 'Aktif', period: 'Sept - Des 2024' }
-                ],
 
                 modal: {
                     show: false,
@@ -455,17 +413,6 @@
                             headers: ['Tahun', 'Status'],
                             viewKeys: ['year', 'status'],
                             viewData: this.academicYears
-                        },
-                        semester: {
-                            title: mode === 'create' ? 'Tambah Semester' : 'Edit Semester',
-                            fields: [
-                                { name: 'name', label: 'Nama Semester', type: 'text', placeholder: 'Contoh: Semester Ganjil (2024/2025)' },
-                                { name: 'period', label: 'Periode', type: 'text', placeholder: 'Contoh: Sept - Des 2024' },
-                                { name: 'status', label: 'Status', type: 'select', options: ['Aktif', 'Tidak Aktif'] }
-                            ],
-                            headers: ['Nama Semester', 'Periode', 'Status'],
-                            viewKeys: ['name', 'period', 'status'],
-                            viewData: this.semesters
                         }
                     };
 
@@ -494,8 +441,7 @@
                     const dataArrays = {
                         microcredential: this.microcredentials,
                         admin: this.users,
-                        academic: this.academicYears,
-                        semester: this.semesters
+                        academic: this.academicYears
                     };
 
                     const item = dataArrays[type][index];
@@ -512,8 +458,7 @@
                     const dataArrays = {
                         microcredential: this.microcredentials,
                         admin: this.users,
-                        academic: this.academicYears,
-                        semester: this.semesters
+                        academic: this.academicYears
                     };
 
                     const targetArray = dataArrays[this.modal.type];
@@ -553,8 +498,7 @@
                     const dataArrays = {
                         microcredential: this.microcredentials,
                         admin: this.users,
-                        academic: this.academicYears,
-                        semester: this.semesters
+                        academic: this.academicYears
                     };
 
                     dataArrays[this.deleteModal.type].splice(this.deleteModal.index, 1);

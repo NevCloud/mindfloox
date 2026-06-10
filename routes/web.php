@@ -45,7 +45,7 @@ Route::prefix('program')->name('program.')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('instruktur')->name('instruktur.')->group(function () {
+Route::prefix('instruktur')->name('instruktur.')->middleware('check.session')->group(function () {
 
 
     Route::get('/dasbor', fn() => view('instruktur.dasbor'))->name('dasbor');
@@ -62,8 +62,15 @@ Route::prefix('instruktur')->name('instruktur.')->group(function () {
     Route::get('/tugas-detail', fn() => view('instruktur.tugas-detail'))->name('tugas-detail');
     Route::get('/tugas-kumpul', fn() => view('instruktur.tugas-kumpul'))->name('tugas-kumpul');
 
-    Route::get('/kuis-mulai', [tugasController::class, 'kuis'])->name('kuis-mulai');
-    Route::get('/kuis-detail', [tugasController::class, 'kuisDetail'])->name('kuis-detail');
+    Route::get('/kuis-mulai', function() {
+        $kuis = config('kuis');
+        return view('instruktur.kuis-mulai', compact('kuis'));
+    })->name('kuis-mulai');
+    
+    Route::get('/kuis-detail', function() {
+        $kuis = config('kuis');
+        return view('instruktur.kuis-detail', compact('kuis'));
+    })->name('kuis-detail');
     Route::get('/upload-materi', fn() => view('instruktur.upload-materi'))->name('upload-materi');
 });
 
@@ -72,7 +79,7 @@ Route::prefix('instruktur')->name('instruktur.')->group(function () {
 | PESERTA
 |--------------------------------------------------------------------------
 */
-Route::prefix('peserta')->name('peserta.')->group(function () {
+Route::prefix('peserta')->name('peserta.')->middleware('check.session')->group(function () {
 
     Route::get('/dasbor', fn() => view('peserta.dasbor'))->name('dasbor');
 
@@ -95,10 +102,18 @@ Route::prefix('peserta')->name('peserta.')->group(function () {
 | SUPER ADMIN
 |--------------------------------------------------------------------------
 */
-Route::prefix('super-admin')->name('superAdmin.')->group(function () {
+Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session')->group(function () {
     Route::get('/dasbor', fn() => view('superAdmin.dasbor'))->name('dasbor');
     Route::get('/profil', fn() => view('superAdmin.profil'))->name('profil');
     Route::get('/program', fn() => view('superAdmin.program'))->name('program');
+    Route::get('/program/edit', fn() => view('superAdmin.programEdit'))->name('program.edit');
+    
+    // New pages added from remote
+    Route::get('/admin-instruktur', fn() => view('superAdmin.adminInstruktur'))->name('adminInstruktur');
+    Route::get('/jenis-microcredential', fn() => view('superAdmin.jenisMicrocredential'))->name('jenisMicrocredential');
+    Route::get('/periode-akademik', fn() => view('superAdmin.periodeAkademik'))->name('periodeAkademik');
+    Route::get('/program-microcredential', fn() => view('superAdmin.programMicrocredential'))->name('programMicrocredential');
+    Route::get('/semester', fn() => view('superAdmin.semester'))->name('semester');
 });
 
 /*
@@ -106,7 +121,7 @@ Route::prefix('super-admin')->name('superAdmin.')->group(function () {
 | ADMIN MICRO
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('check.session')->group(function () {
     Route::get('/dasbor', fn() => view('admin.dasbor'))->name('dasbor');
     Route::get('/profil', fn() => view('admin.profil'))->name('profil');
 

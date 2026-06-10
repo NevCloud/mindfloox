@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Register</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         if (localStorage.getItem('theme') === 'dark') {
@@ -24,12 +24,14 @@
     {{-- Navbar --}}
     <x-navbar />
 
-    {{-- Section login --}}
+    {{-- Section register --}}
     <section class="flex items-center justify-center px-4 py-16">
 
-        {{-- Card login --}}
+        {{-- Card register --}}
         <div class="w-full max-w-md p-8 card" x-data="{
+            nama: '',
             username: '',
+            email: '',
             password: '',
             showPassword: false,
             errors: {},
@@ -37,8 +39,16 @@
             validate() {
                 this.errors = {};
 
+                if (!this.nama.trim()) {
+                    this.errors.nama = 'Nama lengkap wajib diisi.';
+                }
+
                 if (!this.username.trim()) {
-                    this.errors.username = 'username wajib diisi.';
+                    this.errors.username = 'Username wajib diisi.';
+                }
+
+                if (!this.email.trim()) {
+                    this.errors.email = 'Email wajib diisi.';
                 }
 
                 if (!this.password.trim()) {
@@ -55,7 +65,7 @@
 
                 this.$el.submit(); // ✅ pasti submit form
             }
-        }"">
+        }">
 
             {{-- Icon user --}}
             <div class="flex justify-center mb-5">
@@ -63,14 +73,14 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                     </svg>
                 </div>
             </div>
 
             {{-- Judul --}}
-            <h2 class="text-center text-2xl text-primary font-bold ">Selamat Datang</h2>
-            <p class="text-center text-sm text-gray-400 dark:text-gray-300 mb-6">Masuk ke akun Mindfloox Anda</p>
+            <h2 class="text-center text-2xl text-primary font-bold ">Daftar Akun Baru</h2>
+            <p class="text-center text-sm text-gray-400 dark:text-gray-300 mb-6">Bergabung dengan Mindfloox hari ini</p>
 
             {{-- Banner error global --}}
             <div x-show="Object.keys(errors).length > 0" x-cloak x-transition
@@ -79,12 +89,32 @@
             </div>
 
             {{-- Form --}}
-            <form method="POST" action="{{ route('login.process') }}" class="space-y-4" @submit.prevent="handleSubmit">
+            <form method="POST" action="{{ route('register.process') }}" class="space-y-4" @submit.prevent="handleSubmit">
                 @csrf
+
+                {{-- Nama Lengkap --}}
+                <div>
+                    <label class="text-sm font-medium mb-2 block">Nama Lengkap</label>
+                    <div class="relative">
+                        <input type="text" placeholder="Masukkan nama lengkap" name="nama" x-model="nama"
+                            :class="errors.nama ? 'input input-error' : 'input'" class="pl-10">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2"
+                            :class="errors.nama ? 'text-red-400' : 'text-primary'">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-5"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                    </div>
+                    <p x-show="errors.nama" x-text="errors.nama" x-transition class="text-red-400 text-xs mt-1">
+                    </p>
+                </div>
 
                 {{-- username --}}
                 <div>
-                    <label class="text-sm font-medium mb-2 block">username</label>
+                    <label class="text-sm font-medium mb-2 block">Username</label>
                     <div class="relative">
                         <input type="text" placeholder="Masukkan username" name="username" x-model="username"
                             :class="errors.username ? 'input input-error' : 'input'" class="pl-10">
@@ -99,6 +129,25 @@
                         </span>
                     </div>
                     <p x-show="errors.username" x-text="errors.username" x-transition class="text-red-400 text-xs mt-1">
+                    </p>
+                </div>
+
+                {{-- Email --}}
+                <div>
+                    <label class="text-sm font-medium mb-2 block">Email</label>
+                    <div class="relative">
+                        <input type="email" placeholder="Masukkan email" name="email" x-model="email"
+                            :class="errors.email ? 'input input-error' : 'input'" class="pl-10">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2"
+                            :class="errors.email ? 'text-red-400' : 'text-primary'">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-5"
+                                fill="currentColor">
+                                <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+                                <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                            </svg>
+                        </span>
+                    </div>
+                    <p x-show="errors.email" x-text="errors.email" x-transition class="text-red-400 text-xs mt-1">
                     </p>
                 </div>
 
@@ -142,13 +191,13 @@
                 {{-- Tombol submit --}}
                 <button type="submit"
                     class="w-full py-3 mt-2 rounded-xl bg-primary text-white font-semibold hover:opacity-90 hover:-translate-y-0.5 transition duration-300 ">
-                    Masuk
+                    Daftar
                 </button>
 
-                {{-- Link daftar --}}
+                {{-- Link login --}}
                 <p class="text-center text-sm text-gray-400 mt-4">
-                    Belum punya akun?
-                    <a href="/register" class="text-primary font-medium hover:underline">Daftar sekarang</a>
+                    Sudah punya akun?
+                    <a href="/login" class="text-primary font-medium hover:underline">Masuk sekarang</a>
                 </p>
 
             </form>
