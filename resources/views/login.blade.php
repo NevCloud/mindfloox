@@ -72,7 +72,14 @@
             <h2 class="text-center text-2xl text-primary font-bold ">Selamat Datang</h2>
             <p class="text-center text-sm text-gray-400 dark:text-gray-300 mb-6">Masuk ke akun Mindfloox Anda</p>
 
-            {{-- Banner error global --}}
+            {{-- Banner error Backend (Sistem) --}}
+            @if(session('error'))
+            <div class="bg-red-50 border border-red-300 text-red-500 text-sm p-3 rounded-xl mb-4">
+                {{ session('error') }}
+            </div>
+            @endif
+
+            {{-- Banner error global (Frontend) --}}
             <div x-show="Object.keys(errors).length > 0" x-cloak x-transition
                 class="bg-red-50 border border-red-300 text-red-500 text-sm p-3 rounded-xl mb-4">
                 Mohon periksa kembali form Anda.

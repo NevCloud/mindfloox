@@ -4,45 +4,34 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class CheckSessionAuth
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * checking status login & role sebelum user masuk ke halaman.
+     * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, string $role): Response
     {
-        // Periksa apakah ada user session (artinya sudah login)
-        if (!Session::has('user')) {
-            // Jika tidak ada session, kembalikan ke halaman login
-            return redirect('/login')->with('error', 'Silakan login terlebih dahulu untuk mengakses halaman tersebut.');
+        // 1. CEK STATUS LOGIN:
+        // Apakah user ini BUKAN orang yang sudah login?
+        if (!Auth::check()) {
+            // Jika belum login, tendang balik ke halaman login
+            return redirect('/login');
         }
 
-        // Opsional: Cek spesifik Role berdasarkan prefix URL
-        // Misalnya: Hanya super-admin yang bisa akses /super-admin/*
-        $user = Session::get('user');
-        
-        if ($request->is('super-admin/*') && $user['role'] !== 'Super Admin') {
-            return redirect('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
-        }
-        
-        if ($request->is('admin/*') && !in_array($user['role'], ['Admin', 'Super Admin'])) {
-            return redirect('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        // 2. CEK HAK AKSES (ROLE):
+        // Apakah role dari user yang sedang login saat ini TIDAK SAMA dengan role yang diminta di routes/web.php?
+        if (Auth::user()->role !== $role) {
+            // Jika rolenya berbeda, tolak aksesnya dan munculkan pesan error 403 (Forbidden)
+            return abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk halaman ini.');
         }
 
-        if ($request->is('instruktur/*') && $user['role'] !== 'Instruktur') {
-            return redirect('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
-        }
-
-        if ($request->is('peserta/*') && $user['role'] !== 'Peserta') {
-            return redirect('/login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
-        }
-
+        // 3. IZINKAN MASUK:
+        // Jika lolos dari dua pengecekan di atas, izinkan user melanjutkan perjalanannya ke Controller/View
         return $next($request);
     }
 }

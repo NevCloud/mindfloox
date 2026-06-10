@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Pengguna extends Model
+class Pengguna extends Authenticatable
 {
     protected $table = "pengguna";
 
     const CREATED_AT = "dibuat_pada";
     const UPDATED_AT = "diperbarui_pada";
+
+    public function getAuthPassword()
+    {
+        return $this->kata_sandi;
+    }
 
     protected $fillable = [
         'nama',

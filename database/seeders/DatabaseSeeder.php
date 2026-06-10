@@ -15,11 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // $this->call() berfungsi untuk mengeksekusi file class seeder lain.
+        // Dengan mendaftarkan class di bawah ini, Anda hanya perlu menjalankan 1 perintah terminal: 
+        // 'php artisan db:seed'
+        // untuk mengeksekusi semua seeder yang terdaftar secara bersamaan.
+        $this->call([
+            PenggunaSeeder::class,
         ]);
     }
 }

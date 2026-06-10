@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\programController;
 use App\Http\Controllers\instrukturController;
@@ -12,7 +13,22 @@ use App\Http\Controllers\tugasController;
 | AUTH
 |--------------------------------------------------------------------------
 */
-Route::get('/login', fn() => view('login'))->name('login');
+Route::get('/login', function () {
+    // 1. CEK GUEST (PENCEGAHAN DOUBLE LOGIN)
+    // Jika ada user yang sudah terlanjur login mencoba mengakses halaman '/login' lagi,
+    // kita cegah mereka melihat form login dan langsung kita 'lemparkan' kembali ke dasbornya.
+    if (Auth::check()) {
+        $role = Auth::user()->role;
+        if ($role === 'peserta') return redirect('/peserta/dasbor');
+        if ($role === 'instruktur') return redirect('/instruktur/dasbor');
+        if ($role === 'admin_microcredential') return redirect('/admin/dasbor');
+        if ($role === 'super_admin') return redirect('/super-admin/dasbor');
+    }
+    
+    // 2. TAMPILKAN FORM
+    // Jika belum login sama sekali, barulah kita tampilkan halaman form login.
+    return view('login');
+})->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', function () {
@@ -45,7 +61,7 @@ Route::prefix('program')->name('program.')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('instruktur')->name('instruktur.')->middleware('check.session')->group(function () {
+Route::prefix('instruktur')->name('instruktur.')->middleware('check.session:instruktur')->group(function () {
 
 
     Route::get('/dasbor', fn() => view('instruktur.dasbor'))->name('dasbor');
@@ -79,7 +95,7 @@ Route::prefix('instruktur')->name('instruktur.')->middleware('check.session')->g
 | PESERTA
 |--------------------------------------------------------------------------
 */
-Route::prefix('peserta')->name('peserta.')->middleware('check.session')->group(function () {
+Route::prefix('peserta')->name('peserta.')->middleware('check.session:peserta')->group(function () {
 
     Route::get('/dasbor', fn() => view('peserta.dasbor'))->name('dasbor');
 
@@ -102,7 +118,7 @@ Route::prefix('peserta')->name('peserta.')->middleware('check.session')->group(f
 | SUPER ADMIN
 |--------------------------------------------------------------------------
 */
-Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session')->group(function () {
+Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session:super_admin')->group(function () {
     Route::get('/dasbor', fn() => view('superAdmin.dasbor'))->name('dasbor');
     Route::get('/profil', fn() => view('superAdmin.profil'))->name('profil');
     Route::get('/program', fn() => view('superAdmin.program'))->name('program');
@@ -121,7 +137,7 @@ Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session')->
 | ADMIN MICRO
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->name('admin.')->middleware('check.session')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('check.session:admin_microcredential')->group(function () {
     Route::get('/dasbor', fn() => view('admin.dasbor'))->name('dasbor');
     Route::get('/profil', fn() => view('admin.profil'))->name('profil');
 
