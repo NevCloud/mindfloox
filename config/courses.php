@@ -4,7 +4,6 @@ return [
     [
         'title' => 'Desain Grafis',
         'category' => 'DESIGN',
-        'price' => 49,
         'image' => 'img/momo.png',
         'author' => 'Fahad Arifin',
         'role' => 'Graphic Designer',
@@ -14,7 +13,6 @@ return [
     [
         'title' => 'Fullstack Web Dev',
         'category' => 'CODE',
-        'price' => 89,
         'image' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085',
         'author' => 'Budi Santoso',
         'role' => 'Fullstack Engineer',
@@ -24,7 +22,6 @@ return [
     [
         'title' => 'Data Science',
         'category' => 'DATA',
-        'price' => 75,
         'image' => 'https://images.unsplash.com/photo-1460925895917-afdab827c52f',
         'author' => 'Siti Aminah',
         'role' => 'Data Scientist',

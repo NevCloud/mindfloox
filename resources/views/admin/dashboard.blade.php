@@ -18,14 +18,23 @@
         this.dark = !this.dark;
         localStorage.setItem('theme', this.dark ? 'dark' : 'light');
         document.documentElement.classList.toggle('dark', this.dark);
-    }
+    },
+    programs: [
+        { name: 'Desain UI/UX Lanjut', type: 'UI/UX Design' },
+        { name: 'Fullstack Web Development', type: 'Web Development' },
+        { name: 'Data Science Bootcamp', type: 'Data Science' }
+    ],
+    verifications: [
+        { name: 'Budi Santoso', course: 'Fundamental UI/UX', initial: 'B' },
+        { name: 'Siti Aminah', course: 'React JS Dasar', initial: 'S' },
+        { name: 'Andi Wijaya', course: 'Python for Data Science', initial: 'A' }
+    ]
 }" x-init="document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray-50 dark:bg-[#0F0F1A]">
 
     <div class="flex h-screen overflow-hidden">
         <x-leftPanel />
 
-        <div class="flex flex-1 min-w-0 overflow-hidden">
-            <main class="flex-1 min-w-0 flex flex-col overflow-hidden">
+        <main class="flex-1 flex flex-col overflow-hidden">
 
         <!-- Navbar admin -->
         <x-topNav />
@@ -37,75 +46,59 @@
         <x-banner />
 
                     <!-- Stat Cards -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="card translate-0 p-4 flex items-center gap-4">
-                            <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-500/20 text-purple-500 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-2xl font-bold text-gray-800 dark:text-white">0</p>
-                                <p class="text-sm text-gray-500">Total Program</p>
-                            </div>
-                        </div>
-
-                        <div class="card translate-0 p-4 flex items-center gap-4">
-                            <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-500/20 text-blue-500 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-2xl font-bold text-gray-800 dark:text-white">0</p>
-                                <p class="text-sm text-gray-500">Total Kursus</p>
-                            </div>
-                        </div>
-
-                        <div class="card translate-0 p-4 flex items-center gap-4">
-                            <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-yellow-100 dark:bg-yellow-500/20 text-yellow-500 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-2xl font-bold text-gray-800 dark:text-white">0</p>
-                                <p class="text-sm text-gray-500">Pending Verifikasi</p>
-                            </div>
-                        </div>
-                    </div>
+                    <x-stats />
 
                     <!-- Main Grid -->
                     <section class="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
                         <!-- Program Terbaru -->
-                        <div class="card translate-0 p-4">
-                            <div class="flex items-center justify-between mb-5">
+                        <div class="card translate-0">
+                            <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-500/20 text-purple-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                    <div class="w-10 h-10 bg-pink-100 dark:bg-pink-500/10 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="font-semibold text-gray-800 dark:text-white">Program Akademik</h3>
+                                        <h3 class="font-semibold text-gray-800 dark:text-white">Program Microcredential</h3>
                                         <p class="text-xs text-gray-500">Daftar program microcredential</p>
                                     </div>
                                 </div>
-                                <a href="#" class="text-xs text-primary font-medium px-3 py-1.5 rounded-lg transition" style="background:rgba(108,99,255,0.10)">Lihat Semua</a>
+                                <a href="{{ url('/admin/program') }}" class="flex items-center gap-1 px-3 py-1.5 text-xs text-[#6C63FF] hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition font-medium">
+                                    Lihat Semua
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
                             </div>
 
-                            <div class="space-y-3">
-                                <p class="text-center text-gray-400 text-sm py-4">Belum ada program</p>
+                            <div class="p-5">
+                                <table class="w-full text-xs">
+                                    <thead class="text-gray-500 border-b border-gray-200 dark:border-gray-800">
+                                        <tr class="text-left">
+                                            <th class="pb-3 font-medium">Nama Program</th>
+                                            <th class="pb-3 font-medium">Jenis Microcredential</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-gray-800 dark:text-gray-300">
+                                        <template x-for="(item, index) in programs" :key="index">
+                                            <tr class="border-b border-gray-100 dark:border-gray-800 last:border-b-0">
+                                                <td class="py-3 font-medium" x-text="item.name"></td>
+                                                <td class="py-3 text-gray-500" x-text="item.type"></td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
                         <!-- Verifikasi Terbaru -->
-                        <div class="card translate-0 p-4">
-                            <div class="flex items-center justify-between mb-5">
+                        <div class="card translate-0">
+                            <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-yellow-100 dark:bg-yellow-500/20 text-yellow-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-yellow-100 dark:bg-yellow-500/10 text-yellow-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
                                         </svg>
                                     </div>
@@ -114,24 +107,30 @@
                                         <p class="text-xs text-gray-500">Menunggu verifikasi</p>
                                     </div>
                                 </div>
-                                <a href="#" class="text-xs text-primary font-medium px-3 py-1.5 rounded-lg transition" style="background:rgba(108,99,255,0.10)">Lihat Semua</a>
+                                <a href="{{ url('/admin/verifikasi') }}" class="flex items-center gap-1 px-3 py-1.5 text-xs text-[#6C63FF] hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition font-medium">
+                                    Lihat Semua
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
                             </div>
 
-                            <div class="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800">
-                                <table class="w-full text-sm">
-                                    <thead class="text-gray-500 border-b border-gray-200 dark:border-gray-800">
-                                        <tr class="text-left">
-                                            <th class="px-3 py-3">Nama</th>
-                                            <th class="px-3 py-3">Program</th>
-                                            <th class="px-3 py-3 text-right">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                                        <tr>
-                                            <td colspan="3" class="px-3 py-6 text-center text-gray-400">Belum ada pendaftaran</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="p-5 space-y-3">
+                                <template x-for="(item, index) in verifications.slice(0, 2)" :key="index">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold" x-text="item.initial">
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-800 dark:text-white" x-text="item.name"></p>
+                                                <p class="text-xs text-gray-500" x-text="item.course"></p>
+                                            </div>
+                                        </div>
+                                        <span class="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 text-[10px] font-medium rounded-full">
+                                            Pending
+                                        </span>
+                                    </div>
+                                </template>
                             </div>
                         </div>
 
@@ -139,8 +138,8 @@
 
                 </div>
             </main>
-        </div>
-    </div>
+
+    <x-rightPanel />
 
 </body>
 </html>

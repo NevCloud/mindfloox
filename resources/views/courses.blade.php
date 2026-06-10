@@ -42,9 +42,6 @@
                                 {{ $course['category'] }}
                             </span>
 
-                            <span class="badge right-3 bg-secondary">
-                                ${{ $course['price'] }}
-                            </span>
                         </div>
 
                         <div class="p-5 flex flex-col flex-grow">

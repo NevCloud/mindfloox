@@ -23,7 +23,10 @@
                 </div>
             </div>
             <div class="flex items-center gap-3">
-                <a href="/instructor/upload-materi" @click.stop class="px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">Upload Materi</a>
+                <a href="/instructor/upload-materi" @click.stop class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    Upload Materi
+                </a>
                 <button @click.stop="weekOpen = !weekOpen" class="w-9 h-9 flex items-center justify-center">
                     <svg :class="weekOpen ? 'rotate-180' : ''" class="w-5 h-5 text-gray-500 transition duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
@@ -119,7 +122,10 @@
                                 {{-- Actions --}}
                                 <div class="flex justify-between gap-2 mt-4">
                                     <div>
-                                        <button class="px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">Download</button>
+                                        <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                            Download
+                                        </button>
                                     </div>
                                     <div class="flex gap-2">
                                         <button onclick="window.location.href='/instructor/upload-materi'"

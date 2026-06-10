@@ -146,7 +146,8 @@
 
                                     <!-- Button -->
                                     <button
-                                        class="w-full py-2 rounded-xl text-sm font-medium text-white bg-primary hover:opacity-90 transition mb-5">
+                                        class="flex items-center justify-center gap-2 w-full py-2 rounded-xl text-sm font-medium text-white bg-primary hover:opacity-90 transition mb-5">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                         Edit Profile
                                     </button>
 
@@ -271,8 +272,9 @@
                                             </h3>
 
                                             <button
-                                                class="text-xs text-primary px-3 py-1.5 rounded-lg transition hover:text-white hover:bg-primary"
+                                                class="flex items-center gap-1.5 text-xs text-primary px-3 py-1.5 rounded-lg transition hover:text-white hover:bg-primary"
                                                 style="background:rgba(108,99,255,0.10)">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                                 Edit Data
                                             </button>
                                         </div>
@@ -390,7 +392,8 @@
                                             </p>
 
                                             <a href="#"
-                                                class="mt-4 px-4 py-2 w-fit rounded-xl text-sm font-medium text-white bg-primary hover:opacity-90 transition">
+                                                class="mt-4 flex items-center gap-2 px-4 py-2 w-fit rounded-xl text-sm font-medium text-white bg-primary hover:opacity-90 transition">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                                 Download Sertifikat
                                             </a>
 

@@ -19,13 +19,17 @@
     <section>
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-base font-semibold dark:text-white">Course Saya</h3>
-            <button onclick="window.location.href='/instructor/courses'" class="text-xs text-primary font-medium px-3 py-1.5 rounded-lg transition hover:bg-primary/20"
-                style="background:rgba(108,99,255,0.10)">Lihat Semua</button>
+            <a href="{{ url('/instructor/courses') }}" class="flex items-center gap-1 px-3 py-1.5 text-xs text-[#6C63FF] hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition font-medium">
+                Lihat Semua
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
 
             <!-- Course 1 -->
-            <div onclick="window.location.href='/instructor/course'" class="card cursor-pointer hover:shadow-md transition p-0 overflow-hidden flex flex-row">
+            <div class="card p-0 overflow-hidden flex flex-row">
                 <div class="flex-1 p-4">
                     <div class="flex items-stretch gap-3">
                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -54,7 +58,7 @@
             </div>
 
             <!-- Course 2 -->
-            <div onclick="window.location.href='/instructor/course'" class="card cursor-pointer hover:shadow-md transition p-0 overflow-hidden flex flex-row">
+            <div class="card p-0 overflow-hidden flex flex-row">
                 <div class="flex-1 p-4">
                     <div class="flex items-stretch gap-3">
                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -84,7 +88,7 @@
             </div>
 
             <!-- Course 3 -->
-            <div onclick="window.location.href='/instructor/course'" class="card cursor-pointer hover:shadow-md transition p-0 overflow-hidden flex flex-row">
+            <div class="card p-0 overflow-hidden flex flex-row">
                 <div class="flex-1 p-4">
                     <div class="flex items-stretch gap-3">
                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -114,8 +118,7 @@
             </div>
 
             <!-- Course 4 -->
-            <div onclick="window.location.href='/instructor/course'"
-                class="card cursor-pointer p-0 overflow-hidden flex flex-row border rounded-xl hover:shadow-md transition">
+            <div class="card p-0 overflow-hidden flex flex-row border rounded-xl">
                 <div class="flex-1 p-4">
                     <div class="flex items-stretch gap-3">
                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
