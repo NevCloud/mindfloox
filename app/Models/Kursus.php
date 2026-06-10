@@ -15,6 +15,7 @@ class Kursus extends Model
         "id_program_microcredential",
         "nama",
         "deskripsi",
+        "foto_kursus",
         "nilai_kelulusan_kursus",
     ];
 

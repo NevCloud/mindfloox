@@ -62,16 +62,6 @@
                             class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500">
                     </div>
 
-                    <!-- Notification -->
-                    <button
-                        class="relative w-9 h-9 flex items-center justify-center rounded-lg bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 text-gray-500 hover:text-primary transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                        </svg>
-                        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
-                    </button>
 
                     <!-- Dark mode toggle -->
                     <button @click="toggleDark()"
@@ -163,9 +153,13 @@
                                         </div>
 
                                         <a href="{{ $task['type'] === 'kuis' ? 'kuis-mulai' : 'tugas-kumpul' }}"
-                                            class="text-xs px-3 py-1 rounded-lg transition {{ $task['ui']['button'] }}">
-
-                                            {{ $task['type'] === 'kuis' ? 'Mulai' : ($task['status'] === 'track' ? 'Kerjakan' : 'Kumpulkan') }}
+                                            class="inline-flex items-center justify-center gap-1.5 text-xs px-3 py-1 rounded-lg transition {{ $task['ui']['button'] }}">
+                                            @if($task['type'] === 'kuis' || $task['status'] === 'track')
+                                                <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                            @else
+                                                <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                            @endif
+                                            <span>{{ $task['type'] === 'kuis' ? 'Mulai' : ($task['status'] === 'track' ? 'Kerjakan' : 'Kumpulkan') }}</span>
                                         </a>
 
                                     </div>

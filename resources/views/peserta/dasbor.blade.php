@@ -53,8 +53,12 @@
                     <section>
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-base font-semibold dark:text-white">Deadline Mendekati</h3>
-                            <button class="text-xs text-primary font-medium px-3 py-1.5 rounded-lg transition"
-                                style="background:rgba(108,99,255,0.10)">Lihat Semua</button>
+                            <a href="{{ url('/peserta/tugas') }}" class="flex items-center gap-1 px-3 py-1.5 text-xs text-[#6C63FF] hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition font-medium">
+                                Lihat Semua
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
@@ -81,7 +85,10 @@
                                         19 Apr 2025
                                     </div>
                                     <button
-                                        class="text-xs bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">Kumpulkan</button>
+                                        class="inline-flex items-center justify-center gap-1.5 text-xs bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">
+                                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                        <span>Kumpulkan</span>
+                                    </button>
                                 </div>
                             </div>
 
@@ -108,7 +115,10 @@
                                         22 Apr 2025
                                     </div>
                                     <button
-                                        class="text-xs bg-yellow-400 text-white px-3 py-1 rounded-lg hover:bg-yellow-500 transition">Kumpulkan</button>
+                                        class="inline-flex items-center justify-center gap-1.5 text-xs bg-yellow-400 text-white px-3 py-1 rounded-lg hover:bg-yellow-500 transition">
+                                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                        <span>Kumpulkan</span>
+                                    </button>
                                 </div>
                             </div>
 
@@ -135,8 +145,11 @@
                                         25 Apr 2025
                                     </div>
                                     <button
-                                        class="text-xs text-primary px-3 py-1 rounded-lg transition hover:text-white hover:bg-primary"
-                                        style="background:rgba(108,99,255,0.10)">Kerjakan</button>
+                                        class="inline-flex items-center justify-center gap-1.5 text-xs text-primary px-3 py-1 rounded-lg transition hover:text-white hover:bg-primary"
+                                        style="background:rgba(108,99,255,0.10)">
+                                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                        <span>Kerjakan</span>
+                                    </button>
                                 </div>
                             </div>
 
@@ -147,8 +160,12 @@
                     <section>
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-base font-semibold dark:text-white">Course Saya</h3>
-                            <button class="text-xs text-primary font-medium px-3 py-1.5 rounded-lg transition"
-                                style="background:rgba(108,99,255,0.10)">Lihat Semua</button>
+                            <a href="{{ url('/peserta/courses') }}" class="flex items-center gap-1 px-3 py-1.5 text-xs text-[#6C63FF] hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition font-medium">
+                                Lihat Semua
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
 

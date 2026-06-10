@@ -62,16 +62,6 @@
                             class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500">
                     </div>
 
-                    <!-- Notification -->
-                    <button
-                        class="relative w-9 h-9 flex items-center justify-center rounded-lg bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 text-gray-500 hover:text-primary transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                        </svg>
-                        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
-                    </button>
 
                     <!-- Dark mode toggle -->
                     <button @click="toggleDark()"
@@ -148,6 +138,12 @@
                     }">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-base font-semibold dark:text-white">Kumpul Tugas</h3>
+                            <button onclick="history.back()" class="flex items-center gap-2 px-3 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#1A1A2E] transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                                </svg>
+                                Kembali
+                            </button>
                         </div>
 
                         <form @submit.prevent="submitForm" class="card translate-none rounded-lg p-6 space-y-4">
@@ -178,19 +174,12 @@
                                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
                                     <p class="text-gray-600 dark:text-gray-400 mb-2">Drag and drop files here</p>
-                                    <p class="text-sm text-gray-500">or <span class="text-primary underline">browse</span> to choose files</p>
+                                    <p class="text-sm text-gray-500">or <span class="text-primary underline">click</span> to choose files</p>
                                     <input x-ref="fileInput" type="file" class="hidden" multiple
                                         @change="addFiles($event.target.files)">
                                 </div>
 
-                                <button @click="$refs.fileInput.click()" type="button"
-                                    class="flex items-center gap-2 mt-3 bg-primary hover:bg-primary/90 text-white font-semibold py-1 px-3 rounded-lg transition duration-200">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                                    </svg>
-                                    Add More Files
-                                </button>
+
 
                                 <!-- File List -->
                                 <div x-show="files.length > 0" class="mt-4 space-y-3">
@@ -242,12 +231,14 @@
                             <!-- Submit Buttons -->
                             <div class="pt-2 flex gap-2">
                                 <button type="submit"
-                                    class="bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
-                                    Kumpulkan
+                                    class="inline-flex items-center justify-center gap-1.5 bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                    <span>Kumpulkan</span>
                                 </button>
-                                <button type="button" @click="files = []"
-                                    class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
-                                    Reset
+                                <button type="button" @click="if(confirm('Apakah Anda yakin ingin mereset semua file yang dipilih?')) files = []"
+                                    class="inline-flex items-center justify-center gap-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                    <span>Reset</span>
                                 </button>
                             </div>
                         </form>
