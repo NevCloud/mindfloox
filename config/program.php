@@ -5,7 +5,7 @@ return [
         'title' => 'Desain Grafis',
         'category' => 'DESIGN',
         'price' => 49,
-        'image' => 'img/momo.png',
+        'image' => '/img/momo.png',
         'author' => 'Fahad Arifin',
         'role' => 'Graphic Designer',
         'rating' => 4.9,

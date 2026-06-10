@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-class coursesController extends Controller
+class programController extends Controller
 {
     public function index()
     {
-        $courses = config('courses');
+        $program = config('program');
 
-        return view('courses', compact('courses'));
+        return view('program', compact('program'));
     }
 }

@@ -1,9 +1,9 @@
 {{-- ============================================================
     Instruktur — Speed Grader (Workspace Penilaian)
-    Layout: layouts.instructor
+    Layout: layouts.instruktur
 ============================================================ --}}
 
-@extends('layouts.instructor')
+@extends('layouts.instruktur')
 
 @section('title', 'Penilaian Tugas')
 
@@ -105,7 +105,7 @@
     <div class="flex items-center justify-between mb-4 flex-shrink-0">
         <div>
             <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-1">
-                <a href="{{ route('instructor.tugas') }}" class="hover:text-primary transition">Tugas</a>
+                <a href="{{ route('instruktur.tugas') }}" class="hover:text-primary transition">Tugas</a>
                 <span>/</span>
                 <span class="text-gray-900 dark:text-white font-medium">UI/UX Case Study</span>
             </div>
@@ -114,7 +114,7 @@
                 <span class="text-xs px-2.5 py-1 bg-primary/10 text-primary rounded-lg" x-text="gradedCount + ' dari ' + students.length + ' Dinilai'"></span>
             </h2>
         </div>
-        <a href="{{ route('instructor.tugas') }}"
+        <a href="{{ route('instruktur.tugas') }}"
             class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />

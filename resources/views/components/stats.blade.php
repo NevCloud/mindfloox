@@ -135,10 +135,10 @@
 
 
 <!--STATS INSTRUUKTUR-->
-@elseif(request()->is('instructor/*'))
+@elseif(request()->is('instruktur/*'))
 <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
     <!-- Course Diajar -->
-    <div onclick="window.location.href='/instructor/courses'" class="card p-4 cursor-pointer hover:shadow-md transition">
+    <div onclick="window.location.href='/instruktur/kursus'" class="card p-4 cursor-pointer hover:shadow-md transition">
         <div class="flex items-start justify-between mb-3">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(108,99,255,0.15)">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24"
@@ -155,7 +155,7 @@
     </div>
 
     <!-- Terlambat Evaluasi -->
-    <div onclick="window.location.href='/instructor/tugas'" class="card p-4 cursor-pointer hover:shadow-md transition">
+    <div onclick="window.location.href='/instruktur/tugas'" class="card p-4 cursor-pointer hover:shadow-md transition">
         <div class="flex items-start justify-between mb-3">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(239,68,68,0.15)">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24"
@@ -172,7 +172,7 @@
     </div>
 
     <!-- Menunggu Penilaian -->
-    <div onclick="window.location.href='/instructor/tugas'" class="card p-4 cursor-pointer hover:shadow-md transition">
+    <div onclick="window.location.href='/instruktur/tugas'" class="card p-4 cursor-pointer hover:shadow-md transition">
         <div class="flex items-start justify-between mb-3">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(245,158,11,0.15)">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-500" fill="none" viewBox="0 0 24 24"
@@ -189,7 +189,7 @@
     </div>
 
     <!-- Deadline -->
-    <div onclick="window.location.href='/instructor/tugas'" class="card p-4 cursor-pointer hover:shadow-md transition">
+    <div onclick="window.location.href='/instruktur/tugas'" class="card p-4 cursor-pointer hover:shadow-md transition">
         <div class="flex items-start justify-between mb-3">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(108,99,255,0.15)">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24"

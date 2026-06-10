@@ -8,12 +8,12 @@ class homeController extends Controller
 {
     public function index()
     {
-        $courses = config('courses');
+        $program = config('program');
 
-        $instructors = config('instructors');
+        $instruktur = config('instruktur');
 
-        $categories = config('categories');
+        $kategori = config('kategori');
         
-        return view('index', compact('courses', 'instructors', 'categories'));
+        return view('index', compact('program', 'instruktur', 'kategori'));
     }
 }

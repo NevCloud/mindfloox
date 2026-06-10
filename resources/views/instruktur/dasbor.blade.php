@@ -1,11 +1,11 @@
 {{-- ============================================================
-    Instruktur — Dashboard
-    Layout: layouts.instructor
+    Instruktur — Dasbor
+    Layout: layouts.instruktur
 ============================================================ --}}
 
-@extends('layouts.instructor')
+@extends('layouts.instruktur')
 
-@section('title', 'Dashboard')
+@section('title', 'Dasbor')
 
 @section('content')
 
@@ -18,14 +18,14 @@
     <!-- Course Saya -->
     <section>
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-base font-semibold dark:text-white">Course Saya</h3>
-            <button onclick="window.location.href='/instructor/courses'" class="text-xs text-primary font-medium px-3 py-1.5 rounded-lg transition hover:bg-primary/20"
+            <h3 class="text-base font-semibold dark:text-white">Kursus Saya</h3>
+            <button onclick="window.location.href='/instruktur/kursus'" class="text-xs text-primary font-medium px-3 py-1.5 rounded-lg transition hover:bg-primary/20"
                 style="background:rgba(108,99,255,0.10)">Lihat Semua</button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
 
             <!-- Course 1 -->
-            <div onclick="window.location.href='/instructor/course'" class="card cursor-pointer hover:shadow-md transition p-0 overflow-hidden flex flex-row">
+            <div onclick="window.location.href='/instruktur/detail-kursus'" class="card cursor-pointer hover:shadow-md transition p-0 overflow-hidden flex flex-row">
                 <div class="flex-1 p-4">
                     <div class="flex items-stretch gap-3">
                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -54,7 +54,7 @@
             </div>
 
             <!-- Course 2 -->
-            <div onclick="window.location.href='/instructor/course'" class="card cursor-pointer hover:shadow-md transition p-0 overflow-hidden flex flex-row">
+            <div onclick="window.location.href='/instruktur/detail-kursus'" class="card cursor-pointer hover:shadow-md transition p-0 overflow-hidden flex flex-row">
                 <div class="flex-1 p-4">
                     <div class="flex items-stretch gap-3">
                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -84,7 +84,7 @@
             </div>
 
             <!-- Course 3 -->
-            <div onclick="window.location.href='/instructor/course'" class="card cursor-pointer hover:shadow-md transition p-0 overflow-hidden flex flex-row">
+            <div onclick="window.location.href='/instruktur/detail-kursus'" class="card cursor-pointer hover:shadow-md transition p-0 overflow-hidden flex flex-row">
                 <div class="flex-1 p-4">
                     <div class="flex items-stretch gap-3">
                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -114,7 +114,7 @@
             </div>
 
             <!-- Course 4 -->
-            <div onclick="window.location.href='/instructor/course'"
+            <div onclick="window.location.href='/instruktur/detail-kursus'"
                 class="card cursor-pointer p-0 overflow-hidden flex flex-row border rounded-xl hover:shadow-md transition">
                 <div class="flex-1 p-4">
                     <div class="flex items-stretch gap-3">

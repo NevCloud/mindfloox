@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\homeController;
-use App\Http\Controllers\coursesController;
-use App\Http\Controllers\instructorsController;
+use App\Http\Controllers\programController;
+use App\Http\Controllers\instrukturController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\tugasController;
 
@@ -21,52 +21,50 @@ Route::get('/register', function () {
 
 /*
 |--------------------------------------------------------------------------
-| PUBLIC PAGES
+| HALAMAN PUBLIK
 |--------------------------------------------------------------------------
 */
 Route::get('/', [homeController::class, 'index'])->name('index');
-Route::get('/about', fn() => view('about'))->name('about');
-Route::get('/instructors', [instructorsController::class, 'instructors'])->name('instructors');
+Route::get('/tentang', fn() => view('tentang'))->name('tentang');
+Route::get('/instruktur', [instrukturController::class, 'instruktur'])->name('instruktur');
 
 /*
 |--------------------------------------------------------------------------
-| COURSES
+| PROGRAM
 |--------------------------------------------------------------------------
 */
-Route::prefix('courses')->name('courses.')->group(function () {
-    Route::get('/', [coursesController::class, 'index'])->name('index');
-    Route::get('/my', fn() => view('mycourses'))->name('my');
-    Route::get('/enroll', fn() => view('enroll'))->name('enroll');
+Route::prefix('program')->name('program.')->group(function () {
+    Route::get('/', [programController::class, 'index'])->name('index');
+    Route::get('/saya', fn() => view('programsaya'))->name('saya');
+    Route::get('/pendaftaran', fn() => view('pendaftaran'))->name('pendaftaran');
 });
 
 /*
 |--------------------------------------------------------------------------
-| INSTRUCTORS
-|---------------------------------------------------------------------
------
+| INSTRUKTUR
+|--------------------------------------------------------------------------
 */
 
-Route::prefix('instructor')->name('instructor.')->group(function () {
+Route::prefix('instruktur')->name('instruktur.')->group(function () {
 
 
-    Route::get('/dashboard', fn() => view('instructor.dashboard'))->name('dashboard');
-    Route::get('/profile', fn() => view('instructor.profile'))->name('profile');
+    Route::get('/dasbor', fn() => view('instruktur.dasbor'))->name('dasbor');
+    Route::get('/profil', fn() => view('instruktur.profil'))->name('profil');
 
-    Route::get('/courses', fn() => view('instructor.courses'))->name('courses');
-    Route::get('/course', fn() => view('instructor.course'))->name('course');
+    Route::get('/kursus', fn() => view('instruktur.kursus'))->name('kursus');
+    Route::get('/detail-kursus', fn() => view('instruktur.detail-kursus'))->name('detail-kursus');
 
     Route::get('/tugas', function() {
         $tugas = config('tugas');
-        return view('instructor.tugas', compact('tugas'));
+        return view('instruktur.tugas', compact('tugas'));
     })->name('tugas');
 
-    //(commented buat pelajaran, abaikan aja) Route::get('/tugas', [tugasController::class, 'tugas'])->name('tugas');
-    Route::get('/tugas-detail', fn() => view('instructor.tugas-detail'))->name('tugas-detail');
-    Route::get('/tugas-kumpul', fn() => view('instructor.tugas-kumpul'))->name('tugas-kumpul');
+    Route::get('/tugas-detail', fn() => view('instruktur.tugas-detail'))->name('tugas-detail');
+    Route::get('/tugas-kumpul', fn() => view('instruktur.tugas-kumpul'))->name('tugas-kumpul');
 
     Route::get('/kuis-mulai', [tugasController::class, 'kuis'])->name('kuis-mulai');
-    Route::get('/kuis-detail', [tugasController::class, 'kuis-detail'])->name('kuis-detail');
-    Route::get('/upload-materi', fn() => view('instructor.upload-materi'))->name('upload-materi');
+    Route::get('/kuis-detail', [tugasController::class, 'kuisDetail'])->name('kuis-detail');
+    Route::get('/upload-materi', fn() => view('instruktur.upload-materi'))->name('upload-materi');
 });
 
 /*
@@ -76,18 +74,18 @@ Route::prefix('instructor')->name('instructor.')->group(function () {
 */
 Route::prefix('peserta')->name('peserta.')->group(function () {
 
-    Route::get('/dashboard', fn() => view('peserta.dashboard'))->name('dashboard');
+    Route::get('/dasbor', fn() => view('peserta.dasbor'))->name('dasbor');
 
-    Route::get('/courses', fn() => view('peserta.courses'))->name('courses');
-    Route::get('/course-detail', fn() => view('peserta.course-detail'))->name('course-detail');
-    Route::get('/profile', fn() => view('peserta.profile'))->name('profile');
+    Route::get('/kursus', fn() => view('peserta.kursus'))->name('kursus');
+    Route::get('/detail-kursus', fn() => view('peserta.detail-kursus'))->name('detail-kursus');
+    Route::get('/profil', fn() => view('peserta.profil'))->name('profil');
 
     Route::get('/tugas', [tugasController::class, 'tugas'])->name('tugas');
     Route::get('/tugas-detail', fn() => view('peserta.tugas-detail'))->name('tugas-detail');
     Route::get('/tugas-kumpul', fn() => view('peserta.tugas-kumpul'))->name('tugas-kumpul');
 
     Route::get('/kuis-mulai', [tugasController::class, 'kuis'])->name('kuis-mulai');
-    Route::get('/kuis-detail', [tugasController::class, 'kuis-detail'])->name('kuis-detail');
+    Route::get('/kuis-detail', [tugasController::class, 'kuisDetail'])->name('kuis-detail');
 
     Route::get('/nilai-detail', fn() => view('peserta.nilai-detail'))->name('nilai-detail');
 });
@@ -98,8 +96,9 @@ Route::prefix('peserta')->name('peserta.')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('super-admin')->name('superAdmin.')->group(function () {
-    Route::get('/dashboard', fn() => view('superAdmin.dashboard'))->name('dashboard');
-    Route::get('/profile', fn() => view('superAdmin.profile'))->name('profile');
+    Route::get('/dasbor', fn() => view('superAdmin.dasbor'))->name('dasbor');
+    Route::get('/profil', fn() => view('superAdmin.profil'))->name('profil');
+    Route::get('/program', fn() => view('superAdmin.program'))->name('program');
 });
 
 /*
@@ -108,8 +107,8 @@ Route::prefix('super-admin')->name('superAdmin.')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
-    Route::get('/profile', fn() => view('admin.profile'))->name('profile');
+    Route::get('/dasbor', fn() => view('admin.dasbor'))->name('dasbor');
+    Route::get('/profil', fn() => view('admin.profil'))->name('profil');
 
     Route::get('/program', fn() => view('admin.programIndex', ['programs' => []]))->name('program.index');
     Route::get('/program/create', fn() => view('admin.programCreate'))->name('program.create');

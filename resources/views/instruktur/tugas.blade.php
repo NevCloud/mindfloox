@@ -1,9 +1,9 @@
 {{-- ============================================================
     Instruktur — Tugas Perlu Dinilai
-    Layout: layouts.instructor
+    Layout: layouts.instruktur
 ============================================================ --}}
 
-@extends('layouts.instructor')
+@extends('layouts.instruktur')
 
 @section('title', 'Tugas')
 
@@ -15,7 +15,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
         @foreach ($tugas as $task)
-            <div onclick="window.location='/instructor/tugas-kumpul'"
+            <div onclick="window.location='/instruktur/tugas-kumpul'"
                 class="card p-4 {{ $task['ui']['border'] }}">
 
                 <div class="flex items-start justify-between mb-2">
@@ -51,7 +51,7 @@
                         {{ $task['deadline'] }}
                     </div>
 
-                    <a href="{{ route('instructor.tugas-kumpul') }}"
+                    <a href="{{ route('instruktur.tugas-kumpul') }}"
                         class="text-xs px-3 py-1 rounded-lg transition {{ $task['ui']['button'] }}">
                         Lihat
                     </a>

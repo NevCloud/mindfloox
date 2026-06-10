@@ -15,11 +15,14 @@
     <!-- LEFT PANEL -->
     <x-leftPanel />
 
-    <!--right panel-->
-    <x-rightPanel />
+    <!-- MAIN CONTENT AREA -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-    <!-- MAIN -->
-    <div class="flex-1 overflow-y-auto">
+        <!-- TOP NAV -->
+        <x-topNav />
+
+        <!-- SCROLLABLE CONTENT -->
+        <div class="flex-1 overflow-y-auto">
 
         <!-- TOPBAR -->
         <div class="flex items-center justify-between p-5">
@@ -184,8 +187,8 @@
 
         </div>
 
+        </div>
     </div>
-
 </div>
 
 </body>

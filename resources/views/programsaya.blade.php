@@ -56,7 +56,7 @@
                 <div class="card group relative">
 
                     <div class="relative overflow-hidden">
-                        <img src="img/momo.png" alt="Desain Grafis" class="w-full h-48 object-cover group-hover:scale-110 transition duration-500">
+                        <img src="/img/momo.png" alt="Desain Grafis" class="w-full h-48 object-cover group-hover:scale-110 transition duration-500">
 
                         <span class="badge left-3 bg-primary text-xs">DESIGN</span>
 

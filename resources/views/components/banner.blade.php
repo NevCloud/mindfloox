@@ -35,7 +35,7 @@
     </div>
 
 <!--banner instruktur-->
-@elseif(request()->is('instructor/*'))
+@elseif(request()->is('instruktur/*'))
 
     <div class="relative overflow-hidden rounded-2xl px-8 py-6 flex items-center justify-between" style="background-color:#6C63FF">
         <div class="z-10 relative">
@@ -43,10 +43,10 @@
             <h2 class="text-2xl font-bold text-white mb-1">Selamat datang, Instruktur! 👋</h2>
             <p class="text-white/80 text-sm mb-5">Ada <span class="font-semibold text-white">15 tugas peserta</span> yang menunggu untuk dinilai.<br>Mari periksa perkembangan mereka!</p>
             <div class="flex items-center gap-3">
-                <a href="/instructor/tugas" class="bg-white font-semibold text-sm px-5 py-2 rounded-lg hover:-translate-y-0.5 transition duration-200" style="color:#6C63FF">
+                <a href="/instruktur/tugas" class="bg-white font-semibold text-sm px-5 py-2 rounded-lg hover:-translate-y-0.5 transition duration-200" style="color:#6C63FF">
                     Mulai Menilai
                 </a>
-                <a href="/instructor/courses" class="border border-white/40 text-white font-medium text-sm px-5 py-2 rounded-lg hover:bg-white/10 transition duration-200 inline-block">
+                <a href="/instruktur/kursus" class="border border-white/40 text-white font-medium text-sm px-5 py-2 rounded-lg hover:bg-white/10 transition duration-200 inline-block">
                     Upload Materi
                 </a>
             </div>

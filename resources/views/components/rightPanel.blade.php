@@ -15,16 +15,16 @@
 
     if (request()->is('super-admin/*')) {
         $nama = 'SUPER ADMIN';
-        $linkProfil = route('superAdmin.profile');
+        $linkProfil = route('superAdmin.profil');
     } elseif (request()->is('admin/*')) {
         $nama = 'ADMIN';
-        $linkProfil = route('admin.profile');
-    } elseif (request()->is('instructor/*')) {
+        $linkProfil = route('admin.profil');
+    } elseif (request()->is('instruktur/*')) {
         $nama = 'Instruktur';
-        $linkProfil = route('instructor.profile');
+        $linkProfil = route('instruktur.profil');
     } elseif (request()->is('peserta/*')) {
         $nama = 'Sara Abraham'; 
-        $linkProfil = route('peserta.profile');
+        $linkProfil = route('peserta.profil');
     }
     @endphp
 
@@ -148,47 +148,28 @@
                 ],
             ];
 
-            // Daftar tugas berdasarkan role
+            // Daftar tugas dummy sesuai role
             $tasks = [];
-            if (request()->is('super-admin/*')) {
-               $tasks = [
-                   ['title' => 'UI/UX Case Study',       'subtext' => 'UI/UX Design · 19 Apr',       ...$status['terlambat']],
-                   ['title' => 'Analisis Sorting',        'subtext' => 'DSA · 22 Apr',                ...$status['segera']],
-                   ['title' => 'Business Model Canvas',   'subtext' => 'Entrepreneurship · 25 Apr',   ...$status['onTrack']],
-                   ['title' => 'SEO Content Strategy',    'subtext' => 'Digital Marketing · 28 Apr',  ...$status['tugasBaru']],
-                   ['title' => 'Wireframe Prototype',     'subtext' => 'UI/UX Design · 15 Apr',      ...$status['selesai']],
-                   ['title' => 'Array & Linked List Quiz', 'subtext' => 'DSA · 10 Apr',              ...$status['selesai']]
-               ];
-            }
-            elseif (request()->is('admin/*')) {
-               $tasks = [
-                   ['title' => 'UI/UX Case Study',       'subtext' => 'UI/UX Design · 19 Apr',       ...$status['terlambat']],
-                   ['title' => 'Analisis Sorting',        'subtext' => 'DSA · 22 Apr',                ...$status['segera']],
-                   ['title' => 'Business Model Canvas',   'subtext' => 'Entrepreneurship · 25 Apr',   ...$status['onTrack']],
-                   ['title' => 'SEO Content Strategy',    'subtext' => 'Digital Marketing · 28 Apr',  ...$status['tugasBaru']],
-                   ['title' => 'Wireframe Prototype',     'subtext' => 'UI/UX Design · 15 Apr',      ...$status['selesai']],
-                   ['title' => 'Array & Linked List Quiz', 'subtext' => 'DSA · 10 Apr',              ...$status['selesai']]
-               ]; 
-            }
-            elseif (request()->is('instructor/*')) {
-               $tasks = [
-                   ['title' => 'UI/UX Case Study',       'subtext' => 'UI/UX Design · 19 Apr',       ...$status['terlambat']],
-                   ['title' => 'Analisis Sorting',        'subtext' => 'DSA · 22 Apr',                ...$status['segera']],
-                   ['title' => 'Business Model Canvas',   'subtext' => 'Entrepreneurship · 25 Apr',   ...$status['onTrack']],
-                   ['title' => 'SEO Content Strategy',    'subtext' => 'Digital Marketing · 28 Apr',  ...$status['tugasBaru']],
-                   ['title' => 'Wireframe Prototype',     'subtext' => 'UI/UX Design · 15 Apr',      ...$status['selesai']],
-                   ['title' => 'Array & Linked List Quiz', 'subtext' => 'DSA · 10 Apr',              ...$status['selesai']]
-               ];
-            }
-            elseif (request()->is('peserta/*')) {
-               $tasks = [
-                   ['title' => 'UI/UX Case Study',       'subtext' => 'UI/UX Design · 19 Apr',       ...$status['terlambat']],
-                   ['title' => 'Analisis Sorting',        'subtext' => 'DSA · 22 Apr',                ...$status['segera']],   
-                   ['title' => 'Business Model Canvas',   'subtext' => 'Entrepreneurship · 25 Apr',   ...$status['onTrack']],
-                   ['title' => 'SEO Content Strategy',    'subtext' => 'Digital Marketing · 28 Apr',  ...$status['tugasBaru']],
-                   ['title' => 'Wireframe Prototype',     'subtext' => 'UI/UX Design · 15 Apr',      ...$status['selesai']],
-                   ['title' => 'Array & Linked List Quiz', 'subtext' => 'DSA · 10 Apr',              ...$status['selesai']]
-               ];
+            
+            if (request()->is('instruktur/*')) {
+                // Tugas khusus Instruktur (contoh: tugas yang harus dinilai/diperiksa)
+                $tasks = [
+                    ['title' => 'Periksa UI/UX Case Study',  'subtext' => 'UI/UX Design · 19 Apr',       ...$status['terlambat']],
+                    ['title' => 'Input Nilai Sorting',       'subtext' => 'DSA · 22 Apr',                ...$status['segera']],
+                    ['title' => 'Review BMC',                'subtext' => 'Entrepreneurship · 25 Apr',   ...$status['onTrack']],
+                    ['title' => 'Buat Kuis Array',           'subtext' => 'DSA · 28 Apr',                ...$status['tugasBaru']],
+                    ['title' => 'Wireframe Prototype',     'subtext' => 'UI/UX Design · 15 Apr',      ...$status['selesai']],
+                ];
+            } elseif (request()->is('peserta/*')) {
+                // Tugas khusus Peserta (contoh: tugas yang harus dikerjakan/dikumpulkan)
+                $tasks = [
+                    ['title' => 'Kerjakan UI/UX Case Study', 'subtext' => 'UI/UX Design · 19 Apr',       ...$status['terlambat']],
+                    ['title' => 'Kuis Analisis Sorting',     'subtext' => 'DSA · 22 Apr',                ...$status['segera']],
+                    ['title' => 'Upload BMC',                'subtext' => 'Entrepreneurship · 25 Apr',   ...$status['onTrack']],
+                    ['title' => 'SEO Content Strategy',      'subtext' => 'Digital Marketing · 28 Apr',  ...$status['tugasBaru']],
+                    ['title' => 'Wireframe Prototype',       'subtext' => 'UI/UX Design · 15 Apr',       ...$status['selesai']],
+                    ['title' => 'Array & Linked List Quiz', 'subtext' => 'DSA · 10 Apr',              ...$status['selesai']]
+                ];
             }
         @endphp
 

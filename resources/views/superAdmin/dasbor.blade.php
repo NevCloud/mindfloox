@@ -244,11 +244,6 @@
 
         </main>
 
-                <!--right panel-->
-                <x-rightPanel />
- 
-
-
     <!-- UNIVERSAL MODAL -->
     <div x-show="modal.show" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop" style="background: rgba(0,0,0,0.5);">
         <div @click.away="closeModal()" x-show="modal.show" x-transition class="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-2xl w-full p-6"

@@ -1,17 +1,17 @@
-@extends('layouts.instructor')
-@section('title', 'Courses')
+@extends('layouts.instruktur')
+@section('title', 'Kursus')
 @section('content')
 
 <x-banner />
 
 <section>
     <div class="flex items-center justify-between mb-4">
-        <h3 class="text-base font-semibold dark:text-white">Course Saya</h3>
+        <h3 class="text-base font-semibold dark:text-white">Kursus Saya</h3>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
 
         <x-course-card
-            href="course"
+            href="detail-kursus"
             bg="rgba(33,150,243,0.15)"
             img="../img/momo.png"
             title="UI/UX Design Specialist"
@@ -25,7 +25,7 @@
         />
 
         <x-course-card
-            href="course"
+            href="detail-kursus"
             bg="rgba(156,39,176,0.15)"
             img="https://images.unsplash.com/photo-1498050108023-c5249f4df085"
             title="Data Science Bootcamp"
@@ -39,7 +39,7 @@
         />
 
         <x-course-card
-            href="course"
+            href="detail-kursus"
             bg="rgba(255,152,0,0.15)"
             img="https://images.unsplash.com/photo-1460925895917-afdab827c52f"
             title="Full-stack Laravel"
@@ -53,7 +53,7 @@
         />
 
         <x-course-card
-            href="course"
+            href="detail-kursus"
             bg="rgba(244,67,54,0.15)"
             img="https://plus.unsplash.com/premium_photo-1661877737564-3dfd7282efcb?q=80&w=2100&auto=format&fit=crop"
             title="Cyber Security Basic"

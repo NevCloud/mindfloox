@@ -27,21 +27,21 @@
         {{-- MENU --}}
         <ul :class="menuOpen ? 'flex' : 'hidden'"
             class="md:flex flex-col md:flex-row gap-6 md:gap-8 text-sm md:items-center absolute md:static top-16 left-0 w-full md:w-auto backdrop-blur-md md:border-none border-gray-200 dark:border-gray-700 px-6 py-6 md:p-0">
-            <li><a href="/" class="relative group py-1 block">Home
+            <li><a href="/" class="relative group py-1 block">Beranda
                     <span
                         class="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary duration-300 group-hover:w-full {{ request()->routeIs('index') ? 'w-full' : 'w-0' }}"></span>
                 </a></li>
-            <li><a href="/about" class="relative group py-1 block">About
+            <li><a href="/tentang" class="relative group py-1 block">Tentang
                     <span
-                        class="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary duration-300 group-hover:w-full {{ request()->routeIs('about') ? 'w-full' : 'w-0' }}"></span>
+                        class="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary duration-300 group-hover:w-full {{ request()->routeIs('tentang') ? 'w-full' : 'w-0' }}"></span>
                 </a></li>
-            <li><a href="/courses" class="relative group py-1 block">Course
+            <li><a href="/program" class="relative group py-1 block">Program
                     <span
-                        class="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary duration-300 group-hover:w-full {{ request()->routeIs('courses') ? 'w-full' : 'w-0' }}"></span>
+                        class="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary duration-300 group-hover:w-full {{ request()->routeIs('program.*') ? 'w-full' : 'w-0' }}"></span>
                 </a></li>
-            <li><a href="/instructors" class="relative group py-1 block">Instructors
+            <li><a href="/instruktur" class="relative group py-1 block">Instruktur
                     <span
-                        class="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary duration-300 group-hover:w-full {{ request()->routeIs('instructors') ? 'w-full' : 'w-0' }}"></span>
+                        class="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary duration-300 group-hover:w-full {{ request()->routeIs('instruktur') ? 'w-full' : 'w-0' }}"></span>
                 </a></li>
         </ul>
 

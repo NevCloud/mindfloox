@@ -1,5 +1,5 @@
-@extends('layouts.instructor')
-@section('title', 'Course')
+@extends('layouts.instruktur')
+@section('title', 'Detail Kursus')
 @section('content')
 
 <section class="space-y-5" x-data="courseManager()">
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="flex items-center gap-3">
-                <a href="/instructor/upload-materi" @click.stop class="px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">Upload Materi</a>
+                <a href="/instruktur/upload-materi" @click.stop class="px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">Upload Materi</a>
                 <button @click.stop="weekOpen = !weekOpen" class="w-9 h-9 flex items-center justify-center">
                     <svg :class="weekOpen ? 'rotate-180' : ''" class="w-5 h-5 text-gray-500 transition duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
@@ -122,7 +122,7 @@
                                         <button class="px-4 py-2 rounded-lg bg-primary text-white text-sm hover:opacity-90 transition">Download</button>
                                     </div>
                                     <div class="flex gap-2">
-                                        <button onclick="window.location.href='/instructor/upload-materi'"
+                                        <button onclick="window.location.href='/instruktur/upload-materi'"
                                             class="group w-9 h-9 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transform group-hover:scale-110 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />

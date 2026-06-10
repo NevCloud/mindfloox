@@ -49,13 +49,13 @@ class AuthController extends Controller
                 // 🔁 Redirect berdasarkan role
                 switch ($user['role']) {
                     case 'Peserta':
-                        return redirect('/peserta/dashboard');
+                        return redirect('/peserta/dasbor');
                     case 'Instruktur':
-                        return redirect('/instructor/dashboard');
+                        return redirect('/instruktur/dasbor');
                     case 'Admin':
-                        return redirect('/admin/dashboard');
+                        return redirect('/admin/dasbor');
                     case 'Super Admin':
-                        return redirect('/super-admin/dashboard');
+                        return redirect('/super-admin/dasbor');
                 }
             }
         }

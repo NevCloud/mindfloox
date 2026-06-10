@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Mindfloox</title>
+    <title>Beranda - Mindfloox</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
@@ -27,38 +27,38 @@
 
             <div>
                 <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6">
-                    Transform Your Future with
-                    <span class="text-primary">Expert-Led</span> Courses
+                    Transformasi Masa Depanmu dengan
+                    <span class="text-primary">Program</span> dari Ahli
                 </h1>
 
                 <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm sm:text-base md:text-lg">
-                    Learn from professionals and upgrade your skills anytime.
+                    Belajar dari profesional dan tingkatkan keterampilanmu kapan saja.
                 </p>
 
                 <div class="flex gap-6 md:gap-10 mb-8">
                     <div>
                         <h2 class="text-primary font-bold text-xl md:text-2xl">50000</h2>
-                        <p class="text-gray-500 text-sm">Students</p>
+                        <p class="text-gray-500 text-sm">Peserta</p>
                     </div>
                     <div>
                         <h2 class="text-primary font-bold text-xl md:text-2xl">1200</h2>
-                        <p class="text-gray-500 text-sm">Courses</p>
+                        <p class="text-gray-500 text-sm">Program</p>
                     </div>
                     <div>
                         <h2 class="text-primary font-bold text-xl md:text-2xl">98%</h2>
-                        <p class="text-gray-500 text-sm">Success</p>
+                        <p class="text-gray-500 text-sm">Sukses</p>
                     </div>
                 </div>
 
                 <div class="flex gap-4 flex-wrap">
                     <button
                         class="bg-primary text-white px-6 py-3 rounded-full hover:shadow-lg hover:-translate-y-1 transition duration-300">
-                        Browse Courses
+                        Jelajahi Program
                     </button>
 
                     <button
                         class="border border-primary text-primary px-6 py-3 rounded-full hover:bg-primary hover:text-white hover:shadow-lg hover:-translate-y-1 transition duration-300">
-                        Learn More
+                        Pelajari Lebih
                     </button>
                 </div>
             </div>
@@ -103,34 +103,34 @@
 
         </section>
 
-        {{-- course --}}
+        {{-- program --}}
         <section class="px-4 py-16 text-left max-w-7xl mx-auto">
             <h2 class="text-2xl md:text-3xl font-bold mb-4 dark:text-white ">
-                Featured <span class="text-primary">Course</span>
+                Daftar <span class="text-primary">Program</span>
             </h2>
 
             <div class="w-20 h-1 bg-gradient-to-r from-primary to-accent mb-10"></div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 
-                @foreach ($courses as $course)
+                @foreach ($program as $prog)
                     <div class="card">
 
                         <div class="relative">
-                            <img src="{{ $course['image'] }}" class="w-full h-48 object-cover">
+                            <img src="{{ $prog['image'] }}" class="w-full h-48 object-cover">
 
                             <span class="badge left-3 bg-primary">
-                                {{ $course['category'] }}
+                                {{ $prog['category'] }}
                             </span>
 
                             <span class="badge right-3 bg-secondary">
-                                ${{ $course['price'] }}
+                                ${{ $prog['price'] }}
                             </span>
                         </div>
 
                         <div class="p-5 flex flex-col flex-grow">
                             <h3 class="font-semibold text-lg mb-2">
-                                {{ $course['title'] }}
+                                {{ $prog['title'] }}
                             </h3>
 
                             <p class="text-gray-500 text-sm mb-4 line-clamp-2">
@@ -140,14 +140,14 @@
                             <div class="flex items-center gap-4 my-6">
                                 <img src="img/momo.png" class="w-12 h-12 rounded-full object-cover">
                                 <div>
-                                    <p class="font-medium">{{ $course['author'] }}</p>
-                                    <p class="text-xs text-gray-500">{{ $course['role'] }}</p>
+                                    <p class="font-medium">{{ $prog['author'] }}</p>
+                                    <p class="text-xs text-gray-500">{{ $prog['role'] }}</p>
                                 </div>
                             </div>
 
                             <div class="flex justify-between items-center mb-4">
                                 <span class="text-yellow-400 font-bold">
-                                    ⭐ {{ $course['rating'] }}
+                                    ⭐ {{ $prog['rating'] }}
                                 </span>
                                 <span class="flex gap-1 text-primary font-bold">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -158,12 +158,12 @@
                                         <path d="M16 3.128a4 4 0 0 1 0 7.744" />
                                         <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                                         <circle cx="9" cy="7" r="4" />
-                                    </svg> {{ $course['students'] }}
+                                    </svg> {{ $prog['students'] }}
                                 </span>
                             </div>
 
-                            <a href="enroll" class="text-center mt-auto w-full bg-primary text-white py-2 rounded-lg">
-                                Enroll Now
+                            <a href="/program/pendaftaran" class="text-center mt-auto w-full bg-primary text-white py-2 rounded-lg">
+                                Daftar Sekarang
                             </a>
                         </div>
 
@@ -173,10 +173,9 @@
             </div>
 
             <div class="mt-10 text-center">
-                <button
-                    class="border border-primary text-primary px-6 py-3 rounded-full hover:bg-primary hover:text-white hover:shadow-lg hover:-translate-y-1 transition duration-300 font-semibold">
-                    View All Course
-                </button>
+                <a href="{{ route('program.index') }}" class="border border-primary text-primary px-6 py-3 rounded-full hover:bg-primary hover:text-white hover:shadow-lg hover:-translate-y-1 transition duration-300 font-semibold">
+                    Lihat Semua Program
+                </a>
             </div>
         </section>
 
@@ -185,14 +184,14 @@
             <div class="container mx-auto px-4">
                 <div class="text-center mb-16">
                     <h2 class="text-2xl md:text-3xl font-bold mb-4 dark:text-white">
-                        Explore Top <span class="text-primary">Course</span>
+                     Jelajahi <span class="text-primary">Kategori</span>
                     </h2>
                     <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
 
-                    @foreach ($categories as $category)
+                    @foreach ($kategori as $category)
                         <a href="#"
                             class="group p-8 rounded-2xl border border-gray-600/0 hover:border-primary hover:shadow-lg hover:-translate-y-2 transition-transform transition-shadow duration-300 text-center relative overflow-hidden">
                             <div
@@ -209,24 +208,24 @@
                             </div>
 
                             <h3 class="font-medium text-lg mb-1">{{ $category['name'] }}</h3>
-                            <p class="text-sm text-gray-400">{{ $category['count'] }} Courses</p>
+                            <p class="text-sm text-gray-400">{{ $category['count'] }} Program</p>
                         </a>
                     @endforeach
                 </div>
             </div>
         </section>
 
-        {{-- instructors --}}
+        {{-- instruktur --}}
         <section class="px-4 py-16 text-center">
             <h2 class="text-2xl md:text-3xl font-bold mb-4 dark:text-white">
-                Featured <span class="text-primary">Instructor</span>
+                Daftar <span class="text-primary">Instruktur</span>
             </h2>
 
             <div class="w-20 h-1 mx-auto bg-gradient-to-r from-blue-500 to-purple-500 mb-10"></div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-                @foreach ($instructors as $inst)
+                @foreach ($instruktur as $inst)
                     <div class="card group">
 
                         <div class="relative overflow-hidden">
@@ -314,7 +313,7 @@
             <div class="mt-10 text-center">
                 <button
                     class="border border-primary text-primary px-6 py-3 rounded-full hover:bg-primary hover:text-white hover:shadow-lg hover:-translate-y-1 transition duration-300 font-semibold">
-                    View All Insctructors
+                    Lihat Semua Instruktur
                 </button>
             </div>
 

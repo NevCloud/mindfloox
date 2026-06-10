@@ -174,7 +174,7 @@
                                 <h3 class="text-lg font-bold text-gray-900 dark:text-white">Upload Materi</h3>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">Tambahkan materi baru ke dalam kursus</p>
                             </div>
-                            <a href="/instructor/course"
+                            <a href="/instruktur/detail-kursus"
                                 class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -423,7 +423,7 @@
 
                             <!-- Action Buttons -->
                             <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <a href="/instructor/course"
+                                <a href="/instruktur/detail-kursus"
                                     class="px-6 py-2.5 rounded-xl text-sm font-medium border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                                     Batal
                                 </a>
