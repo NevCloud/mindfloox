@@ -3,11 +3,10 @@
     Layout: layouts.instruktur
 ============================================================ --}}
 
-@extends('layouts.instruktur')
 
-@section('title', 'Penilaian Tugas')
 
-@push('scripts')
+
+
 <script>
     function gradingApp() {
         return {
@@ -48,12 +47,12 @@
             searchQuery: '',
             filterStatus: 'all',
             windowWidth: window.innerWidth,
-            
+
             get filteredStudents() {
                 return this.students.filter(s => {
                     const matchSearch = s.name.toLowerCase().includes(this.searchQuery.toLowerCase());
                     let matchStatus = true;
-                    
+
                     if (this.filterStatus === 'perlu_dinilai') {
                         matchStatus = s.grade === null && s.status !== 'Belum Kumpul';
                     } else if (this.filterStatus === 'sudah_dinilai') {
@@ -61,7 +60,7 @@
                     } else if (this.filterStatus === 'belum_kumpul') {
                         matchStatus = s.status === 'Belum Kumpul';
                     }
-                    
+
                     return matchSearch && matchStatus;
                 });
             },
@@ -69,7 +68,7 @@
             get activeStudent() {
                 return this.students.find(s => s.id === this.activeId);
             },
-            
+
             get gradedCount() {
                 return this.students.filter(s => s.grade !== null).length;
             },
@@ -92,13 +91,53 @@
         }
     }
 </script>
-@endpush
+<!DOCTYPE html>
+<html lang="en" class="light">
 
-@section('content')
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Penilaian Tugas - Instruktur</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
 
-<div x-data="gradingApp()" 
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+
+<body x-data="dashboardApp()" x-init="initApp()" class="relative bg-gray-50 dark:bg-[#0F0F1A]">
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- SIDEBAR -->
+        <x-leftPanel />
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+
+            <!-- Top Nav -->
+            <x-topNav />
+
+            <!-- SCROLLABLE CONTENT -->
+            <div class="flex-1 overflow-y-auto">
+                <div class="p-5 space-y-5">
+
+<div x-data="gradingApp()"
      @resize.window="windowWidth = window.innerWidth"
-     class="flex flex-col" 
+     class="flex flex-col"
      style="min-height: 700px; height: calc(100vh - 8rem);">
 
     <!-- Header & Breadcrumb -->
@@ -125,11 +164,11 @@
 
     <!-- Main Workspace (Split-Pane) -->
     <div class="flex flex-col md:flex-row gap-5 flex-1 min-h-0 pb-4">
-        
+
         <!-- KOLOM KIRI: Daftar Peserta (Inbox Style) -->
-        <div class="w-full md:w-1/3 card p-0 border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-sm flex flex-col overflow-hidden shrink-0" 
+        <div class="w-full md:w-1/3 card p-0 border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-sm flex flex-col overflow-hidden shrink-0"
              :style="windowWidth < 768 ? 'height: 320px;' : 'max-height: 100%;'">
-            
+
             <div class="p-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-[#0F0F1A]/50 shrink-0 flex flex-col gap-3">
                 <input type="text" placeholder="Cari nama peserta..." x-model="searchQuery" class="w-full pl-4 pr-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#1A1A2E] text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
                 <div class="flex items-center gap-2">
@@ -146,12 +185,12 @@
             </div>
 
             <div class="flex-1 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800">
-                
+
                 <template x-for="student in filteredStudents" :key="student.id">
                     <div @click="activeId = student.id"
                         class="p-4 cursor-pointer transition-all duration-200 border-l-4"
                         :class="activeId === student.id ? 'bg-primary/5 border-primary' : 'border-transparent hover:bg-gray-50 dark:hover:bg-gray-800/50'">
-                        
+
                         <div class="flex items-start justify-between mb-1">
                             <div class="flex items-center gap-3">
                                 <img :src="student.avatar" class="w-9 h-9 rounded-full object-cover">
@@ -161,10 +200,10 @@
                                 </div>
                             </div>
                             <!-- Badge Status -->
-                            <span x-show="student.status !== 'Belum Kumpul'" class="w-2.5 h-2.5 rounded-full mt-1" 
+                            <span x-show="student.status !== 'Belum Kumpul'" class="w-2.5 h-2.5 rounded-full mt-1"
                                   :class="student.statusColor === 'green' ? 'bg-green-500' : (student.statusColor === 'red' ? 'bg-red-500' : 'bg-gray-400')"></span>
                         </div>
-                        
+
                         <!-- Mini Preview -->
                         <div class="pl-12 flex items-center justify-between mt-1">
                             <span x-show="student.grade !== null" class="text-xs font-bold text-green-600 dark:text-green-400 flex items-center gap-1">
@@ -184,7 +223,7 @@
 
         <!-- KOLOM KANAN: Detail & Form Penilaian -->
         <div class="w-full md:w-2/3 flex-1 card border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-sm flex flex-col overflow-hidden relative">
-            
+
             <!-- Success Toast -->
             <div x-show="showSuccess" x-transition.opacity
                 class="absolute top-4 right-4 z-10 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-medium flex items-center gap-2">
@@ -194,7 +233,7 @@
 
             <template x-if="activeStudent">
                 <div class="flex-1 overflow-y-auto flex flex-col h-full">
-                    
+
                     <!-- Header Info -->
                     <div class="p-6 border-b border-gray-100 dark:border-gray-800">
                         <div class="flex items-center justify-between mb-2">
@@ -222,10 +261,10 @@
 
                     <!-- Konten Tugas & Form Penilaian -->
                     <div x-show="activeStudent.status !== 'Belum Kumpul'" class="flex-1 p-6 flex flex-col xl:flex-row gap-8 overflow-y-auto">
-                        
+
                         <!-- File & Catatan -->
                         <div class="w-full xl:w-1/2 space-y-6">
-                            
+
                             <!-- Instruksi Pengingat -->
                             <div class="p-4 rounded-xl border border-blue-200 dark:border-blue-900/30 bg-blue-50/50 dark:bg-blue-900/10">
                                 <h4 class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-2">Instruksi Tugas</h4>
@@ -259,9 +298,9 @@
                         <!-- Form Penilaian -->
                         <div class="w-full xl:w-1/2 bg-gray-50/50 dark:bg-gray-800/30 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 flex flex-col">
                             <h4 class="text-sm font-bold text-gray-900 dark:text-white mb-4">Panel Penilaian</h4>
-                            
+
                             <form @submit.prevent="saveGrade" class="flex-1 flex flex-col">
-                                
+
                                 <div class="mb-5">
                                     <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Nilai Akhir (0-100) <span class="text-red-500">*</span></label>
                                     <div class="relative max-w-[200px]">
@@ -298,4 +337,32 @@
 
 </div>
 
-@endsection
+                </div>
+            </div>
+
+        </main>
+
+        <!--right panel-->
+        <x-rightPanel />
+
+    </div>
+
+    <script>
+        function dashboardApp() {
+            return {
+                dark: localStorage.getItem('theme') === 'dark',
+                toggleDark() {
+                    this.dark = !this.dark;
+                    localStorage.setItem('theme', this.dark ? 'dark' : 'light');
+                    document.documentElement.classList.toggle('dark', this.dark);
+                },
+                initApp() {
+                    document.documentElement.classList.toggle('dark', this.dark);
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>

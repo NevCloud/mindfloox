@@ -52,7 +52,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
 
                             {{-- Course 1 — Progress tracking via localStorage --}}
-                            <div onclick="window.location.href='course-detail'"
+                            <div onclick="window.location.href='detail-kursus'"
                                 x-data="{ done: 0, total: 56, pct: 0 }"
                                 x-init="
                                     let p = JSON.parse(localStorage.getItem('courseProgressDemo') || '{}');
@@ -97,7 +97,7 @@
                                 </div>
                             </div>
 
-                            <div onclick="window.location.href='course-detail'" class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
+                            <div onclick="window.location.href='detail-kursus'" class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
                                 <div class="flex-1 p-4">
                                     <div class="flex items-stretch gap-3">
                                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -132,7 +132,7 @@
                                 </div>
                             </div>
 
-                            <div onclick="window.location.href='course-detail'" class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
+                            <div onclick="window.location.href='detail-kursus'" class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
                                 <div class="flex-1 p-4">
                                     <div class="flex items-stretch gap-3">
                                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"
@@ -167,7 +167,7 @@
                                 </div>
                             </div>
 
-                            <div onclick="window.location.href='course-detail'" class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
+                            <div onclick="window.location.href='detail-kursus'" class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
                                 <div class="flex-1 p-4">
                                     <div class="flex items-stretch gap-3">
                                         <div class="w-30 flex-shrink-0 rounded-xl overflow-hidden"

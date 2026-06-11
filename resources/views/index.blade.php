@@ -122,10 +122,6 @@
                             <span class="badge left-3 bg-primary">
                                 {{ $prog['category'] }}
                             </span>
-
-                            <span class="badge right-3 bg-secondary">
-                                ${{ $prog['price'] }}
-                            </span>
                         </div>
 
                         <div class="p-5 flex flex-col flex-grow">

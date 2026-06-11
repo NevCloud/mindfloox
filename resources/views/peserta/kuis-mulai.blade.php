@@ -113,7 +113,7 @@
                                     progress[quizId] = true;
                                     localStorage.setItem('courseProgressDemo', JSON.stringify(progress));
                                 }
-                                window.location.href = 'course-detail';
+                                window.location.href = 'detail-kursus';
                             }
                         }">
                             <div class="flex items-center justify-between mb-4">

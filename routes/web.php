@@ -24,7 +24,7 @@ Route::get('/login', function () {
         if ($role === 'admin_microcredential') return redirect('/admin/dasbor');
         if ($role === 'super_admin') return redirect('/super-admin/dasbor');
     }
-    
+
     // 2. TAMPILKAN FORM
     // Jika belum login sama sekali, barulah kita tampilkan halaman form login.
     return view('login');
@@ -82,7 +82,7 @@ Route::prefix('instruktur')->name('instruktur.')->middleware('check.session:inst
         $kuis = config('kuis');
         return view('instruktur.kuis-mulai', compact('kuis'));
     })->name('kuis-mulai');
-    
+
     Route::get('/kuis-detail', function() {
         $kuis = config('kuis');
         return view('instruktur.kuis-detail', compact('kuis'));
@@ -123,7 +123,7 @@ Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session:sup
     Route::get('/profil', fn() => view('superAdmin.profil'))->name('profil');
     Route::get('/program', fn() => view('superAdmin.program'))->name('program');
     Route::get('/program/edit', fn() => view('superAdmin.programEdit'))->name('program.edit');
-    
+
     // New pages added from remote
     Route::get('/admin-instruktur', fn() => view('superAdmin.adminInstruktur'))->name('adminInstruktur');
     Route::get('/jenis-microcredential', fn() => view('superAdmin.jenisMicrocredential'))->name('jenisMicrocredential');

@@ -14,16 +14,16 @@
     $linkProfil = '';
 
     if (request()->is('super-admin/*')) {
-        $nama = 'SUPER ADMIN';
+        $nama = 'Super Admin';
         $linkProfil = route('superAdmin.profil');
     } elseif (request()->is('admin/*')) {
-        $nama = 'ADMIN';
+        $nama = 'Admin Microcredential';
         $linkProfil = route('admin.profil');
-    } elseif (request()->is('instruktur/*')) {
+    } elseif (request()->is('instructor/*') || request()->is('instruktur/*')) {
         $nama = 'Instruktur';
         $linkProfil = route('instruktur.profil');
     } elseif (request()->is('peserta/*')) {
-        $nama = 'Sara Abraham'; 
+        $nama = 'Sara Abraham';
         $linkProfil = route('peserta.profil');
     }
     @endphp
@@ -63,43 +63,36 @@
 
         <div class="grid grid-cols-7 gap-1 text-center text-xs">
             <template x-for="(day, idx) in calendarDays" :key="idx">
-                <div class="aspect-square flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition"
+                <div class="aspect-square relative flex flex-col items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition"
                     :class="{
-                                'bg-purple-600 text-white font-semibold': day === today && !isOtherMonth(idx),
-                                'bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-400 font-medium': day === 22 && !isOtherMonth(idx),
-                                'text-red-600 font-medium': day === 19 && !isOtherMonth(idx),
-                                'bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400': day === 28 && !isOtherMonth(idx),
-                                'text-purple-600 font-medium': day === 25 && !isOtherMonth(idx),
+                                'bg-[#6C63FF] text-white font-semibold shadow-md shadow-indigo-500/20': day === today && !isOtherMonth(idx),
                                 'text-gray-400': isOtherMonth(idx),
-                                'text-gray-800 dark:text-gray-300': !isOtherMonth(idx) && day !== today && day !== 22 && day !== 19 && day !== 28 && day !== 25
-                                }"
-                                x-text="day">
+                                'text-gray-800 dark:text-gray-300': !isOtherMonth(idx) && day !== today
+                                }">
+                    <span x-text="day"></span>
+
+                    <!-- Indikator Acara/Tugas -->
+                    <template x-if="!isOtherMonth(idx) && events[day]">
+                        <div class="absolute bottom-1 flex gap-0.5">
+                            <template x-for="type in events[day]" :key="type">
+                                <div class="w-1 h-1 rounded-full"
+                                     :class="{
+                                        'bg-red-500': type === 'terlambat',
+                                        'bg-yellow-500': type === 'segera',
+                                        'bg-white': type === 'onTrack' && day === today,
+                                        'bg-[#6C63FF]': type === 'onTrack' && day !== today,
+                                        'bg-green-500': type === 'tugasBaru',
+                                     }"></div>
+                            </template>
+                        </div>
+                    </template>
                 </div>
             </template>
         </div>
-            
-        <!-- Legenda-->
-            <div class="mt-3 flex flex-wrap gap-x-3 gap-y-1.5">
-                <div class="flex items-center gap-1">
-                    <div class="w-2 h-2 rounded-full bg-red-500"></div><span
-                        class="text-[9px] text-gray-400">Terlambat</span>
-                </div>
-                <div class="flex items-center gap-1">
-                    <div class="w-2 h-2 rounded-full bg-yellow-500"></div><span
-                        class="text-[9px] text-gray-400">Segera</span>
-                </div>
-                <div class="flex items-center gap-1">
-                    <div class="w-2 h-2 rounded-full" style="background:#6C63FF"></div><span
-                        class="text-[9px] text-gray-400">Deadline</span>
-            </div>
-            <div class="flex items-center gap-1">
-                <div class="w-2 h-2 rounded-full bg-green-500"></div><span class="text-[9px] text-gray-400">Tugas
-                    baru</span>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Daftar Tugas -->
+    @if(!request()->is('super-admin/*') && !request()->is('admin/*'))
     <div>
         <div class="flex items-center justify-between mb-3">
             <h4 class="text-sm font-semibold dark:text-white">Semua Tugas</h4>
@@ -148,28 +141,27 @@
                 ],
             ];
 
-            // Daftar tugas dummy sesuai role
+            // Daftar tugas berdasarkan role
             $tasks = [];
-            
             if (request()->is('instruktur/*')) {
-                // Tugas khusus Instruktur (contoh: tugas yang harus dinilai/diperiksa)
-                $tasks = [
-                    ['title' => 'Periksa UI/UX Case Study',  'subtext' => 'UI/UX Design · 19 Apr',       ...$status['terlambat']],
-                    ['title' => 'Input Nilai Sorting',       'subtext' => 'DSA · 22 Apr',                ...$status['segera']],
-                    ['title' => 'Review BMC',                'subtext' => 'Entrepreneurship · 25 Apr',   ...$status['onTrack']],
-                    ['title' => 'Buat Kuis Array',           'subtext' => 'DSA · 28 Apr',                ...$status['tugasBaru']],
-                    ['title' => 'Wireframe Prototype',     'subtext' => 'UI/UX Design · 15 Apr',      ...$status['selesai']],
-                ];
-            } elseif (request()->is('peserta/*')) {
-                // Tugas khusus Peserta (contoh: tugas yang harus dikerjakan/dikumpulkan)
-                $tasks = [
-                    ['title' => 'Kerjakan UI/UX Case Study', 'subtext' => 'UI/UX Design · 19 Apr',       ...$status['terlambat']],
-                    ['title' => 'Kuis Analisis Sorting',     'subtext' => 'DSA · 22 Apr',                ...$status['segera']],
-                    ['title' => 'Upload BMC',                'subtext' => 'Entrepreneurship · 25 Apr',   ...$status['onTrack']],
-                    ['title' => 'SEO Content Strategy',      'subtext' => 'Digital Marketing · 28 Apr',  ...$status['tugasBaru']],
-                    ['title' => 'Wireframe Prototype',       'subtext' => 'UI/UX Design · 15 Apr',       ...$status['selesai']],
-                    ['title' => 'Array & Linked List Quiz', 'subtext' => 'DSA · 10 Apr',              ...$status['selesai']]
-                ];
+               $tasks = [
+                   ['title' => 'UI/UX Case Study',       'subtext' => 'UI/UX Design · 19 Apr',       ...$status['terlambat']],
+                   ['title' => 'Analisis Sorting',        'subtext' => 'DSA · 22 Apr',                ...$status['segera']],
+                   ['title' => 'Business Model Canvas',   'subtext' => 'Entrepreneurship · 25 Apr',   ...$status['onTrack']],
+                   ['title' => 'SEO Content Strategy',    'subtext' => 'Digital Marketing · 28 Apr',  ...$status['tugasBaru']],
+                   ['title' => 'Wireframe Prototype',     'subtext' => 'UI/UX Design · 15 Apr',      ...$status['selesai']],
+                   ['title' => 'Array & Linked List Quiz', 'subtext' => 'DSA · 10 Apr',              ...$status['selesai']]
+               ];
+            }
+            elseif (request()->is('peserta/*')) {
+               $tasks = [
+                   ['title' => 'UI/UX Case Study',       'subtext' => 'UI/UX Design · 19 Apr',       ...$status['terlambat']],
+                   ['title' => 'Analisis Sorting',        'subtext' => 'DSA · 22 Apr',                ...$status['segera']],
+                   ['title' => 'Business Model Canvas',   'subtext' => 'Entrepreneurship · 25 Apr',   ...$status['onTrack']],
+                   ['title' => 'SEO Content Strategy',    'subtext' => 'Digital Marketing · 28 Apr',  ...$status['tugasBaru']],
+                   ['title' => 'Wireframe Prototype',     'subtext' => 'UI/UX Design · 15 Apr',      ...$status['selesai']],
+                   ['title' => 'Array & Linked List Quiz', 'subtext' => 'DSA · 10 Apr',              ...$status['selesai']]
+               ];
             }
         @endphp
 
@@ -191,6 +183,7 @@
     </div>
     @endif
     </div>
+    @endif
 </aside>
 
 
@@ -202,7 +195,17 @@
             today: new Date().getDate(),
             monthYear: '',
             calendarDays: [],
-            
+
+            // Data mockup events: { tanggal: ['tipe1', 'tipe2'] }
+            events: {!! (!request()->is('super-admin/*') && !request()->is('admin/*')) ? json_encode([
+                10 => ['selesai'],
+                15 => ['selesai'],
+                19 => ['terlambat'],
+                22 => ['segera'],
+                25 => ['onTrack'],
+                28 => ['tugasBaru']
+            ]) : '{}' !!},
+
             init() {
                 this.updateCalendar();
             },
@@ -210,29 +213,29 @@
             updateCalendar() {
                 const year = this.currentDate.getFullYear();
                 const month = this.currentDate.getMonth();
-                
-                const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
+
+                const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
                                   'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
                 this.monthYear = monthNames[month] + ' ' + year;
-                
+
                 let firstDay = new Date(year, month, 1).getDay();
                 if(firstDay === 0) firstDay = 7; // Convert Sunday(0) to 7 so Monday is 1
-                
+
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
                 const daysInPrevMonth = new Date(year, month, 0).getDate();
-                
+
                 this.calendarDays = [];
-                
+
                 // Prev month days
                 for (let i = firstDay - 2; i >= 0; i--) {
                     this.calendarDays.push(daysInPrevMonth - i);
                 }
-                
+
                 // Current month days
                 for (let i = 1; i <= daysInMonth; i++) {
                     this.calendarDays.push(i);
                 }
-                
+
                 // Next month days
                 let totalCells = 35;
                 if (this.calendarDays.length > 35) {
@@ -256,7 +259,7 @@
                 const month = this.currentDate.getMonth();
                 let firstDay = new Date(year, month, 1).getDay();
                 if(firstDay === 0) firstDay = 7;
-                
+
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
                 return index < (firstDay - 1) || index >= (firstDay - 1) + daysInMonth;
             },
