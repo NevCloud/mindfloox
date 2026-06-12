@@ -91,13 +91,16 @@
                                         </tr>
                                     </thead>
                                     <tbody class="text-gray-800 dark:text-gray-300">
-                                        <template x-for="(item, index) in microcredentials.slice(0, 3)"
-                                            :key="index">
+                                        @forelse ($jenisMicrocredentials as $item)
                                             <tr class="border-b border-gray-100 dark:border-gray-800">
-                                                <td class="py-3 font-medium" x-text="item.name"></td>
-                                                <td class="py-3 text-gray-500" x-text="item.description"></td>
+                                                <td class="py-3 font-medium">{{ $item->nama }}</td>
+                                                <td class="py-3 text-gray-500">{{ Str::limit($item->deskripsi, 40) }}</td>
                                             </tr>
-                                        </template>
+                                        @empty
+                                            <tr>
+                                                <td colspan="2" class="py-3 text-gray-400 text-center">Belum ada data</td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -191,26 +194,28 @@
                             </div>
 
                             <div class="p-5 space-y-3">
-                                <template x-for="(program, index) in programs.slice(0, 3)" :key="index">
+                                @forelse ($programs as $prog)
                                     <div
                                         class="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                                         <div class="flex-1">
-                                            <p class="font-semibold text-gray-800 dark:text-white"
-                                                x-text="program.name"></p>
-                                            <p class="text-xs text-gray-500 mt-0.5" x-text="program.type"></p>
+                                            <p class="font-semibold text-gray-800 dark:text-white">{{ $prog->nama }}</p>
+                                            <p class="text-xs text-gray-500 mt-0.5">{{ $prog->jenisMicrocredential->nama ?? '-' }}</p>
                                         </div>
                                         <div class="flex items-center gap-1">
-                                            <span x-show="program.status === 'buka'"
-                                                class="px-2 py-0.5 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-medium rounded mr-1">Buka</span>
-                                            <span x-show="program.status === 'tutup'"
-                                                class="px-2 py-0.5 bg-red-100 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-medium rounded mr-1">Tutup</span>
+                                            @if ($prog->status_pendaftaran === 'buka')
+                                                <span class="px-2 py-0.5 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-medium rounded mr-1">Buka</span>
+                                            @else
+                                                <span class="px-2 py-0.5 bg-red-100 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-medium rounded mr-1">Tutup</span>
+                                            @endif
                                         </div>
                                     </div>
-                                </template>
+                                @empty
+                                    <p class="text-xs text-gray-400 text-center py-3">Belum ada data program</p>
+                                @endforelse
                             </div>
                         </div>
 
-                        <!-- 4. SEMESTER -->
+                        <!-- 4. PERIODE PEMBELAJARAN -->
                         <div class="card translate-0">
                             <div
                                 class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
@@ -224,8 +229,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="font-semibold text-gray-800 dark:text-white">Semester</h3>
-                                        <p class="text-xs text-gray-500">Manajemen semester (ganjil/genap)</p>
+                                        <h3 class="font-semibold text-gray-800 dark:text-white">Periode Pembelajaran</h3>
+                                        <p class="text-xs text-gray-500">Manajemen periode pembelajaran (ganjil/genap)</p>
                                     </div>
                                 </div>
                                 <a href="{{ url('/super-admin/semester') }}"
@@ -239,23 +244,21 @@
                             </div>
 
                             <div class="p-5 space-y-3">
-                                <template x-for="(semester, index) in semesters.slice(0, 3)" :key="index">
+                                @forelse ($semesters as $sem)
                                     <div
                                         class="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                                         <div class="flex-1">
-                                            <p class="font-semibold text-gray-800 dark:text-white"
-                                                x-text="semester.name"></p>
-                                            <p class="text-xs text-gray-500 mt-0.5"
-                                                x-text="'Status: ' + semester.status + ' • ' + semester.period"></p>
-                                        </div>
-                                        <div class="flex items-center gap-1">
-                                            <span x-show="semester.status === 'Aktif'"
-                                                class="px-2 py-0.5 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-medium rounded mr-1">
-                                                Aktif
-                                            </span>
+                                            <p class="font-semibold text-gray-800 dark:text-white">
+                                                {{ ucfirst($sem->jenis) }} ({{ $sem->tahun }})
+                                            </p>
+                                            <p class="text-xs text-gray-500 mt-0.5">
+                                                {{ $sem->tanggal_mulai ? $sem->tanggal_mulai->format('M Y') : '-' }} - {{ $sem->tanggal_selesai ? $sem->tanggal_selesai->format('M Y') : '-' }}
+                                            </p>
                                         </div>
                                     </div>
-                                </template>
+                                @empty
+                                    <p class="text-xs text-gray-400 text-center py-3">Belum ada data periode pembelajaran</p>
+                                @endforelse
                             </div>
                         </div>
 

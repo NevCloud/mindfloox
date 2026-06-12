@@ -159,7 +159,7 @@
         </div>
     </main>
 
-
+    <x-rightPanel />
 
 </body>
 
