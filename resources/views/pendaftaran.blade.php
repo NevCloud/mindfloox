@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enroll - Mindfloox</title>
+    <title>Daftar - Mindfloox</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
@@ -44,9 +44,9 @@
 
                 {{-- Judul --}}
                 <div class="text-center mb-8">
-                    <h1 class="text-2xl md:text-3xl font-bold text-primary mb-3">Enroll in Your Dream Course</h1>
+                    <h1 class="text-2xl md:text-3xl font-bold text-primary mb-3">Daftar ke Program Impian Anda</h1>
                     <p class="text-gray-500 dark:text-gray-400 text-sm max-w-lg mx-auto">
-                        Take the next step in your educational journey. Complete the form below to secure your spot in our comprehensive online learning program.
+                        Ambil langkah selanjutnya dalam perjalanan pendidikan Anda. Lengkapi formulir di bawah ini untuk mengamankan tempat Anda dalam program pembelajaran online kami yang komprehensif.
                     </p>
                 </div>
 
@@ -59,7 +59,7 @@
                         {{-- First Name --}}
                         <div>
                             <label class="text-sm font-medium mb-1 block">
-                                First Name <span class="text-red-500">*</span>
+                                Nama Depan <span class="text-red-500">*</span>
                             </label>
                             <input type="text"
                                 x-model="firstName"
@@ -71,7 +71,7 @@
                         {{-- Last Name --}}
                         <div>
                             <label class="text-sm font-medium mb-1 block">
-                                Last Name <span class="text-red-500">*</span>
+                                Nama Belakang <span class="text-red-500">*</span>
                             </label>
                             <input type="text"
                                 x-model="lastName"
@@ -88,7 +88,7 @@
                         {{-- Email --}}
                         <div>
                             <label class="text-sm font-medium mb-1 block">
-                                Email Address <span class="text-red-500">*</span>
+                                Alamat Email <span class="text-red-500">*</span>
                             </label>
                             <input type="email"
                                 x-model="email"
@@ -100,7 +100,7 @@
                         {{-- Password --}}
                         <div>
                             <label class="text-sm font-medium mb-1 block">
-                                Password <span class="text-red-500">*</span>
+                                Kata Sandi <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
                                 {{-- Input type berubah sesuai showPassword --}}
@@ -134,9 +134,9 @@
 
                     {{-- Motivation --}}
                     <div>
-                        <label class="text-sm font-medium mb-1 block">What motivates you to take this course?</label>
+                        <label class="text-sm font-medium mb-1 block">Apa motivasi Anda untuk mengikuti program ini?</label>
                         <textarea x-model="motivation" rows="5"
-                            placeholder="Share your goals and what you hope to achieve..."
+                            placeholder="Bagikan tujuan Anda dan apa yang ingin Anda capai..."
                             class="textarea"></textarea>
                     </div>
 
@@ -147,13 +147,13 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
-                            ENROLL NOW
+                            DAFTAR SEKARANG
                         </button>
                         <p class="text-gray-400 text-xs mt-3 flex items-center justify-center gap-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
                             </svg>
-                            Your information is secure and will never be shared with third parties
+                            Informasi Anda aman dan tidak akan pernah dibagikan kepada pihak ketiga
                         </p>
                     </div>
 
@@ -163,7 +163,7 @@
             {{-- KOLOM KANAN: Why Choose --}}
             <div class="space-y-4">
 
-                <h2 class="text-xl font-bold mb-6">Why Choose Our Courses?</h2>
+                <h2 class="text-xl font-bold mb-6">Mengapa Memilih Program Kami?</h2>
 
                 {{-- Card: Expert Instructors --}}
                 <div class="bg-white dark:bg-[#1A1A2E] rounded-xl shadow p-4 flex items-start gap-4">
@@ -173,8 +173,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-sm mb-1">Expert Instructors</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed">Learn from industry professionals with years of real-world experience</p>
+                        <h3 class="font-semibold text-sm mb-1">Instruktur Ahli</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed">Belajar dari profesional industri dengan pengalaman bertahun-tahun di dunia nyata</p>
                     </div>
                 </div>
 
@@ -186,8 +186,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-sm mb-1">Flexible Learning</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed">Study at your own pace with 24/7 access to course materials</p>
+                        <h3 class="font-semibold text-sm mb-1">Pembelajaran Fleksibel</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed">Belajar sesuai kecepatan Anda sendiri dengan akses 24/7 ke materi pembelajaran</p>
                     </div>
                 </div>
 
@@ -199,8 +199,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-sm mb-1">Certification</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed">Earn industry-recognized certificates upon course completion</p>
+                        <h3 class="font-semibold text-sm mb-1">Sertifikasi</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed">Dapatkan sertifikat yang diakui industri setelah menyelesaikan program</p>
                     </div>
                 </div>
 
@@ -212,8 +212,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-sm mb-1">Community Support</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed">Connect with fellow students and get help when you need it</p>
+                        <h3 class="font-semibold text-sm mb-1">Dukungan Komunitas</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed">Terhubung dengan sesama siswa dan dapatkan bantuan saat Anda membutuhkannya</p>
                     </div>
                 </div>
 
@@ -221,15 +221,15 @@
                 <div class="bg-primary rounded-xl p-6 text-white text-center space-y-4">
                     <div>
                         <h3 class="text-3xl font-bold">15,000+</h3>
-                        <p class="text-white/80 text-sm">Students Enrolled</p>
+                        <p class="text-white/80 text-sm">Siswa Terdaftar</p>
                     </div>
                     <div>
                         <h3 class="text-3xl font-bold">98%</h3>
-                        <p class="text-white/80 text-sm">Completion Rate</p>
+                        <p class="text-white/80 text-sm">Tingkat Penyelesaian</p>
                     </div>
                     <div>
                         <h3 class="text-3xl font-bold">4.9/5</h3>
-                        <p class="text-white/80 text-sm">Average Rating</p>
+                        <p class="text-white/80 text-sm">Rata-rata Penilaian</p>
                     </div>
                 </div>
 

@@ -49,7 +49,7 @@
                             </h3>
 
                             <p class="text-gray-500 text-sm mb-4 line-clamp-2">
-                                Lorem ipsum dolor sit amet...
+                                deskripsi disini
                             </p>
 
                             <div class="flex items-center gap-4 my-6">

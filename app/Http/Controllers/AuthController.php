@@ -59,7 +59,7 @@ class AuthController extends Controller
 
         // 5. JIKA LOGIN GAGAL
         // Kembalikan ke halaman sebelumnya (form login) dengan membawa pesan error
-        return back()->with('error', 'Login gagal! Username salah, password salah, atau akun Anda belum aktif.');
+        return back()->with('error', 'Login gagal! Username atau password salah.');
     }
 
     public function logout(Request $request)

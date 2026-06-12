@@ -8,7 +8,7 @@
             <div>
                 <h2 class="text-xl font-bold text-primary mb-3">Mindfloox</h2>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 leading-relaxed">
-                    Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.
+                    Mindfloox adalah aplikasi microcredential berbasis web untuk para profesional yang ingin meningkatkan keterampilan dan pengetahuan.
                 </p>
 
                 {{-- Sosial Media --}}
@@ -47,39 +47,39 @@
 
             {{-- Kolom 2: Useful Links --}}
             <div>
-                <h3 class="font-semibold text-base mb-4 text-gray-800 dark:text-white">Useful Links</h3>
+                <h3 class="font-semibold text-base mb-4 text-gray-800 dark:text-white">Tautan Berguna</h3>
                 <ul class="space-y-2 text-sm text-gray-500 dark:text-gray-400">
-                    <li><a href="#" class="hover:text-primary transition">Home</a></li>
-                    <li><a href="#" class="hover:text-primary transition">About us</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Services</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Terms of service</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Privacy policy</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Beranda</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Tentang kami</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Layanan</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Syarat dan ketentuan</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Kebijakan privasi</a></li>
                 </ul>
             </div>
 
             {{-- Kolom 3: Our Services --}}
             <div>
-                <h3 class="font-semibold text-base mb-4 text-gray-800 dark:text-white">Our Services</h3>
+                <h3 class="font-semibold text-base mb-4 text-gray-800 dark:text-white">Layanan Kami</h3>
                 <ul class="space-y-2 text-sm text-gray-500 dark:text-gray-400">
-                    <li><a href="#" class="hover:text-primary transition">Web Design</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Web Development</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Product Management</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Marketing</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Graphic Design</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Desain Web</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Pengembangan Web</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Manajemen Produk</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Pemasaran</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Desain Grafis</a></li>
                 </ul>
             </div>
 
             {{-- Kolom 4: Contact Us --}}
             <div>
-                <h3 class="font-semibold text-base mb-4 text-gray-800 dark:text-white">Contact Us</h3>
+                <h3 class="font-semibold text-base mb-4 text-gray-800 dark:text-white">Hubungi Kami</h3>
                 <ul class="space-y-3 text-sm text-gray-500 dark:text-gray-400">
                     <li class="leading-relaxed">
                         A108 Adam Street<br>
                         New York, NY 535022<br>
-                        United States
+                        Amerika Serikat
                     </li>
                     <li>
-                        <span class="text-gray-800 dark:text-white font-medium">Phone:</span>
+                        <span class="text-gray-800 dark:text-white font-medium">Telepon:</span>
                         +1 5589 55488 55
                     </li>
                     <li>
@@ -93,7 +93,7 @@
 
         {{-- Garis pemisah + Copyright --}}
         <div class="border-t dark:border-gray-700 mt-10 pt-6 text-center text-sm text-gray-400">
-            © Copyright <span class="text-primary font-semibold">Mindfloox</span> All Rights Reserved
+            © Hak Cipta <span class="text-primary font-semibold">Mindfloox</span> Dilindungi
         </div>
 
     </div>
