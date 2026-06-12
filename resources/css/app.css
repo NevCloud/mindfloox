@@ -217,4 +217,180 @@
         color: #ffffff;
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     }
+
+    /* =========================================
+   DRAG AND DROP - MATERI KURSUS
+   ========================================= */
+
+    /* Base transition untuk materi card */
+    .materi-card {
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            opacity 0.2s ease,
+            border-color 0.2s ease,
+            background-color 0.2s ease;
+        position: relative;
+    }
+
+    /* Saat card sedang di-drag */
+    .materi-card.is-dragging {
+        opacity: 0.4;
+        transform: scale(0.98);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        z-index: 10;
+    }
+
+    /* Saat card jadi target drop */
+    .materi-card.is-drag-over {
+        border: 2px dashed var(--color-primary, #3b82f6) !important;
+        background-color: rgba(59, 130, 246, 0.05) !important;
+    }
+
+    /* Indikator posisi drop - garis biru di atas card */
+    .materi-card.drop-before::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -2px;
+        height: 3px;
+        background: var(--color-primary, #3b82f6);
+        border-radius: 2px;
+        z-index: 20;
+        box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+
+    /* Indikator posisi drop - garis biru di bawah card */
+    .materi-card.drop-after::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -2px;
+        height: 3px;
+        background: var(--color-primary, #3b82f6);
+        border-radius: 2px;
+        z-index: 20;
+        box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+
+    /* Drag Handle (icon 6 titik) */
+    .drag-handle {
+        cursor: grab;
+        color: #cbd5e1;
+        transition: color 0.2s;
+        flex-shrink: 0;
+        user-select: none;
+        touch-action: none;
+    }
+
+    .drag-handle:hover {
+        color: #64748b;
+    }
+
+    .drag-handle:active {
+        cursor: grabbing;
+    }
+
+    /* Dark mode untuk drag handle */
+    .dark .drag-handle {
+        color: #475569;
+    }
+
+    .dark .drag-handle:hover {
+        color: #cbd5e1;
+    }
+
+    /* Prevent text selection saat drag */
+    body.is-dragging * {
+        user-select: none !important;
+    }
+
+    body.is-dragging .drag-handle {
+        cursor: grabbing !important;
+    }
+
+    /* =========================================
+   INSERT ZONE ANIMATION (Detail Kursus)
+   ========================================= */
+
+    /* Base state: gap tertutup rapat (height 0) */
+    .insert-zone {
+        height: 0;
+        overflow: hidden;
+        transition: height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+
+    /* Trigger: hover di insert row ATAU di materi-card tepat di atasnya */
+    .insert-row:hover .insert-zone,
+    .materi-card:hover + .insert-row .insert-zone {
+        height: 40px;
+    }
+
+    .insert-inner {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        position: relative;
+    }
+
+    .insert-line {
+        flex: 1;
+        height: 1px;
+        background-color: #e2e8f0;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .dark .insert-line {
+        background-color: #334155;
+    }
+
+    .insert-row:hover .insert-line,
+    .materi-card:hover + .insert-row .insert-line {
+        opacity: 1;
+    }
+
+    .insert-btn {
+        padding: 6px 14px;
+        background-color: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #64748b;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin: 0 12px;
+        opacity: 0;
+        transform: scale(0.9);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        white-space: nowrap;
+        cursor: pointer;
+        text-decoration: none;
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    }
+
+    .dark .insert-btn {
+        background-color: #1e293b;
+        border-color: #475569;
+        color: #94a3b8;
+    }
+
+    .insert-row:hover .insert-btn,
+    .materi-card:hover + .insert-row .insert-btn {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .insert-btn:hover {
+        background-color: var(--color-primary, #3b82f6);
+        border-color: var(--color-primary, #3b82f6);
+        color: #ffffff;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
 }
