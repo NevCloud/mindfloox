@@ -16,7 +16,7 @@ class PenggunaSeeder extends Seeder
     {
         $users = [
             [
-                'nama' => 'Budi Peserta',
+                'nama' => 'peserta',
                 'username' => 'peserta',
                 'email' => 'peserta@mindfloox.com',
                 'kata_sandi' => Hash::make('123456'),
@@ -24,7 +24,7 @@ class PenggunaSeeder extends Seeder
                 'aktif' => 'aktif'
             ],
             [
-                'nama' => 'Andi Instruktur',
+                'nama' => 'instruktur',
                 'username' => 'instruktur',
                 'email' => 'instruktur@mindfloox.com',
                 'kata_sandi' => Hash::make('123456'),
@@ -32,7 +32,7 @@ class PenggunaSeeder extends Seeder
                 'aktif' => 'aktif'
             ],
             [
-                'nama' => 'Siti Admin',
+                'nama' => 'admin',
                 'username' => 'admin',
                 'email' => 'admin@mindfloox.com',
                 'kata_sandi' => Hash::make('123456'),
@@ -40,7 +40,7 @@ class PenggunaSeeder extends Seeder
                 'aktif' => 'aktif'
             ],
             [
-                'nama' => 'Sutejo Super Admin',
+                'nama' => 'superadmin',
                 'username' => 'superadmin',
                 'email' => 'superadmin@mindfloox.com',
                 'kata_sandi' => Hash::make('123456'),

@@ -1,0 +1,148 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+use App\Models\Pengguna;
+
+/**
+ * ProfilController
+ *
+ * Mengelola halaman profil untuk SEMUA role (super_admin, admin_microcredential, instruktur, peserta).
+ * Setiap user bisa melihat dan mengedit profil mereka sendiri (F021).
+ */
+class ProfilController extends Controller
+{
+    /**
+     * Menampilkan halaman profil user yang sedang login.
+     * Semua role pakai 1 view yang sama (component <x-profil-page>).
+     */
+    public function show()
+    {
+        $user = Auth::user();
+        return view('profil', compact('user'));
+    }
+
+    /**
+     * AJAX: cek apakah username sudah dipakai user lain.
+     * Dipanggil via fetch() dari form edit profil.
+     *
+     * Response: { available: true/false, message: string }
+     */
+    public function checkUsername(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|max:255',
+        ]);
+
+        $user = Auth::user();
+        $exists = Pengguna::where('username', $request->username)
+            ->where('id', '!=', $user->id)
+            ->exists();
+
+        if ($exists) {
+            return response()->json([
+                'available' => false,
+                'message'   => 'Username sudah digunakan.',
+            ]);
+        }
+
+        return response()->json([
+            'available' => true,
+            'message'   => 'Username tersedia.',
+        ]);
+    }
+
+    /**
+     * Mengupdate data profil user yang sedang login.
+     *
+     * Field yang bisa diedit:
+     * - nama, username, email, nomor_telepon, alamat, tanggal_lahir
+     * - linkedin, instagram, facebook, x (social media)
+     * - foto_profil (upload gambar)
+     * - kata_sandi (opsional, default = username)
+     *
+     * Field yang TIDAK bisa diedit:
+     * - role (dikontrol Super Admin)
+     * - aktif (dikontrol sistem)
+     */
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'nama'     => 'required|string|min:2|max:255',
+            // Username: unique kecuali milik sendiri, tanpa spasi
+            'username' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z0-9._]+$/',
+                Rule::unique('pengguna', 'username')->ignore($user->id),
+            ],
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('pengguna', 'email')->ignore($user->id),
+            ],
+            'nomor_telepon' => 'nullable|string|max:20',
+            'alamat'        => 'nullable|string|max:500',
+            'tanggal_lahir' => 'nullable|date|before:today',
+            'linkedin'      => 'nullable|string|max:255',
+            'instagram'     => 'nullable|string|max:255',
+            'facebook'      => 'nullable|string|max:255',
+            'x'             => 'nullable|string|max:255',
+            'foto_profil'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'kata_sandi'    => 'nullable|string|min:6|confirmed',
+        ], [
+            'nama.required'      => 'Nama lengkap wajib diisi.',
+            'nama.min'           => 'Nama minimal 2 karakter.',
+            'username.required'  => 'Username wajib diisi.',
+            'username.regex'     => 'Username tidak boleh mengandung spasi.',
+            'username.unique'    => 'Username sudah digunakan.',
+            'email.required'     => 'Email wajib diisi.',
+            'email.email'        => 'Format email tidak valid.',
+            'email.unique'       => 'Email ini sudah digunakan user lain.',
+            'tanggal_lahir.date' => 'Format tanggal lahir tidak valid.',
+            'tanggal_lahir.before' => 'Tanggal lahir harus sebelum hari ini.',
+            'foto_profil.image'  => 'File harus berupa gambar.',
+            'foto_profil.max'    => 'Ukuran foto maksimal 2MB.',
+            'kata_sandi.min'     => 'Kata sandi minimal 6 karakter.',
+            'kata_sandi.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
+        ]);
+
+        // Upload foto profil (jika ada)
+        if ($request->hasFile('foto_profil')) {
+            if ($user->foto_profil && Storage::disk('public')->exists($user->foto_profil)) {
+                Storage::disk('public')->delete($user->foto_profil);
+            }
+            $fotoPath = $request->file('foto_profil')->store('foto-profil', 'public');
+            $user->foto_profil = $fotoPath;
+        }
+
+        // Update semua field yang boleh diedit
+        $user->nama          = $request->nama;
+        $user->username      = $request->username;
+        $user->email         = $request->email;
+        $user->nomor_telepon = $request->nomor_telepon;
+        $user->alamat        = $request->alamat;
+        $user->tanggal_lahir = $request->tanggal_lahir;
+        $user->linkedin      = $request->linkedin;
+        $user->instagram     = $request->instagram;
+        $user->facebook      = $request->facebook;
+        $user->x             = $request->x;
+
+        // Update kata sandi: jika diisi → pakai yang baru, jika kosong → default = username
+        if ($request->filled('kata_sandi')) {
+            $user->kata_sandi = Hash::make($request->kata_sandi);
+        }
+
+        $user->save();
+
+        return back()->with('success', 'Profil berhasil diperbarui!');
+    }
+}

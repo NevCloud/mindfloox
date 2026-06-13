@@ -10,22 +10,30 @@
 
     <!-- Profile setiap role -->
     @php
-    $nama = '';
-    $linkProfil = '';
+    $user = Auth::user();
 
-    if (request()->is('super-admin/*')) {
-        $nama = 'Super Admin';
-        $linkProfil = route('superAdmin.profil');
-    } elseif (request()->is('admin/*')) {
-        $nama = 'Admin Microcredential';
-        $linkProfil = route('admin.profil');
-    } elseif (request()->is('instructor/*') || request()->is('instruktur/*')) {
-        $nama = 'Instruktur';
-        $linkProfil = route('instruktur.profil');
-    } elseif (request()->is('peserta/*')) {
-        $nama = 'Sara Abraham';
-        $linkProfil = route('peserta.profil');
-    }
+    // Label role berdasarkan nilai di database
+    $roleLabels = [
+        'super_admin' => 'Super Admin',
+        'admin_microcredential' => 'Admin Microcredential',
+        'instruktur' => 'Instruktur',
+        'peserta' => 'Peserta',
+    ];
+    $nama = $roleLabels[$user->role] ?? ucfirst($user->role);  // Tampilkan label role, bukan nama
+
+    // Link profil sesuai role
+    $linkProfil = match($user->role) {
+        'super_admin' => route('superAdmin.profil'),
+        'admin_microcredential' => route('admin.profil'),
+        'instruktur' => route('instruktur.profil'),
+        'peserta' => route('peserta.profil'),
+        default => '#',
+    };
+
+    // Foto profil: pakai foto asli kalau ada, atau fallback ke avatar API (inisial)
+    $avatarUrl = $user->foto_profil
+        ? asset('storage/' . $user->foto_profil)
+        : 'https://ui-avatars.com/api/?name=' . urlencode($user->nama) . '&background=6C63FF&color=fff&size=64&font-size=0.4';
     @endphp
 
     @if($nama && $linkProfil)
@@ -34,8 +42,11 @@
             <p class="text-sm font-semibold dark:text-white">{{ $nama }}</p>
             <a href="{{ $linkProfil }}" class="text-xs text-primary cursor-pointer hover:underline">Lihat profil</a>
         </div>
-        <img src="https://i.pravatar.cc/150?img=47" alt="Sara"
-            class="w-10 h-10 rounded-full object-cover flex-shrink-0" style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
+        <a href="{{ $linkProfil }}">
+            <img src="{{ $avatarUrl }}" alt="{{ $nama }}"
+                class="w-10 h-10 rounded-full object-cover flex-shrink-0 hover:ring-2 hover:ring-primary/30 transition"
+                style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
+        </a>
     </div>
     @endif
 
@@ -89,6 +100,7 @@
                 </div>
             </template>
         </div>
+    </div>
 
 
     <!-- Daftar Tugas -->

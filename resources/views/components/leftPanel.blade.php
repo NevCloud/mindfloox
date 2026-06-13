@@ -1,5 +1,32 @@
 <!----->
 
+{{-- Data user yang sedang login (dipakai di semua panel) --}}
+@php
+    $user = Auth::user();
+    // Label role berdasarkan nilai di database
+    $roleLabels = [
+        'super_admin' => 'Super Admin',
+        'admin_microcredential' => 'Admin Microcredential',
+        'instruktur' => 'Instruktur',
+        'peserta' => 'Peserta',
+    ];
+    $roleLabel = $roleLabels[$user->role] ?? ucfirst($user->role);
+
+    // Link profil sesuai role
+    $profileLinks = [
+        'super_admin' => route('superAdmin.profil'),
+        'admin_microcredential' => route('admin.profil'),
+        'instruktur' => route('instruktur.profil'),
+        'peserta' => route('peserta.profil'),
+    ];
+    $profileLink = $profileLinks[$user->role] ?? '#';
+
+    // Foto profil: pakai foto asli kalau ada, atau fallback ke avatar API (inisial)
+    $avatarUrl = $user->foto_profil
+        ? asset('storage/' . $user->foto_profil)
+        : 'https://ui-avatars.com/api/?name=' . urlencode($user->nama) . '&background=6C63FF&color=fff&size=64&font-size=0.4';
+@endphp
+
 
 {{-- LEFT PANEL SUPER-ADMIN --}}
 @if (request()->is('super-admin/*'))
@@ -80,15 +107,16 @@
 
         <!-- User info + Logout -->
         <div class="px-3 py-4 border-t border-black/5 dark:border-white/5 space-y-1 flex-shrink-0">
-            <div class="flex items-center gap-3 px-3 py-2">
-                <img src="https://i.pravatar.cc/150?img=47"
+            <!-- Profil: klik untuk ke halaman profil -->
+            <a href="{{ $profileLink }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 transition">
+                <img src="{{ $avatarUrl }}"
                     class="w-8 h-8 rounded-full object-cover ring-2 ring-offset-0 flex-shrink-0"
                     style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
                 <div class="min-w-0">
-                    <p class="text-xs font-semibold dark:text-white truncate">P Abraham</p>
-                    <p class="text-[10px] text-gray-400 truncate">Super Admin</p>
+                    <p class="text-xs font-semibold dark:text-white truncate">{{ $user->nama }}</p>
+                    <p class="text-[10px] text-gray-400 truncate">{{ $roleLabel }}</p>
                 </div>
-            </div>
+            </a>
             <form method="POST" action="{{ route('logout') }}" class="w-full">
                 @csrf
                 <button type="submit"
@@ -163,15 +191,16 @@
 
         <!-- User info + Logout -->
         <div class="px-3 py-4 border-t border-black/5 dark:border-white/5 space-y-1 flex-shrink-0">
-            <div class="flex items-center gap-3 px-3 py-2">
-                <img src="https://i.pravatar.cc/150?img=47"
+            <!-- Profil: klik untuk ke halaman profil -->
+            <a href="{{ $profileLink }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 transition">
+                <img src="{{ $avatarUrl }}"
                     class="w-8 h-8 rounded-full object-cover ring-2 ring-offset-0 flex-shrink-0"
                     style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
                 <div class="min-w-0">
-                    <p class="text-xs font-semibold dark:text-white truncate">P Abraham</p>
-                    <p class="text-[10px] text-gray-400 truncate">Admin Microcredential</p>
+                    <p class="text-xs font-semibold dark:text-white truncate">{{ $user->nama }}</p>
+                    <p class="text-[10px] text-gray-400 truncate">{{ $roleLabel }}</p>
                 </div>
-            </div>
+            </a>
             <form method="POST" action="{{ route('logout') }}" class="w-full">
                 @csrf
                 <button type="submit"
@@ -245,15 +274,16 @@
 
         <!-- User info + Logout -->
         <div class="px-3 py-4 border-t border-black/5 dark:border-white/5 space-y-1 flex-shrink-0">
-            <div class="flex items-center gap-3 px-3 py-2">
-                <img src="https://i.pravatar.cc/150?img=12"
+            <!-- Profil: klik untuk ke halaman profil -->
+            <a href="{{ $profileLink }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 transition">
+                <img src="{{ $avatarUrl }}"
                     class="w-8 h-8 rounded-full object-cover ring-2 ring-offset-0 flex-shrink-0"
                     style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
                 <div class="min-w-0">
-                    <p class="text-xs font-semibold dark:text-white truncate">Sarah Wijaya</p>
-                    <p class="text-[10px] text-gray-400 truncate">Instruktur</p>
+                    <p class="text-xs font-semibold dark:text-white truncate">{{ $user->nama }}</p>
+                    <p class="text-[10px] text-gray-400 truncate">{{ $roleLabel }}</p>
                 </div>
-            </div>
+            </a>
             <form method="POST" action="{{ route('logout') }}" class="w-full">
                 @csrf
                 <button type="submit"
@@ -328,15 +358,16 @@
 
         <!-- User info + Logout -->
         <div class="px-3 py-4 border-t border-black/5 dark:border-white/5 space-y-1 flex-shrink-0">
-            <div class="flex items-center gap-3 px-3 py-2">
-                <img src="https://i.pravatar.cc/150?img=47"
+            <!-- Profil: klik untuk ke halaman profil -->
+            <a href="{{ $profileLink }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 transition">
+                <img src="{{ $avatarUrl }}"
                     class="w-8 h-8 rounded-full object-cover ring-2 ring-offset-0 flex-shrink-0"
                     style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
                 <div class="min-w-0">
-                    <p class="text-xs font-semibold dark:text-white truncate">P Abraham</p>
-                    <p class="text-[10px] text-gray-400 truncate">Peserta Aktif</p>
+                    <p class="text-xs font-semibold dark:text-white truncate">{{ $user->nama }}</p>
+                    <p class="text-[10px] text-gray-400 truncate">{{ $roleLabel }}</p>
                 </div>
-            </div>
+            </a>
             <form method="POST" action="{{ route('logout') }}" class="w-full">
                 @csrf
                 <button type="submit"

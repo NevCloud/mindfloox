@@ -137,24 +137,28 @@
                             </div>
 
                             <div class="p-5 space-y-3">
-                                <template x-for="(user, index) in users.slice(0, 3)" :key="index">
+                                @forelse ($adminInstrukturs as $user)
                                     <div
                                         class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                                         <div class="flex items-center gap-3">
-                                            <img :src="'https://i.pravatar.cc/40?img=' + (index + 3)"
-                                                class="w-10 h-10 rounded-full" alt="User">
+                                            <img src="{{ $user->foto_profil ? asset('storage/' . $user->foto_profil) : 'https://i.pravatar.cc/40?u=' . $user->id }}"
+                                                class="w-10 h-10 rounded-full object-cover" alt="User">
                                             <div>
-                                                <p class="font-medium text-gray-800 dark:text-white" x-text="user.name">
-                                                </p>
-                                                <p class="text-xs text-gray-500" x-text="user.role"></p>
+                                                <p class="font-medium text-gray-800 dark:text-white">{{ $user->nama }}</p>
+                                                <p class="text-xs text-gray-500">{{ $user->role === 'admin_microcredential' ? 'Admin Microcredential' : 'Instruktur' }}</p>
                                             </div>
                                         </div>
                                         <div class="flex items-center">
-                                            <span x-show="user.status === 'Aktif'" class="px-2 py-0.5 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-[10px] font-medium rounded">Aktif</span>
-                                            <span x-show="user.status === 'Tidak Aktif'" class="px-2 py-0.5 bg-red-100 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-[10px] font-medium rounded">Tidak Aktif</span>
+                                            @if ($user->aktif === 'aktif')
+                                                <span class="px-2 py-0.5 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-[10px] font-medium rounded">Aktif</span>
+                                            @else
+                                                <span class="px-2 py-0.5 bg-red-100 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-[10px] font-medium rounded">Tidak Aktif</span>
+                                            @endif
                                         </div>
                                     </div>
-                                </template>
+                                @empty
+                                    <p class="text-xs text-gray-400 text-center py-3">Belum ada data admin atau instruktur</p>
+                                @endforelse
                             </div>
                         </div>
 

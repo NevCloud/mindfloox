@@ -6,13 +6,16 @@ use App\Http\Controllers\homeController;
 use App\Http\Controllers\programController;
 use App\Http\Controllers\instrukturController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SuperAdmin\JenisMicrocredentialController;
 use App\Http\Controllers\SuperAdmin\SemesterController;
 use App\Http\Controllers\SuperAdmin\ProgramMicrocredentialController;
+use App\Http\Controllers\SuperAdmin\AdminInstrukturController;
 use App\Http\Controllers\tugasController;
 use App\Models\JenisMicrocredential;
 use App\Models\Semester;
 use App\Models\ProgramMicrocredential;
+use App\Models\Pengguna;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,13 +37,11 @@ Route::get('/login', function () {
 
     // 2. TAMPILKAN FORM
     // Jika belum login sama sekali, barulah kita tampilkan halaman form login.
-    return view('login');
-})->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/register', function () {
-    return view('register');
-})->name('register.process');
+    return view('login');})->name('login');
+
+    Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/register', function () { return view('register');})->name('register.process');
 
 /*
 |--------------------------------------------------------------------------
@@ -72,7 +73,9 @@ Route::prefix('instruktur')->name('instruktur.')->middleware('check.session:inst
 
 
     Route::get('/dasbor', fn() => view('instruktur.dasbor'))->name('dasbor');
-    Route::get('/profil', fn() => view('instruktur.profil'))->name('profil');
+    Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
+    Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+    Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
 
     Route::get('/kursus', fn() => view('instruktur.kursus'))->name('kursus');
     Route::get('/detail-kursus', fn() => view('instruktur.detail-kursus'))->name('detail-kursus');
@@ -108,7 +111,9 @@ Route::prefix('peserta')->name('peserta.')->middleware('check.session:peserta')-
 
     Route::get('/kursus', fn() => view('peserta.kursus'))->name('kursus');
     Route::get('/detail-kursus', fn() => view('peserta.detail-kursus'))->name('detail-kursus');
-    Route::get('/profil', fn() => view('peserta.profil'))->name('profil');
+    Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
+    Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+    Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
 
     Route::get('/tugas', [tugasController::class, 'tugas'])->name('tugas');
     Route::get('/tugas-detail', fn() => view('peserta.tugas-detail'))->name('tugas-detail');
@@ -130,14 +135,20 @@ Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session:sup
         $jenisMicrocredentials = JenisMicrocredential::orderBy('dibuat_pada', 'desc')->limit(2)->get();
         $semesters = Semester::orderBy('dibuat_pada', 'desc')->limit(2)->get();
         $programs = ProgramMicrocredential::with(['jenisMicrocredential', 'semester'])->orderBy('dibuat_pada', 'desc')->limit(2)->get();
-        return view('superAdmin.dasbor', compact('jenisMicrocredentials', 'semesters', 'programs'));
+        $adminInstrukturs = Pengguna::whereIn('role', ['admin_microcredential', 'instruktur'])->orderBy('dibuat_pada', 'desc')->limit(3)->get();
+        return view('superAdmin.dasbor', compact('jenisMicrocredentials', 'semesters', 'programs', 'adminInstrukturs'));
     })->name('dasbor');
-    Route::get('/profil', fn() => view('superAdmin.profil'))->name('profil');
+    Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
+    Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+    Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
     Route::get('/program', fn() => view('superAdmin.program'))->name('program');
     Route::get('/program/edit', fn() => view('superAdmin.programEdit'))->name('program.edit');
 
-    // New pages added from remote
-    Route::get('/admin-instruktur', fn() => view('superAdmin.adminInstruktur'))->name('adminInstruktur');
+    // Admin Microcredential & Instruktur CRUD (F004 + F005)
+    Route::get('/admin-instruktur', [AdminInstrukturController::class, 'index'])->name('adminInstruktur');
+    Route::post('/admin-instruktur', [AdminInstrukturController::class, 'store'])->name('adminInstruktur.store');
+    Route::put('/admin-instruktur/{id}', [AdminInstrukturController::class, 'update'])->name('adminInstruktur.update');
+    Route::delete('/admin-instruktur/{id}', [AdminInstrukturController::class, 'destroy'])->name('adminInstruktur.destroy');
 
     // Jenis Microcredential CRUD
     Route::get('/jenis-microcredential', [JenisMicrocredentialController::class, 'index'])->name('jenisMicrocredential');
@@ -167,7 +178,9 @@ Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session:sup
 */
 Route::prefix('admin')->name('admin.')->middleware('check.session:admin_microcredential')->group(function () {
     Route::get('/dasbor', fn() => view('admin.dasbor'))->name('dasbor');
-    Route::get('/profil', fn() => view('admin.profil'))->name('profil');
+    Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
+    Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+    Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
 
     Route::get('/program', fn() => view('admin.programIndex', ['programs' => []]))->name('program.index');
     Route::get('/program/create', fn() => view('admin.programCreate'))->name('program.create');

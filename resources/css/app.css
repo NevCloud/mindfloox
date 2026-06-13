@@ -99,32 +99,57 @@
         @apply border-red-500 focus:ring-red-500;
     }
 
-    /* scrollbar */
+    /* =========================================
+       CUSTOM SCROLLBAR (semua browser)
+       ========================================= */
+
+    /* Firefox: scrollbar tipis + warna subtle */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(150, 150, 150, 0.3) transparent;
+    }
+
+    .dark * {
+        scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    }
+
+    /* Chrome/Edge/Safari: lebar & tinggi scrollbar */
     ::-webkit-scrollbar {
-        width: 6px;
-        @apply border-l border-[#e8e8e8];
+        width: 5px;   /* vertical scrollbar */
+        height: 5px;  /* horizontal scrollbar */
     }
 
-    .dark ::-webkit-scrollbar {
-        @apply border-gray-800;
+    /* Track (latar belakang scrollbar) - transparan biar bersih */
+    ::-webkit-scrollbar-track {
+        background: transparent;
     }
 
+    /* Thumb (bagian yang bisa di-drag) */
     ::-webkit-scrollbar-thumb {
-        background: rgba(150, 150, 150, 0.4);
+        background: rgba(150, 150, 150, 0.3);
         border-radius: 9999px;
+        border: none;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-        background: rgba(120, 120, 120, 0.6);
+        background: rgba(120, 120, 120, 0.5);
     }
 
+    /* Dark mode */
     .dark ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.2);
-        @apply border-l border-gray-800;
+        background: rgba(255, 255, 255, 0.15);
+        border: none;
     }
 
     .dark ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Hilangkan tombol panah di ujung scrollbar (kotak samar) */
+    ::-webkit-scrollbar-button {
+        display: none;
+        width: 0;
+        height: 0;
     }
 
     /* =========================================
