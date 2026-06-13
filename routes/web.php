@@ -141,9 +141,6 @@ Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session:sup
     Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
     Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
-    Route::get('/program', fn() => view('superAdmin.program'))->name('program');
-    Route::get('/program/edit', fn() => view('superAdmin.programEdit'))->name('program.edit');
-
     // Admin Microcredential & Instruktur CRUD (F004 + F005)
     Route::get('/admin-instruktur', [AdminInstrukturController::class, 'index'])->name('adminInstruktur');
     Route::post('/admin-instruktur', [AdminInstrukturController::class, 'store'])->name('adminInstruktur.store');
@@ -155,8 +152,6 @@ Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session:sup
     Route::post('/jenis-microcredential', [JenisMicrocredentialController::class, 'store'])->name('jenisMicrocredential.store');
     Route::put('/jenis-microcredential/{id}', [JenisMicrocredentialController::class, 'update'])->name('jenisMicrocredential.update');
     Route::delete('/jenis-microcredential/{id}', [JenisMicrocredentialController::class, 'destroy'])->name('jenisMicrocredential.destroy');
-
-    Route::get('/periode-akademik', fn() => view('superAdmin.periodeAkademik'))->name('periodeAkademik');
 
     // Program Microcredential CRUD
     Route::get('/program-microcredential', [ProgramMicrocredentialController::class, 'index'])->name('programMicrocredential');
