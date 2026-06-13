@@ -91,8 +91,8 @@
                     </div>
 
                     <!-- Table -->
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left whitespace-nowrap">
+                    <div class="overflow-auto max-h-[65vh]">
+                        <table class="w-full text-sm text-left">
                             <thead>
                                 <tr class="border-b border-gray-200 dark:border-gray-800">
                                     <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">No</th>
@@ -112,14 +112,14 @@
                                         <td class="py-3 px-4">
                                             <div class="flex items-center gap-3">
                                                 <img src="{{ $admin->foto_profil ? asset('storage/' . $admin->foto_profil) : 'https://i.pravatar.cc/40?u=' . $admin->id }}"
-                                                    class="w-8 h-8 rounded-full object-cover" alt="">
-                                                <span class="font-medium">{{ $admin->nama }}</span>
+                                                    class="w-8 h-8 rounded-full object-cover flex-shrink-0" alt="">
+                                                <span class="font-medium break-words">{{ $admin->nama }}</span>
                                             </div>
                                         </td>
                                         <td class="py-3 px-4 text-gray-500">
-                                            <code class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs text-gray-700 dark:text-white">{{ $admin->username }}</code>
+                                            <code class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs text-gray-700 dark:text-white break-words">{{ $admin->username }}</code>
                                         </td>
-                                        <td class="py-3 px-4 text-gray-500">{{ $admin->email }}</td>
+                                        <td class="py-3 px-4 text-gray-500 break-words">{{ $admin->email }}</td>
                                         <td class="py-3 px-4">
                                             @if ($admin->role === 'admin_microcredential')
                                                 <span

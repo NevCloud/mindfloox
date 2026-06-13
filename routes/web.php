@@ -132,15 +132,16 @@ Route::prefix('peserta')->name('peserta.')->middleware('check.session:peserta')-
 */
 Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session:super_admin')->group(function () {
     Route::get('/dasbor', function () {
-        $jenisMicrocredentials = JenisMicrocredential::orderBy('dibuat_pada', 'desc')->limit(2)->get();
-        $semesters = Semester::orderBy('dibuat_pada', 'desc')->limit(2)->get();
-        $programs = ProgramMicrocredential::with(['jenisMicrocredential', 'semester'])->orderBy('dibuat_pada', 'desc')->limit(2)->get();
-        $adminInstrukturs = Pengguna::whereIn('role', ['admin_microcredential', 'instruktur'])->orderBy('dibuat_pada', 'desc')->limit(3)->get();
+        $jenisMicrocredentials = JenisMicrocredential::orderBy('dibuat_pada', 'desc')->get();
+        $semesters = Semester::orderBy('dibuat_pada', 'desc')->get();
+        $programs = ProgramMicrocredential::with(['jenisMicrocredential', 'semester'])->orderBy('dibuat_pada', 'desc')->get();
+        $adminInstrukturs = Pengguna::whereIn('role', ['admin_microcredential', 'instruktur'])->orderBy('dibuat_pada', 'desc')->get();
         return view('superAdmin.dasbor', compact('jenisMicrocredentials', 'semesters', 'programs', 'adminInstrukturs'));
     })->name('dasbor');
     Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
     Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
+    
     // Admin Microcredential & Instruktur CRUD (F004 + F005)
     Route::get('/admin-instruktur', [AdminInstrukturController::class, 'index'])->name('adminInstruktur');
     Route::post('/admin-instruktur', [AdminInstrukturController::class, 'store'])->name('adminInstruktur.store');

@@ -82,9 +82,9 @@
                                 </div>
                             </div>
 
-                            <div class="p-5">
+                            <div class="p-5 max-h-[250px] overflow-y-auto">
                                 <table class="w-full text-xs">
-                                    <thead class="text-gray-500 border-b border-gray-200 dark:border-gray-800">
+                                    <thead class="text-gray-500 border-b border-gray-200 dark:border-gray-800 sticky top-0 bg-white dark:bg-[#1A1A2E]">
                                         <tr class="text-left">
                                             <th class="pb-3 font-medium">Jenis</th>
                                             <th class="pb-3 font-medium">Deskripsi</th>
@@ -136,15 +136,15 @@
                                 </div>
                             </div>
 
-                            <div class="p-5 space-y-3">
+                            <div class="p-5 space-y-3 max-h-[250px] overflow-y-auto">
                                 @forelse ($adminInstrukturs as $user)
                                     <div
                                         class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-                                        <div class="flex items-center gap-3">
+                                        <div class="flex items-center gap-3 min-w-0">
                                             <img src="{{ $user->foto_profil ? asset('storage/' . $user->foto_profil) : 'https://i.pravatar.cc/40?u=' . $user->id }}"
-                                                class="w-10 h-10 rounded-full object-cover" alt="User">
-                                            <div>
-                                                <p class="font-medium text-gray-800 dark:text-white">{{ $user->nama }}</p>
+                                                class="w-10 h-10 rounded-full object-cover flex-shrink-0" alt="User">
+                                            <div class="min-w-0">
+                                                <p class="font-medium text-gray-800 dark:text-white break-words">{{ $user->nama }}</p>
                                                 <p class="text-xs text-gray-500">{{ $user->role === 'admin_microcredential' ? 'Admin Microcredential' : 'Instruktur' }}</p>
                                             </div>
                                         </div>
@@ -197,7 +197,7 @@
                                 </div>
                             </div>
 
-                            <div class="p-5 space-y-3">
+                            <div class="p-5 space-y-3 max-h-[250px] overflow-y-auto">
                                 @forelse ($programs as $prog)
                                     <div
                                         class="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
@@ -247,7 +247,7 @@
                                 </a>
                             </div>
 
-                            <div class="p-5 space-y-3">
+                            <div class="p-5 space-y-3 max-h-[250px] overflow-y-auto">
                                 @forelse ($semesters as $sem)
                                     <div
                                         class="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
