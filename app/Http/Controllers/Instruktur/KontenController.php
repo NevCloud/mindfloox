@@ -76,10 +76,11 @@ class KontenController extends Controller
             'judul'     => 'required|string|max:255',
             'minggu_ke' => 'required|integer|min:1|max:52',
             'url_file'  => 'nullable|url|max:500',
-            'file'      => 'nullable|file|max:51200',
+            'file'      => 'nullable|file|mimes:pdf,docx,pptx,zip|max:51200',
         ], [
             'judul.required'     => 'Judul materi wajib diisi.',
             'minggu_ke.required' => 'Minggu wajib dipilih.',
+            'file.mimes'         => 'File hanya boleh berformat PDF, DOCX, PPTX, atau ZIP.',
         ]);
 
         $minggu  = $this->getOrCreateMinggu((int) $request->minggu_ke);
@@ -247,7 +248,9 @@ class KontenController extends Controller
                     'judul'     => 'required|string|max:255',
                     'minggu_ke' => 'required|integer|min:1|max:52',
                     'url_file'  => 'nullable|url|max:500',
-                    'file'      => 'nullable|file|max:51200',
+                    'file'      => 'nullable|file|mimes:pdf,docx,pptx,zip|max:51200',
+                ], [
+                    'file.mimes' => 'File hanya boleh berformat PDF, DOCX, PPTX, atau ZIP.',
                 ]);
 
                 $materi = MateriPembelajaran::where('id_kursus', $kursus->id)->findOrFail($id);

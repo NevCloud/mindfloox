@@ -165,7 +165,7 @@
                             </div>
                         @else
                             {{-- Show quiz form --}}
-                            <form method="POST" action="{{ route('peserta.kuis.submit', $kuis->id) }}"
+                            <form id="quiz-form" method="POST" action="{{ route('peserta.kuis.submit', $kuis->id) }}"
                                 class="card translate-none rounded-lg p-6 space-y-4">
                                 @csrf
 
@@ -175,10 +175,17 @@
                                         {{ $kuis->judul }}
                                     </h2>
                                     @if($kuis->batas_waktu_menit)
-                                        <div class="mb-3">
+                                        <div class="mb-3 flex items-center gap-2 flex-wrap">
                                             <span class="inline-block px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-semibold rounded-full">
                                                 Durasi: {{ $kuis->batas_waktu_menit }} menit
                                             </span>
+                                            <div id="quiz-timer"
+                                                class="flex items-center gap-1.5 px-3 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-full transition-colors duration-300">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                                                </svg>
+                                                <span id="timer-display">--:--</span>
+                                            </div>
                                         </div>
                                     @endif
                                 </div>
@@ -242,6 +249,89 @@
 
     </div><!-- end outer flex -->
 
+@if(!$sesiSelesai && $kuis->batas_waktu_menit)
+<script>
+(function () {
+    const DURATION_SEC = {{ (int) $kuis->batas_waktu_menit * 60 }};
+    const STORAGE_KEY  = 'kuis_timer_{{ $kuis->id }}_{{ $pendaftaran->id }}';
+
+    const timerEl   = document.getElementById('quiz-timer');
+    const displayEl = document.getElementById('timer-display');
+    const form      = document.getElementById('quiz-form');
+
+    let startedAt = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+    if (!startedAt || isNaN(startedAt)) {
+        startedAt = Math.floor(Date.now() / 1000);
+        localStorage.setItem(STORAGE_KEY, startedAt);
+    }
+
+    let submitted = false;
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function formatTime(sec) {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return pad(m) + ':' + pad(s);
+    }
+
+    function applyWarningStyle(remaining) {
+        if (remaining <= 60) {
+            timerEl.classList.remove('bg-blue-100', 'dark:bg-blue-900/40', 'text-blue-700', 'dark:text-blue-300',
+                                     'bg-yellow-100', 'dark:bg-yellow-900/40', 'text-yellow-700', 'dark:text-yellow-300');
+            timerEl.classList.add('bg-red-100', 'dark:bg-red-900/40', 'text-red-700', 'dark:text-red-300');
+        } else if (remaining <= 300) {
+            timerEl.classList.remove('bg-blue-100', 'dark:bg-blue-900/40', 'text-blue-700', 'dark:text-blue-300');
+            timerEl.classList.add('bg-yellow-100', 'dark:bg-yellow-900/40', 'text-yellow-700', 'dark:text-yellow-300');
+        }
+    }
+
+    function autoSubmit() {
+        if (submitted) return;
+        submitted = true;
+        localStorage.removeItem(STORAGE_KEY);
+
+        form.style.pointerEvents = 'none';
+
+        const overlay = document.createElement('div');
+        overlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/60';
+        overlay.innerHTML = `
+            <div class="bg-white dark:bg-[#1A1A2E] rounded-2xl p-8 text-center shadow-2xl max-w-sm mx-4">
+                <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <p class="text-lg font-bold text-gray-900 dark:text-white mb-1">Waktu Habis!</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Jawaban kamu sedang dikirimkan...</p>
+            </div>`;
+        document.body.appendChild(overlay);
+        setTimeout(function () { form.submit(); }, 1200);
+    }
+
+    function tick() {
+        const elapsed   = Math.floor(Date.now() / 1000) - startedAt;
+        const remaining = Math.max(0, DURATION_SEC - elapsed);
+
+        displayEl.textContent = formatTime(remaining);
+        applyWarningStyle(remaining);
+
+        if (remaining <= 0) {
+            displayEl.textContent = '00:00';
+            autoSubmit();
+            return;
+        }
+
+        setTimeout(tick, 1000);
+    }
+
+    tick();
+
+    form.addEventListener('submit', function () {
+        if (!submitted) localStorage.removeItem(STORAGE_KEY);
+    });
+})();
+</script>
+@endif
 </body>
 
 </html>

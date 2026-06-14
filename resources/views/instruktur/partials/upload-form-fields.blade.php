@@ -73,7 +73,9 @@
     {{-- ===== MATERI: Link / File ===== --}}
     <div x-show="tipeMateri === 'video' || tipeMateri === 'tautan'" x-transition>
         <label class="label dark:text-white">URL / Link <span x-show="tipeMateri === 'tautan'" class="text-red-500">*</span></label>
-        <input type="url" name="url_file" x-model="linkVideo" placeholder="https://..." class="input">
+        <input type="url" name="url_file" x-model="linkVideo" placeholder="https://..."
+            :disabled="tipeMateri !== 'video' && tipeMateri !== 'tautan'"
+            class="input">
         <p class="text-xs text-gray-400 mt-1">YouTube, Vimeo, atau tautan eksternal lainnya.</p>
     </div>
 
@@ -101,7 +103,7 @@
                     </div>
                 </div>
             </template>
-            <input type="file" name="file" class="hidden" @change="handleFile($event)">
+            <input type="file" name="file" class="hidden" accept=".pdf,.docx,.pptx,.zip" @change="handleFile($event)">
         </label>
         @if($tipe === 'materi' && $item && $item->url_file)
             <p class="text-xs text-gray-400 mt-2">File saat ini: <span class="text-primary">{{ basename($item->url_file) }}</span> (kosongkan untuk mempertahankan)</p>
