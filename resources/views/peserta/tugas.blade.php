@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" class="light">
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Peserta</title>
+    <title>Tugas Saya - Peserta</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
-                '(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
@@ -15,170 +13,125 @@
     </script>
 </head>
 
-<body x-data="{
-    dark: localStorage.getItem('theme') === 'dark',
-    toggleDark() {
-        this.dark = !this.dark;
-        localStorage.setItem('theme', this.dark ? 'dark' : 'light');
-        document.documentElement.classList.toggle('dark', this.dark);
-    }
-}" x-init="document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray-50 dark:bg-[#0F0F1A]">
-
-    <!-- Alpine.js -->
+<body x-data="{ dark: localStorage.getItem('theme') === 'dark', toggleDark() { this.dark = !this.dark; localStorage.setItem('theme', this.dark ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', this.dark); } }"
+    x-init="document.documentElement.classList.toggle('dark', dark)"
+    class="relative bg-gray-50 dark:bg-[#0F0F1A]">
 
     <div class="flex h-screen overflow-hidden">
-
-        <!-- ===== LEFT PANEL ===== -->
         <x-leftPanel />
 
-        <!-- ===== MAIN CONTENT ===== -->
         <div class="flex flex-1 min-w-0 overflow-hidden">
-
             <main class="flex-1 min-w-0 flex flex-col overflow-hidden">
+                <x-topNav />
 
-                <!-- Topbar -->
-                <div
-                    class="flex items-center gap-3 px-4 py-3 bg-gray-100 dark:bg-[#1A1A2E] border-b border-black/5 dark:border-white/5 flex-shrink-0 transition-all duration-300">
-                    <!-- Mobile left toggle -->
-                    <button onclick="document.getElementById('leftPanel').classList.toggle('-translate-x-full')"
-                        class="md:hidden w-9 h-9 flex items-center justify-center rounded-lg bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 text-gray-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <line x1="3" y1="6" x2="21" y2="6" />
-                            <line x1="3" y1="12" x2="21" y2="12" />
-                            <line x1="3" y1="18" x2="21" y2="18" />
-                        </svg>
-                    </button>
-
-                    <!-- Search -->
-                    <div
-                        class="flex-1 flex items-center gap-2 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 transition-all duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 flex-shrink-0"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8" />
-                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                        </svg>
-                        <input type="text" placeholder="Cari course, tugas, materi..."
-                            class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500">
-                    </div>
-
-
-                    <!-- Dark mode toggle -->
-                    <button @click="toggleDark()"
-                        class="w-14 h-8 flex items-center rounded-full p-1 transition-all duration-300"
-                        :class="dark ? 'bg-gray-700' : 'bg-gray-300'">
-
-                        <div :class="dark ? 'translate-x-6' : 'translate-x-0'"
-                            class="w-6 h-6 bg-white dark:bg-[#1A1A2E] rounded-full shadow-md transform transition-all duration-300 flex items-center justify-center">
-
-                            {{-- Moon Icon --}}
-                            <svg x-show="!dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-4 text-gray-700">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
-                            </svg>
-
-                            {{-- Sun Icon --}}
-                            <svg x-show="dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-4 text-yellow-300">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                            </svg>
-                        </div>
-                    </button>
-
-
-                    <!-- Mobile right toggle -->
-                    <button onclick="document.getElementById('rightPanel').classList.toggle('translate-x-full')"
-                        class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 text-gray-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="4" width="18" height="18" rx="2" />
-                            <line x1="16" y1="2" x2="16" y2="6" />
-                            <line x1="8" y1="2" x2="8" y2="6" />
-                            <line x1="3" y1="10" x2="21" y2="10" />
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Scrollable content -->
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">
 
-                    <!-- Welcome Banner -->
-                    <x-banner />
-
-                    <!-- Deadline Mendekati -->
                     <section>
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-base font-semibold dark:text-white">Deadline Mendekati</h3>
+                            <h3 class="text-base font-semibold dark:text-white">Tugas Saya</h3>
+                            <span class="text-xs text-gray-400">{{ $tugasList->count() }} tugas</span>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
-                            <!-- Tugas 1 — Overdue -->
-                            @foreach ($tugas as $task)
-                                <div onclick="window.location='{{ $task['type'] === 'kuis' ? 'kuis-detail' : 'tugas-detail' }}'"
-                                    class="card p-4 {{ $task['ui']['border'] }}">
+                        @if($tugasList->isEmpty())
+                            <div class="text-center py-16 text-gray-400 dark:text-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto mb-2 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                <p class="text-sm">Belum ada tugas.</p>
+                            </div>
+                        @else
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                @foreach($tugasList as $t)
+                                    @php
+                                        if ($t['nilai'] !== null) {
+                                            $uiBorder = 'border-green-200 dark:border-green-800/50';
+                                            $uiBadge  = 'bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-300';
+                                            $uiDot    = 'bg-green-500';
+                                            $label    = 'Dinilai';
+                                            $uiText   = 'text-green-500 dark:text-green-400';
+                                            $uiButton = 'bg-primary hover:opacity-90 text-white';
+                                            $btnLabel = 'Lihat Nilai';
+                                        } elseif ($t['dikumpulkan']) {
+                                            $uiBorder = 'border-blue-200 dark:border-blue-800/50';
+                                            $uiBadge  = 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300';
+                                            $uiDot    = 'bg-blue-500';
+                                            $label    = 'Dikumpulkan';
+                                            $uiText   = 'text-blue-500 dark:text-blue-400';
+                                            $uiButton = 'bg-gray-400 hover:bg-gray-500 text-white';
+                                            $btnLabel = 'Kumpulkan Ulang';
+                                        } elseif ($t['batas_waktu'] && $t['batas_waktu']->isPast()) {
+                                            $uiBorder = 'border-red-200 dark:border-red-800/50';
+                                            $uiBadge  = 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-300';
+                                            $uiDot    = 'bg-red-500';
+                                            $label    = 'Terlambat';
+                                            $uiText   = 'text-red-500 dark:text-red-400';
+                                            $uiButton = 'bg-red-500 hover:bg-red-600 text-white';
+                                            $btnLabel = 'Kumpulkan';
+                                        } elseif ($t['batas_waktu'] && now()->diffInDays($t['batas_waktu'], false) <= 3) {
+                                            $uiBorder = 'border-yellow-200 dark:border-yellow-800/50';
+                                            $uiBadge  = 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600 dark:text-yellow-300';
+                                            $uiDot    = 'bg-yellow-500';
+                                            $label    = 'Segera';
+                                            $uiText   = 'text-yellow-500 dark:text-yellow-400';
+                                            $uiButton = 'bg-yellow-500 hover:bg-yellow-600 text-white';
+                                            $btnLabel = 'Kumpulkan';
+                                        } else {
+                                            $uiBorder = 'border-gray-200 dark:border-gray-700';
+                                            $uiBadge  = 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400';
+                                            $uiDot    = 'bg-gray-400';
+                                            $label    = 'Belum';
+                                            $uiText   = 'text-gray-400';
+                                            $uiButton = 'bg-purple-500 hover:bg-purple-600 text-white';
+                                            $btnLabel = 'Kumpulkan';
+                                        }
+                                    @endphp
 
-                                    <div class="flex items-start justify-between mb-2">
+                                    <div onclick="window.location='{{ route('peserta.tugas.show', $t['id']) }}'"
+                                        class="card p-4 cursor-pointer {{ $uiBorder }}">
 
-                                        <span
-                                            class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full {{ $task['ui']['badge'] }}">
-                                            <span
-                                                class="w-1.5 h-1.5 rounded-full animate-pulse inline-block {{ $task['ui']['dot'] }}"></span>
-                                            {{ $task['label'] }}
-                                        </span>
-
-                                        <span class="text-[10px] text-gray-400">{{ $task['time'] }}</span>
-                                    </div>
-
-                                    <h4 class="text-sm font-semibold dark:text-white mb-1 leading-tight">
-                                        {{ $task['title'] }}
-                                    </h4>
-
-                                    <p class="text-[11px] text-gray-400 mb-3">
-                                        {{ $task['course'] }}
-                                    </p>
-
-                                    <div class="flex items-center justify-between">
-
-                                        <div
-                                            class="flex items-center gap-1.5 text-[11px] font-medium {{ $task['ui']['text'] }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                stroke-width="2">
-                                                <circle cx="12" cy="12" r="10" />
-                                                <polyline points="12 6 12 12 16 14" />
-                                            </svg>
-                                            {{ $task['deadline'] }}
+                                        <div class="flex items-start justify-between mb-2">
+                                            <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full {{ $uiBadge }}">
+                                                <span class="w-1.5 h-1.5 rounded-full animate-pulse inline-block {{ $uiDot }}"></span>
+                                                {{ $label }}
+                                            </span>
+                                            <span class="text-[10px] text-gray-400">
+                                                {{ $t['batas_waktu'] ? $t['batas_waktu']->diffForHumans() : '—' }}
+                                            </span>
                                         </div>
 
-                                        <a href="{{ $task['type'] === 'kuis' ? 'kuis-mulai' : 'tugas-kumpul' }}"
-                                            class="inline-flex items-center justify-center gap-1.5 text-xs px-3 py-1 rounded-lg transition {{ $task['ui']['button'] }}">
-                                            @if($task['type'] === 'kuis' || $task['status'] === 'track')
-                                                <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                            @else
-                                                <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                                            @endif
-                                            <span>{{ $task['type'] === 'kuis' ? 'Mulai' : ($task['status'] === 'track' ? 'Kerjakan' : 'Kumpulkan') }}</span>
-                                        </a>
+                                        <h4 class="text-sm font-semibold dark:text-white mb-1 leading-tight">{{ $t['judul'] }}</h4>
+                                        <p class="text-[11px] text-gray-400 mb-3">{{ $t['kursus'] }}</p>
+
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-1.5 text-[11px] font-medium {{ $uiText }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <circle cx="12" cy="12" r="10" />
+                                                    <polyline points="12 6 12 12 16 14" />
+                                                </svg>
+                                                {{ $t['batas_waktu'] ? $t['batas_waktu']->format('d M Y') : 'Tanpa deadline' }}
+                                            </div>
+
+                                            <a href="{{ route('peserta.tugas.show', $t['id']) }}"
+                                                onclick="event.stopPropagation()"
+                                                class="inline-flex items-center justify-center gap-1.5 text-xs px-3 py-1 rounded-lg transition {{ $uiButton }}">
+                                                <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                                </svg>
+                                                <span>{{ $btnLabel }}</span>
+                                            </a>
+                                        </div>
 
                                     </div>
-                                </div>
-                            @endforeach
-
-                        </div>
+                                @endforeach
+                            </div>
+                        @endif
                     </section>
 
-                </div><!-- end scrollable -->
+                </div>
             </main>
 
-            <!-- ===== RIGHT PANEL ===== -->
             <x-rightPanel />
-
-        </div><!-- end inner flex -->
-
-    </div><!-- end outer flex -->
-
+        </div>
+    </div>
 </body>
-
 </html>

@@ -12,6 +12,12 @@ use App\Http\Controllers\SuperAdmin\SemesterController;
 use App\Http\Controllers\SuperAdmin\ProgramMicrocredentialController;
 use App\Http\Controllers\SuperAdmin\AdminInstrukturController;
 use App\Http\Controllers\tugasController;
+use App\Http\Controllers\Instruktur\KursusController as InstrukturKursusController;
+use App\Http\Controllers\Instruktur\KontenController;
+use App\Http\Controllers\Instruktur\EvaluasiController;
+use App\Http\Controllers\Peserta\KursusController as PesertaKursusController;
+use App\Http\Controllers\Peserta\KuisController as PesertaKuisController;
+use App\Http\Controllers\Peserta\TugasController as PesertaTugasController;
 use App\Models\JenisMicrocredential;
 use App\Models\Semester;
 use App\Models\ProgramMicrocredential;
@@ -71,33 +77,32 @@ Route::prefix('program')->name('program.')->group(function () {
 
 Route::prefix('instruktur')->name('instruktur.')->middleware('check.session:instruktur')->group(function () {
 
-
     Route::get('/dasbor', fn() => view('instruktur.dasbor'))->name('dasbor');
     Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
     Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
 
-    Route::get('/kursus', fn() => view('instruktur.kursus'))->name('kursus');
-    Route::get('/detail-kursus', fn() => view('instruktur.detail-kursus'))->name('detail-kursus');
+    // Kursus
+    Route::get('/kursus', [InstrukturKursusController::class, 'index'])->name('kursus.index');
+    Route::get('/kursus/{kursus}', [InstrukturKursusController::class, 'show'])->name('kursus.show');
 
-    Route::get('/tugas', function () {
-        $tugas = config('tugas');
-        return view('instruktur.tugas', compact('tugas'));
-    })->name('tugas');
+    // Konten CRUD (materi, tugas, kuis)
+    Route::get('/kursus/{kursus}/konten/create', [KontenController::class, 'create'])->name('kursus.konten.create');
+    Route::post('/kursus/{kursus}/konten', [KontenController::class, 'store'])->name('kursus.konten.store');
+    Route::get('/kursus/{kursus}/konten/{tipe}/{id}/edit', [KontenController::class, 'edit'])->name('kursus.konten.edit');
+    Route::put('/kursus/{kursus}/konten/{tipe}/{id}', [KontenController::class, 'update'])->name('kursus.konten.update');
+    Route::delete('/kursus/{kursus}/konten/{tipe}/{id}', [KontenController::class, 'destroy'])->name('kursus.konten.destroy');
 
-    Route::get('/tugas-detail', fn() => view('instruktur.tugas-detail'))->name('tugas-detail');
-    Route::get('/tugas-kumpul', fn() => view('instruktur.tugas-kumpul'))->name('tugas-kumpul');
+    // Toggle visibility minggu
+    Route::patch('/kursus/{kursus}/minggu/{minggu}/toggle', [KontenController::class, 'toggleMinggu'])->name('kursus.minggu.toggle');
 
-    Route::get('/kuis-mulai', function () {
-        $kuis = config('kuis');
-        return view('instruktur.kuis-mulai', compact('kuis'));
-    })->name('kuis-mulai');
-
-    Route::get('/kuis-detail', function () {
-        $kuis = config('kuis');
-        return view('instruktur.kuis-detail', compact('kuis'));
-    })->name('kuis-detail');
-    Route::get('/upload-materi', fn() => view('instruktur.upload-materi'))->name('upload-materi');
+    // Evaluasi (F014)
+    Route::get('/tugas', [EvaluasiController::class, 'tugasList'])->name('tugas');
+    Route::get('/evaluasi/tugas/{jawabanTugas}', [EvaluasiController::class, 'tugasDetail'])->name('evaluasi.tugas.detail');
+    Route::post('/evaluasi/tugas/{jawabanTugas}/nilai', [EvaluasiController::class, 'storeNilaiTugas'])->name('evaluasi.tugas.nilai');
+    Route::get('/evaluasi/kuis', [EvaluasiController::class, 'kuisList'])->name('evaluasi.kuis');
+    Route::get('/evaluasi/kuis/{sesiKuis}', [EvaluasiController::class, 'kuisDetail'])->name('evaluasi.kuis.detail');
+    Route::post('/evaluasi/kuis/{sesiKuis}/nilai', [EvaluasiController::class, 'storeNilaiKuis'])->name('evaluasi.kuis.nilai');
 });
 
 /*
@@ -109,13 +114,19 @@ Route::prefix('peserta')->name('peserta.')->middleware('check.session:peserta')-
 
     Route::get('/dasbor', fn() => view('peserta.dasbor'))->name('dasbor');
 
-    Route::get('/kursus', fn() => view('peserta.kursus'))->name('kursus');
-    Route::get('/detail-kursus', fn() => view('peserta.detail-kursus'))->name('detail-kursus');
-    Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
-    Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
-    Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
+    Route::get('/kursus', [PesertaKursusController::class, 'index'])->name('kursus');
+    Route::get('/kursus/{kursus}', [PesertaKursusController::class, 'show'])->name('kursus.show');
 
-    Route::get('/tugas', [tugasController::class, 'tugas'])->name('tugas');
+    // Kuis (F017)
+    Route::get('/kuis/{kuis}', [PesertaKuisController::class, 'show'])->name('kuis.show');
+    Route::post('/kuis/{kuis}/submit', [PesertaKuisController::class, 'submit'])->name('kuis.submit');
+
+    // Tugas (F017)
+    Route::get('/tugas/{tugas}', [PesertaTugasController::class, 'show'])->name('tugas.show');
+    Route::post('/tugas/{tugas}/submit', [PesertaTugasController::class, 'submit'])->name('tugas.submit');
+    Route::get('/profil', fn() => view('peserta.profil'))->name('profil');
+
+    Route::get('/tugas', [PesertaTugasController::class, 'index'])->name('tugas');
     Route::get('/tugas-detail', fn() => view('peserta.tugas-detail'))->name('tugas-detail');
     Route::get('/tugas-kumpul', fn() => view('peserta.tugas-kumpul'))->name('tugas-kumpul');
 

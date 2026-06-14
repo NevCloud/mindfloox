@@ -1,5 +1,5 @@
 {{-- ============================================================
-    Instruktur — Tugas Perlu Dinilai
+    Instruktur — Evaluasi Kuis
 ============================================================ --}}
 <!DOCTYPE html>
 <html lang="en" class="light">
@@ -7,7 +7,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>Tugas - Instruktur</title>
+    <title>Evaluasi Kuis - Instruktur</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
@@ -44,25 +44,22 @@
     <x-banner />
 
     <div class="flex items-center justify-between mb-4">
-        <h3 class="text-base font-semibold dark:text-white">Tugas Perlu Dinilai</h3>
+        <h3 class="text-base font-semibold dark:text-white">Evaluasi Kuis</h3>
     </div>
 
-    @if($jawaban->isEmpty())
+    @if($sesiList->isEmpty())
         <div class="text-center py-16 text-gray-400 dark:text-gray-500">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto mb-2 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <p class="text-sm">Belum ada pengumpulan tugas.</p>
+            <p class="text-sm">Belum ada pengerjaan kuis.</p>
         </div>
     @else
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
-            @foreach ($jawaban as $j)
+            @foreach ($sesiList as $sesi)
                 @php
-                    $nilaiTugas = $j->pendaftaran->nilaiTugas
-                        ->where('id_tugas', $j->id_tugas)->first();
-
-                    if ($nilaiTugas) {
+                    if ($sesi->nilaiKuis) {
                         $uiBorder = 'border-green-200 dark:border-green-800/50';
                         $uiBadge  = 'bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-300';
                         $uiDot    = 'bg-green-500';
@@ -73,13 +70,13 @@
                         $uiBorder = 'border-orange-200 dark:border-orange-800/50';
                         $uiBadge  = 'bg-orange-100 dark:bg-orange-900/40 text-orange-600 dark:text-orange-300';
                         $uiDot    = 'bg-orange-500';
-                        $label    = 'Belum Dinilai';
+                        $label    = 'Perlu Dinilai';
                         $uiText   = 'text-orange-500 dark:text-orange-400';
                         $uiButton = 'bg-orange-500 hover:bg-orange-600 text-white';
                     }
                 @endphp
 
-                <div onclick="window.location='{{ route('instruktur.evaluasi.tugas.detail', $j->id) }}'"
+                <div onclick="window.location='{{ route('instruktur.evaluasi.kuis.detail', $sesi->id) }}'"
                     class="card p-4 cursor-pointer {{ $uiBorder }}">
 
                     <div class="flex items-start justify-between mb-2">
@@ -87,16 +84,16 @@
                             <span class="w-1.5 h-1.5 rounded-full animate-pulse inline-block {{ $uiDot }}"></span>
                             {{ $label }}
                         </span>
-                        <span class="text-[10px] text-gray-400">{{ $j->disubmit_pada?->diffForHumans() ?? '-' }}</span>
+                        <span class="text-[10px] text-gray-400">{{ $sesi->diselesaikan_pada?->diffForHumans() ?? '-' }}</span>
                     </div>
 
                     <h4 class="text-sm font-semibold dark:text-white mb-1 leading-tight">
-                        {{ $j->tugas->judul }}
+                        {{ $sesi->kuis->judul }}
                     </h4>
 
-                    <p class="text-[11px] text-gray-400 mb-1">{{ $j->tugas->kursus->nama }}</p>
+                    <p class="text-[11px] text-gray-400 mb-1">{{ $sesi->kuis->kursus->nama }}</p>
                     <p class="text-[11px] text-gray-500 dark:text-gray-400 mb-3">
-                        {{ $j->pendaftaran->peserta->pengguna->nama ?? '-' }}
+                        {{ $sesi->pendaftaran->peserta->pengguna->nama ?? '-' }}
                     </p>
 
                     <div class="flex items-center justify-between">
@@ -105,14 +102,18 @@
                                 <circle cx="12" cy="12" r="10" />
                                 <polyline points="12 6 12 12 16 14" />
                             </svg>
-                            {{ $j->tugas->batas_waktu?->format('d M Y') ?? 'Tanpa deadline' }}
+                            @if($sesi->nilaiKuis)
+                                Nilai: {{ number_format($sesi->nilaiKuis->nilai_mentah, 1) }}
+                            @else
+                                Belum dinilai
+                            @endif
                         </div>
 
-                        <a href="{{ route('instruktur.evaluasi.tugas.detail', $j->id) }}"
+                        <a href="{{ route('instruktur.evaluasi.kuis.detail', $sesi->id) }}"
                             onclick="event.stopPropagation()"
                             class="flex items-center gap-1.5 text-xs px-3 py-1 rounded-lg transition {{ $uiButton }}">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                            Nilai
+                            Detail
                         </a>
                     </div>
                 </div>
@@ -120,7 +121,7 @@
 
         </div>
 
-        <div class="mt-4">{{ $jawaban->links() }}</div>
+        <div class="mt-4">{{ $sesiList->links() }}</div>
     @endif
 
                 </div>

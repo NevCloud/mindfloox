@@ -5,7 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Instruktur;
 use App\Models\Pengguna;
+use App\Models\SuperAdmin;
 
 class PenggunaSeeder extends Seeder
 {
@@ -51,6 +53,17 @@ class PenggunaSeeder extends Seeder
 
         foreach ($users as $user) {
             Pengguna::updateOrCreate(['username' => $user['username']], $user);
+        }
+
+        $superAdminPengguna = Pengguna::where('role', 'super_admin')->first();
+        $superAdmin = SuperAdmin::firstOrCreate(['id_pengguna' => $superAdminPengguna->id]);
+
+        $instrukturPengguna = Pengguna::where('role', 'instruktur')->get();
+        foreach ($instrukturPengguna as $p) {
+            Instruktur::firstOrCreate(
+                ['id_pengguna' => $p->id],
+                ['id_dibuat_oleh' => $superAdmin?->id ?? 1, 'keahlian' => 'Umum']
+            );
         }
     }
 }

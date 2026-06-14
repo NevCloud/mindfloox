@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Peserta</title>
+    <title>Kumpul Tugas - Peserta</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
@@ -23,8 +23,6 @@
         document.documentElement.classList.toggle('dark', this.dark);
     }
 }" x-init="document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray-50 dark:bg-[#0F0F1A]">
-
-    <!-- Alpine.js -->
 
     <div class="flex h-screen overflow-hidden">
 
@@ -62,7 +60,6 @@
                             class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500">
                     </div>
 
-
                     <!-- Dark mode toggle -->
                     <button @click="toggleDark()"
                         class="w-14 h-8 flex items-center rounded-full p-1 transition-all duration-300"
@@ -87,7 +84,6 @@
                         </div>
                     </button>
 
-
                     <!-- Mobile right toggle -->
                     <button onclick="document.getElementById('rightPanel').classList.toggle('translate-x-full')"
                         class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 text-gray-500">
@@ -107,33 +103,19 @@
                     <section x-data="{
                         files: [],
                         isDragOver: false,
-
-                        // Tambah file dari input atau drag-drop
                         addFiles(fileList) {
                             for (let f of fileList) {
                                 this.files.push({
                                     name: f.name,
                                     size: f.size,
                                     type: f.type,
-                                    preview: f.type.startsWith('image') ? URL.createObjectURL(f) : null
+                                    preview: f.type.startsWith('image') ? URL.createObjectURL(f) : null,
+                                    raw: f
                                 });
                             }
                         },
-
-                        // Hapus file dari list
                         removeFile(index) {
                             this.files.splice(index, 1);
-                        },
-
-                        // Submit: tandai tugas selesai lalu kembali
-                        submitForm() {
-                            let progress = JSON.parse(localStorage.getItem('courseProgressDemo') || '{}');
-                            let taskId = localStorage.getItem('currentMockTask');
-                            if (taskId) {
-                                progress[taskId] = true;
-                                localStorage.setItem('courseProgressDemo', JSON.stringify(progress));
-                            }
-                            window.location.href = 'detail-kursus';
                         }
                     }">
                         <div class="flex items-center justify-between mb-4">
@@ -146,20 +128,101 @@
                             </button>
                         </div>
 
-                        <form @submit.prevent="submitForm" class="card translate-none rounded-lg p-6 space-y-4">
+                        @if(session('success'))
+                            <div class="mb-4 p-4 rounded-xl bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-sm text-green-700 dark:text-green-300">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        @if($errors->any())
+                            <div class="mb-4 p-4 rounded-xl bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 text-sm text-red-700 dark:text-red-300">
+                                <ul class="list-disc list-inside space-y-1">
+                                    @foreach($errors->all() as $err)<li>{{ $err }}</li>@endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        {{-- Status pengumpulan sebelumnya --}}
+                        @if($jawaban)
+                            <div class="mb-4 p-5 rounded-2xl border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/10 shadow-sm">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-semibold text-green-700 dark:text-green-300">Sudah Dikumpulkan</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">{{ $jawaban->disubmit_pada?->format('d M Y H:i') }}</p>
+                                        </div>
+                                    </div>
+                                    @if($jawaban->url_file)
+                                        <a href="{{ asset('storage/' . $jawaban->url_file) }}" target="_blank"
+                                            class="text-xs text-primary hover:underline flex items-center gap-1">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                            Lihat File
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+
+                        {{-- Nilai --}}
+                        @if($nilaiTugas)
+                            <div class="mb-4 p-5 rounded-2xl border border-primary/30 bg-primary/5 dark:bg-primary/10 shadow-sm flex items-center justify-between gap-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-800 dark:text-white">Nilai Tugas</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Dinilai {{ $nilaiTugas->dinilai_pada?->format('d M Y H:i') }}</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-3xl font-bold text-primary">{{ number_format($nilaiTugas->nilai_mentah, 1) }}</p>
+                                    <p class="text-xs text-gray-400">dari {{ $tugas->nilai ?? 100 }} poin</p>
+                                </div>
+                            </div>
+                        @elseif($jawaban)
+                            <div class="mb-4 p-4 rounded-2xl border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/10 text-sm text-yellow-700 dark:text-yellow-300 flex items-center gap-2 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Menunggu penilaian dari instruktur.
+                            </div>
+                        @endif
+
+                        <form method="POST" action="{{ route('peserta.tugas.submit', $tugas->id) }}"
+                            enctype="multipart/form-data"
+                            @submit.prevent="
+                                if (files.length === 0) { alert('Pilih file terlebih dahulu.'); return; }
+                                // Transfer file from Alpine to real input before submit
+                                const dt = new DataTransfer();
+                                dt.items.add(files[0].raw);
+                                $refs.fileInput.files = dt.files;
+                                $el.submit();
+                            "
+                            class="card translate-none rounded-lg p-6 space-y-4">
+                            @csrf
 
                             <!-- Task Header -->
                             <div class="border-b border-gray-200 dark:border-gray-700">
-                                <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Analisis Algoritma Sorting</h2>
+                                <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">{{ $tugas->judul }}</h2>
                                 <div class="mb-3">
-                                    <span class="inline-block px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-semibold rounded-full">Deadline: 15 Jan 2024</span>
+                                    @if($tugas->batas_waktu)
+                                        <span class="inline-block px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-semibold rounded-full">
+                                            Deadline: {{ $tugas->batas_waktu->format('d M Y') }}
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
 
                             <!-- Drag & Drop Upload Area -->
                             <div>
                                 <label class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2 block uppercase tracking-wide">
-                                    Upload File
+                                    {{ $jawaban ? 'Ganti File (Kumpulkan Ulang)' : 'Upload File' }}
                                 </label>
                                 <div @dragover.prevent="isDragOver = true"
                                     @dragleave.prevent="isDragOver = false"
@@ -175,11 +238,9 @@
                                     </svg>
                                     <p class="text-gray-600 dark:text-gray-400 mb-2">Drag and drop files here</p>
                                     <p class="text-sm text-gray-500">or <span class="text-primary underline">click</span> to choose files</p>
-                                    <input x-ref="fileInput" type="file" class="hidden" multiple
-                                        @change="addFiles($event.target.files)">
+                                    <input x-ref="fileInput" type="file" name="file_tugas" class="hidden"
+                                        @change="files = []; addFiles($event.target.files)">
                                 </div>
-
-
 
                                 <!-- File List -->
                                 <div x-show="files.length > 0" class="mt-4 space-y-3">
@@ -220,22 +281,24 @@
                                 </div>
                             </div>
 
-                            <!-- Notes Section -->
-                            <div>
-                                <label class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2 block uppercase tracking-wide">
-                                    Catatan
-                                </label>
-                                <textarea rows="4" class="textarea" placeholder="Tambahkan catatan..."></textarea>
-                            </div>
+                            @if($tugas->deskripsi)
+                                <!-- Notes Section -->
+                                <div>
+                                    <label class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2 block uppercase tracking-wide">
+                                        Deskripsi Tugas
+                                    </label>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ $tugas->deskripsi }}</p>
+                                </div>
+                            @endif
 
                             <!-- Submit Buttons -->
                             <div class="pt-2 flex gap-2">
                                 <button type="submit"
                                     class="inline-flex items-center justify-center gap-1.5 bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
                                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                                    <span>Kumpulkan</span>
+                                    <span>{{ $jawaban ? 'Kumpulkan Ulang' : 'Kumpulkan' }}</span>
                                 </button>
-                                <button type="button" @click="if(confirm('Apakah Anda yakin ingin mereset semua file yang dipilih?')) files = []"
+                                <button type="button" @click="if(files.length && confirm('Reset semua file?')) files = []"
                                     class="inline-flex items-center justify-center gap-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
                                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                                     <span>Reset</span>

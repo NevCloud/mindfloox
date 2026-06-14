@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         // untuk mengeksekusi semua seeder yang terdaftar secara bersamaan.
         $this->call([
             PenggunaSeeder::class,
+            KursusSeeder::class,
         ]);
     }
 }

@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Peserta</title>
+    <title>Kerjakan Kuis - Peserta</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
@@ -23,8 +23,6 @@
         document.documentElement.classList.toggle('dark', this.dark);
     }
 }" x-init="document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray-50 dark:bg-[#0F0F1A]">
-
-    <!-- Alpine.js -->
 
     <div class="flex h-screen overflow-hidden">
 
@@ -62,7 +60,6 @@
                             class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500">
                     </div>
 
-
                     <!-- Dark mode toggle -->
                     <button @click="toggleDark()"
                         class="w-14 h-8 flex items-center rounded-full p-1 transition-all duration-300"
@@ -87,7 +84,6 @@
                         </div>
                     </button>
 
-
                     <!-- Mobile right toggle -->
                     <button onclick="document.getElementById('rightPanel').classList.toggle('translate-x-full')"
                         class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 text-gray-500">
@@ -104,71 +100,119 @@
                 <!-- Scrollable content -->
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">
 
-                    @foreach ($kuis as $quiz)
-                        <section x-data="{
-                            submitQuiz() {
-                                let progress = JSON.parse(localStorage.getItem('courseProgressDemo') || '{}');
-                                let quizId = localStorage.getItem('currentMockQuiz');
-                                if (quizId) {
-                                    progress[quizId] = true;
-                                    localStorage.setItem('courseProgressDemo', JSON.stringify(progress));
-                                }
-                                window.location.href = 'detail-kursus';
-                            }
-                        }">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-base font-semibold dark:text-white">Kerjakan Kuis</h3>
-                                <button onclick="history.back()" type="button" class="flex items-center gap-2 px-3 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#1A1A2E] transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                                    </svg>
-                                    Kembali
-                                </button>
-                            </div>
+                    <section>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-base font-semibold dark:text-white">Kerjakan Kuis</h3>
+                            <button onclick="history.back()" type="button" class="flex items-center gap-2 px-3 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#1A1A2E] transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                                </svg>
+                                Kembali
+                            </button>
+                        </div>
 
-                            <form @submit.prevent="submitQuiz" class="card translate-none rounded-lg p-6 space-y-4">
+                        @if(session('success'))
+                            <div class="mb-4 p-4 rounded-xl bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-sm text-green-700 dark:text-green-300">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        @if($sesiSelesai)
+                            {{-- Already completed: show result --}}
+                            <div class="card translate-none rounded-lg p-6 space-y-4">
+
+                                <div class="border-b border-gray-200 dark:border-gray-700">
+                                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                                        {{ $kuis->judul }}
+                                    </h2>
+                                    @if($kuis->batas_waktu_menit)
+                                        <div class="mb-3">
+                                            <span class="inline-block px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-semibold rounded-full">
+                                                Durasi: {{ $kuis->batas_waktu_menit }} menit
+                                            </span>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div class="p-5 rounded-xl bg-green-50 dark:bg-green-900/10 border border-green-300 dark:border-green-700 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto mb-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <p class="text-sm font-semibold text-green-700 dark:text-green-300 mb-1">Kuis Sudah Dikerjakan</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                                            Selesai pada {{ $sesiSelesai->diselesaikan_pada?->format('d M Y, H:i') }}
+                                        </p>
+                                    </div>
+
+                                    @if($sesiSelesai->nilaiKuis)
+                                        <div class="p-5 rounded-xl bg-primary/5 dark:bg-primary/10 border border-primary/20 flex items-center justify-between">
+                                            <div>
+                                                <p class="text-sm font-semibold text-gray-700 dark:text-white">Nilai Kuis</p>
+                                                <p class="text-xs text-gray-400">dari {{ $kuis->nilai ?? 100 }} poin</p>
+                                            </div>
+                                            <p class="text-4xl font-bold text-primary">{{ number_format($sesiSelesai->nilaiKuis->nilai_mentah, 1) }}</p>
+                                        </div>
+                                    @else
+                                        <div class="p-4 rounded-xl bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800 text-sm text-yellow-700 dark:text-yellow-300 flex items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            Menunggu penilaian dari instruktur (terdapat soal esai).
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        @else
+                            {{-- Show quiz form --}}
+                            <form method="POST" action="{{ route('peserta.kuis.submit', $kuis->id) }}"
+                                class="card translate-none rounded-lg p-6 space-y-4">
+                                @csrf
 
                                 <!-- Quiz Header -->
                                 <div class="border-b border-gray-200 dark:border-gray-700">
                                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                                        {{ $quiz['title'] }}</h2>
-                                    <div class="mb-3">
-                                        <span
-                                            class="inline-block px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-semibold rounded-full">Deadline:
-                                            {{ $quiz['deadline'] }}</span>
-                                    </div>
+                                        {{ $kuis->judul }}
+                                    </h2>
+                                    @if($kuis->batas_waktu_menit)
+                                        <div class="mb-3">
+                                            <span class="inline-block px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-semibold rounded-full">
+                                                Durasi: {{ $kuis->batas_waktu_menit }} menit
+                                            </span>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <!-- Questions -->
                                 <div class="space-y-6">
-                                    @foreach ($quiz['questions'] as $index => $question)
+                                    @foreach ($kuis->pertanyaanKuis as $index => $pertanyaan)
                                         <div class="border-b border-gray-200 dark:border-gray-700 pb-4 last:border-b-0">
                                             <div class="mb-4">
                                                 <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">
                                                     <span class="text-primary">{{ $index + 1 }}.</span>
-                                                    {{ $question['question'] }}
+                                                    {{ $pertanyaan->teks_pertanyaan }}
                                                 </h4>
                                             </div>
 
-                                            @if ($question['type'] === 'multiple_choice')
+                                            @if($pertanyaan->tipe_pertanyaan === 'pilihan_ganda')
                                                 <div class="space-y-2 ml-4">
-                                                    @foreach ($question['options'] as $key => $option)
+                                                    @foreach ($pertanyaan->pilihanJawaban as $pi => $pilihan)
                                                         <label
                                                             class="flex items-center gap-3 cursor-pointer p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:border-primary dark:hover:border-primary/50 transition duration-200">
                                                             <input type="radio" required
-                                                                name="question_{{ $question['id'] }}"
-                                                                value="{{ $key }}">
+                                                                name="pertanyaan_{{ $pertanyaan->id }}"
+                                                                value="{{ $pilihan->id }}">
                                                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                                                <strong class="text-primary">{{ $key }}</strong>.
-                                                                {{ $option }}
+                                                                <strong class="text-primary">{{ chr(65 + $pi) }}</strong>.
+                                                                {{ $pilihan->teks_pilihan }}
                                                             </span>
                                                         </label>
                                                     @endforeach
                                                 </div>
-                                            @elseif($question['type'] === 'essay')
+                                            @elseif($pertanyaan->tipe_pertanyaan === 'esai')
                                                 <div class="ml-4">
                                                     <input type="text" placeholder="Masukkan jawaban Anda..." required
-                                                        name="question_{{ $question['id'] }}"
+                                                        name="pertanyaan_{{ $pertanyaan->id }}"
                                                         class="input">
                                                 </div>
                                             @endif
@@ -185,8 +229,8 @@
                                     </button>
                                 </div>
                             </form>
-                        </section>
-                    @endforeach
+                        @endif
+                    </section>
 
                 </div><!-- end scrollable -->
             </main>
