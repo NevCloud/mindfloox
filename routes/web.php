@@ -18,6 +18,8 @@ use App\Http\Controllers\Instruktur\EvaluasiController;
 use App\Http\Controllers\Peserta\KursusController as PesertaKursusController;
 use App\Http\Controllers\Peserta\KuisController as PesertaKuisController;
 use App\Http\Controllers\Peserta\TugasController as PesertaTugasController;
+use App\Http\Controllers\AdminMicrocredential\KursusController as AdminKursusController;
+use App\Http\Controllers\AdminMicrocredential\ProgramController as AdminProgramController;
 use App\Models\JenisMicrocredential;
 use App\Models\Semester;
 use App\Models\ProgramMicrocredential;
@@ -189,13 +191,16 @@ Route::prefix('admin')->name('admin.')->middleware('check.session:admin_microcre
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
     Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
 
-    Route::get('/program', fn() => view('admin.programIndex', ['programs' => []]))->name('program.index');
-    Route::get('/program/create', fn() => view('admin.programCreate'))->name('program.create');
-    Route::get('/program/{id}/edit', fn() => view('admin.programEdit'))->name('program.edit');
+    // Program Akademik
+    Route::get('/program', [AdminProgramController::class, 'index'])->name('program.index');
 
-    Route::get('/program/{id}/kursus', fn() => view('admin.kursusIndex'))->name('program.kursus.index');
-    Route::get('/program/{id}/kursus/create', fn() => view('admin.kursusCreate'))->name('program.kursus.create');
-    Route::get('/program/{id}/kursus/{course}/edit', fn() => view('admin.kursusEdit'))->name('program.kursus.edit');
+    // Kursus CRUD dalam Program (F007 - Admin menambah banyak kursus ke 1 program)
+    Route::get('/program/{id}/kursus', [AdminKursusController::class, 'index'])->name('program.kursus.index');
+    Route::get('/program/{id}/kursus/create', [AdminKursusController::class, 'create'])->name('program.kursus.create');
+    Route::post('/program/{id}/kursus', [AdminKursusController::class, 'store'])->name('program.kursus.store');
+    Route::get('/program/{id}/kursus/{kursus}/edit', [AdminKursusController::class, 'edit'])->name('program.kursus.edit');
+    Route::put('/program/{id}/kursus/{kursus}', [AdminKursusController::class, 'update'])->name('program.kursus.update');
+    Route::delete('/program/{id}/kursus/{kursus}', [AdminKursusController::class, 'destroy'])->name('program.kursus.destroy');
 
     Route::get('/verifikasi', fn() => view('admin.verifikasiIndex', ['registrations' => []]))->name('verifikasi.index');
 });

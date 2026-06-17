@@ -43,7 +43,7 @@
                         </a>
                         <div>
                             <h1 class="text-xl font-bold text-gray-800 dark:text-white">Edit Kursus</h1>
-                            <p class="text-sm text-gray-500">Ubah data kursus dalam program {{ $program->name }}</p>
+                            <p class="text-sm text-gray-500">Ubah data kursus dalam program {{ $program->nama }}</p>
                         </div>
                     </div>
 
@@ -56,10 +56,10 @@
                             <!-- Nama Kursus -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Kursus</label>
-                                <input type="text" name="name" value="{{ old('name', $course->name) }}"
+                                <input type="text" name="nama" value="{{ old('nama', $course->nama) }}"
                                     placeholder="Contoh: UI/UX Design"
                                     class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white text-sm outline-none focus:border-primary transition">
-                                @error('name')
+                                @error('nama')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -67,10 +67,10 @@
                             <!-- Deskripsi -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Deskripsi</label>
-                                <textarea name="description" rows="4"
+                                <textarea name="deskripsi" rows="4"
                                     placeholder="Deskripsi kursus..."
-                                    class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white text-sm outline-none focus:border-primary transition resize-none">{{ old('description', $course->description) }}</textarea>
-                                @error('description')
+                                    class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white text-sm outline-none focus:border-primary transition resize-none">{{ old('deskripsi', $course->deskripsi) }}</textarea>
+                                @error('deskripsi')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -78,16 +78,16 @@
                             <!-- Instruktur -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Instruktur (F011 - Assign Instruktur)</label>
-                                <select name="instructor_id"
+                                <select name="id_instruktur"
                                     class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white text-sm outline-none focus:border-primary transition">
                                     <option value="">-- Pilih Instruktur --</option>
                                     @foreach($instructors as $instructor)
-                                        <option value="{{ $instructor->id }}" {{ old('instructor_id', $course->instructor_id) == $instructor->id ? 'selected' : '' }}>
-                                            {{ $instructor->name }}
+                                        <option value="{{ $instructor->id }}" {{ old('id_instruktur', $selectedInstrukturId) == $instructor->id ? 'selected' : '' }}>
+                                            {{ $instructor->pengguna->nama }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('instructor_id')
+                                @error('id_instruktur')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
                             </div>

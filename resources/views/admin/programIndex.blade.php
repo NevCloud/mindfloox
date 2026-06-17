@@ -18,11 +18,7 @@
         this.dark = !this.dark;
         localStorage.setItem('theme', this.dark ? 'dark' : 'light');
         document.documentElement.classList.toggle('dark', this.dark);
-    },
-    programs: [
-        { nama: 'UI/UX Design Specialist', jenis: 'UI/UX Design', semester: 'Ganjil 2024/2025', status: 'buka' },
-        { nama: 'Data Science Bootcamp', jenis: 'Data Science', semester: 'Ganjil 2024/2025', status: 'tutup' }
-    ]
+    }
 }" class="relative bg-gray-50 dark:bg-[#0F0F1A]">
 
     <div class="flex h-screen overflow-hidden">
@@ -52,9 +48,9 @@
                         </div>
                     @endif
 
-                    <!-- Table Section -->
+                    <!-- Filters -->
                     <div class="card translate-0 p-5">
-                        <div class="flex items-center gap-3 mb-5">
+                        <form method="GET" action="{{ route('admin.program.index') }}" class="flex items-center gap-3 mb-5">
                             <div
                                 class="flex-1 flex items-center gap-2 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 transition-all duration-300 focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 flex-shrink-0"
@@ -62,16 +58,16 @@
                                     <circle cx="11" cy="11" r="8" />
                                     <line x1="21" y1="21" x2="16.65" y2="16.65" />
                                 </svg>
-                                <input type="text" placeholder="Cari program microcredential..."
+                                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari program microcredential..."
                                     class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 w-full py-0.5">
                             </div>
-                            <select
+                            <select name="status" onchange="this.form.submit()"
                                 class="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-sm text-gray-800 dark:text-white focus:ring-2 focus:ring-primary outline-none transition">
                                 <option value="">Semua Status</option>
-                                <option value="buka">Buka</option>
-                                <option value="tutup">Tutup</option>
+                                <option value="buka" {{ request('status') === 'buka' ? 'selected' : '' }}>Buka</option>
+                                <option value="tutup" {{ request('status') === 'tutup' ? 'selected' : '' }}>Tutup</option>
                             </select>
-                        </div>
+                        </form>
 
                         <!-- Table -->
                         <div class="overflow-x-auto">
@@ -90,39 +86,39 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-gray-800 dark:text-gray-300">
-                                    <template x-for="(item, index) in programs" :key="index">
-                                        <tr
-                                            class="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
-                                            <td class="py-3 px-4" x-text="index + 1"></td>
-                                            <td class="py-3 px-4 font-medium" x-text="item.nama"></td>
-                                            <td class="py-3 px-4 text-gray-500" x-text="item.jenis"></td>
-                                            <td class="py-3 px-4 text-gray-500" x-text="item.semester"></td>
-                                            <td class="py-3 px-4">
-                                                <template x-if="item.status === 'buka'">
-                                                    <span
-                                                        class="px-2 py-1 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-medium rounded-full">Buka</span>
-                                                </template>
-                                                <template x-if="item.status === 'tutup'">
-                                                    <span
-                                                        class="px-2 py-1 bg-red-100 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-medium rounded-full">Tutup</span>
-                                                </template>
-                                            </td>
-                                            <td class="py-3 px-4">
-                                                <div class="flex justify-center gap-1">
-                                                    <a href="#"
-                                                        class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500 hover:text-white transition-all duration-200 text-xs font-medium">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                            stroke-width="2">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                                        </svg>
-                                                        Kelola Kursus
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </template>
+                                    @forelse($programs as $index => $program)
+                                    <tr class="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
+                                        <td class="py-3 px-4">{{ $index + 1 }}</td>
+                                        <td class="py-3 px-4 font-medium">{{ $program->nama }}</td>
+                                        <td class="py-3 px-4 text-gray-500">{{ $program->jenisMicrocredential->nama ?? '-' }}</td>
+                                        <td class="py-3 px-4 text-gray-500">{{ $program->semester->nama ?? '-' }}</td>
+                                        <td class="py-3 px-4">
+                                            @if($program->status_pendaftaran === 'buka')
+                                                <span class="px-2 py-1 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-medium rounded-full">Buka</span>
+                                            @else
+                                                <span class="px-2 py-1 bg-red-100 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-medium rounded-full">Tutup</span>
+                                            @endif
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <div class="flex justify-center gap-1">
+                                                <a href="{{ route('admin.program.kursus.index', $program->id) }}"
+                                                    class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500 hover:text-white transition-all duration-200 text-xs font-medium">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                        stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                    </svg>
+                                                    Kelola Kursus ({{ $program->kursus->count() }})
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="6" class="py-8 text-center text-gray-400">Belum ada program akademik yang tersedia.</td>
+                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

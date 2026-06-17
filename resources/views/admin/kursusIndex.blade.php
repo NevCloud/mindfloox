@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kursus - {{ $program->name }}</title>
+    <title>Kursus - {{ $program->nama }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         if (localStorage.getItem('theme') === 'dark') {
@@ -43,7 +43,7 @@
                                 </svg>
                             </a>
                             <div>
-                                <h1 class="text-xl font-bold text-gray-800 dark:text-white">Kursus - {{ $program->name }}</h1>
+                                <h1 class="text-xl font-bold text-gray-800 dark:text-white">Kursus - {{ $program->nama }}</h1>
                                 <p class="text-sm text-gray-500">Kelola kursus dalam program ini</p>
                             </div>
                         </div>
@@ -81,10 +81,10 @@
                                     @forelse($courses as $index => $course)
                                     <tr class="hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200">
                                         <td class="px-4 py-4 text-gray-500">{{ $index + 1 }}</td>
-                                        <td class="px-4 py-4 font-medium text-gray-800 dark:text-white">{{ $course->name }}</td>
-                                        <td class="px-4 py-4 text-gray-500">{{ Str::limit($course->description, 50) }}</td>
+                                        <td class="px-4 py-4 font-medium text-gray-800 dark:text-white">{{ $course->nama }}</td>
+                                        <td class="px-4 py-4 text-gray-500">{{ Str::limit($course->deskripsi, 50) }}</td>
                                         <td class="px-4 py-4 text-gray-500">
-                                            {{ $course->instructor ? $course->instructor->name : 'Belum ada instruktur' }}
+                                            {{ $course->instruktur->isNotEmpty() ? $course->instruktur->first()->pengguna->nama : 'Belum ada instruktur' }}
                                         </td>
                                         <td class="px-4 py-4">
                                             <div class="flex justify-end items-center gap-2">
