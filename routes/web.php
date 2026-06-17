@@ -18,6 +18,7 @@ use App\Http\Controllers\Instruktur\EvaluasiController;
 use App\Http\Controllers\Peserta\KursusController as PesertaKursusController;
 use App\Http\Controllers\Peserta\KuisController as PesertaKuisController;
 use App\Http\Controllers\Peserta\TugasController as PesertaTugasController;
+use App\Http\Controllers\Peserta\PendaftaranController as PesertaPendaftaranController;
 use App\Http\Controllers\AdminMicrocredential\KursusController as AdminKursusController;
 use App\Http\Controllers\AdminMicrocredential\ProgramController as AdminProgramController;
 use App\Http\Controllers\AdminMicrocredential\VerifikasiController as AdminVerifikasiController;
@@ -137,6 +138,11 @@ Route::prefix('peserta')->name('peserta.')->middleware('check.session:peserta')-
     Route::get('/kuis-detail', [tugasController::class, 'kuisDetail'])->name('kuis-detail');
 
     Route::get('/nilai-detail', fn() => view('peserta.nilai-detail'))->name('nilai-detail');
+
+    // Pendaftaran Program (F009 - Peserta mendaftar ke Program Microcredential)
+    Route::get('/pendaftaran', [PesertaPendaftaranController::class, 'index'])->name('pendaftaran.index');
+    Route::post('/pendaftaran/{programId}', [PesertaPendaftaranController::class, 'store'])->name('pendaftaran.store');
+    Route::get('/riwayat-pendaftaran', [PesertaPendaftaranController::class, 'riwayat'])->name('pendaftaran.riwayat');
 });
 
 /*
