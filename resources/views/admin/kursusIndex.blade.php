@@ -84,7 +84,17 @@
                                         <td class="px-4 py-4 font-medium text-gray-800 dark:text-white">{{ $course->nama }}</td>
                                         <td class="px-4 py-4 text-gray-500">{{ Str::limit($course->deskripsi, 50) }}</td>
                                         <td class="px-4 py-4 text-gray-500">
-                                            {{ $course->instruktur->isNotEmpty() ? $course->instruktur->first()->pengguna->nama : 'Belum ada instruktur' }}
+                                            @if($course->instruktur->isNotEmpty())
+                                                <div class="flex flex-wrap gap-1">
+                                                    @foreach($course->instruktur as $ins)
+                                                        <span class="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300">
+                                                            {{ $ins->pengguna->nama }}
+                                                        </span>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <span class="text-gray-400 italic text-xs">Belum ada instruktur</span>
+                                            @endif
                                         </td>
                                         <td class="px-4 py-4">
                                             <div class="flex justify-end items-center gap-2">

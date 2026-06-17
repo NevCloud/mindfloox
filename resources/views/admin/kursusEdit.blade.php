@@ -75,19 +75,21 @@
                                 @enderror
                             </div>
 
-                            <!-- Instruktur -->
+                            <!-- Instruktur (Multi-select) -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Instruktur (F011 - Assign Instruktur)</label>
-                                <select name="id_instruktur"
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Instruktur <span class="text-xs text-gray-400">(tahan Ctrl/Cmd untuk pilih banyak)</span></label>
+                                <select name="id_instruktur[]" multiple size="4"
                                     class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white text-sm outline-none focus:border-primary transition">
-                                    <option value="">-- Pilih Instruktur --</option>
                                     @foreach($instructors as $instructor)
-                                        <option value="{{ $instructor->id }}" {{ old('id_instruktur', $selectedInstrukturId) == $instructor->id ? 'selected' : '' }}>
-                                            {{ $instructor->pengguna->nama }}
+                                        <option value="{{ $instructor->id }}" {{ in_array($instructor->id, old('id_instruktur', $selectedInstrukturIds)) ? 'selected' : '' }}>
+                                            {{ $instructor->pengguna->nama }}{{ $instructor->keahlian ? ' (' . $instructor->keahlian . ')' : '' }}
                                         </option>
                                     @endforeach
                                 </select>
                                 @error('id_instruktur')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                                @error('id_instruktur.*')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
                             </div>

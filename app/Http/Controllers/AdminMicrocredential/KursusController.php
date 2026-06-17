@@ -49,13 +49,15 @@ class KursusController extends Controller
         $request->validate([
             'nama'            => 'required|string|max:255',
             'deskripsi'       => 'nullable|string|max:2000',
-            'id_instruktur'   => 'nullable|exists:instruktur,id',
+            'id_instruktur'   => 'nullable|array',
+            'id_instruktur.*' => 'exists:instruktur,id',
             'foto_kursus'     => 'nullable|image|max:2048',
             'nilai_kelulusan_kursus' => 'nullable|numeric|min:0|max:100',
         ], [
             'nama.required'          => 'Nama kursus wajib diisi.',
             'nama.max'               => 'Nama kursus maksimal 255 karakter.',
-            'id_instruktur.exists'   => 'Instruktur yang dipilih tidak valid.',
+            'id_instruktur.array'    => 'Data instruktur tidak valid.',
+            'id_instruktur.*.exists' => 'Salah satu instruktur tidak valid.',
             'foto_kursus.image'      => 'Foto harus berupa file gambar.',
             'foto_kursus.max'        => 'Ukuran foto maksimal 2 MB.',
             'nilai_kelulusan_kursus.numeric' => 'Nilai kelulusan harus berupa angka.',
@@ -78,12 +80,14 @@ class KursusController extends Controller
 
         $kursus = Kursus::create($data);
 
-        // Assign instruktur jika dipilih
+        // Assign multiple instruktur (many-to-many)
         if ($request->id_instruktur) {
-            KursusInstruktur::create([
-                'id_kursus'     => $kursus->id,
-                'id_instruktur' => $request->id_instruktur,
-            ]);
+            foreach ($request->id_instruktur as $instrukturId) {
+                KursusInstruktur::create([
+                    'id_kursus'     => $kursus->id,
+                    'id_instruktur' => $instrukturId,
+                ]);
+            }
         }
 
         return redirect()
@@ -101,10 +105,10 @@ class KursusController extends Controller
 
         $instructors = Instruktur::with('pengguna')->get();
 
-        // Ambil id instruktur pertama yang di-assign ke kursus ini
-        $selectedInstrukturId = $course->instruktur->first()?->id;
+        // Ambil semua id instruktur yang di-assign ke kursus ini
+        $selectedInstrukturIds = $course->instruktur->pluck('id')->toArray();
 
-        return view('admin.kursusEdit', compact('program', 'course', 'instructors', 'selectedInstrukturId'));
+        return view('admin.kursusEdit', compact('program', 'course', 'instructors', 'selectedInstrukturIds'));
     }
 
     /**
@@ -118,13 +122,15 @@ class KursusController extends Controller
         $request->validate([
             'nama'            => 'required|string|max:255',
             'deskripsi'       => 'nullable|string|max:2000',
-            'id_instruktur'   => 'nullable|exists:instruktur,id',
+            'id_instruktur'   => 'nullable|array',
+            'id_instruktur.*' => 'exists:instruktur,id',
             'foto_kursus'     => 'nullable|image|max:2048',
             'nilai_kelulusan_kursus' => 'nullable|numeric|min:0|max:100',
         ], [
             'nama.required'          => 'Nama kursus wajib diisi.',
             'nama.max'               => 'Nama kursus maksimal 255 karakter.',
-            'id_instruktur.exists'   => 'Instruktur yang dipilih tidak valid.',
+            'id_instruktur.array'    => 'Data instruktur tidak valid.',
+            'id_instruktur.*.exists' => 'Salah satu instruktur tidak valid.',
             'foto_kursus.image'      => 'Foto harus berupa file gambar.',
             'foto_kursus.max'        => 'Ukuran foto maksimal 2 MB.',
             'nilai_kelulusan_kursus.numeric' => 'Nilai kelulusan harus berupa angka.',
@@ -144,16 +150,16 @@ class KursusController extends Controller
 
         $kursus->update($data);
 
-        // Sync instruktur: hapus lama, insert baru
-        if ($request->filled('id_instruktur')) {
-            // Hapus assign instruktur lama
-            KursusInstruktur::where('id_kursus', $kursus->id)->delete();
+        // Sync instruktur (many-to-many): hapus semua lama, insert baru
+        KursusInstruktur::where('id_kursus', $kursus->id)->delete();
 
-            // Insert instruktur baru
-            KursusInstruktur::create([
-                'id_kursus'     => $kursus->id,
-                'id_instruktur' => $request->id_instruktur,
-            ]);
+        if ($request->id_instruktur) {
+            foreach ($request->id_instruktur as $instrukturId) {
+                KursusInstruktur::create([
+                    'id_kursus'     => $kursus->id,
+                    'id_instruktur' => $instrukturId,
+                ]);
+            }
         }
 
         return redirect()
