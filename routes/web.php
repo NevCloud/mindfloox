@@ -20,6 +20,7 @@ use App\Http\Controllers\Peserta\KuisController as PesertaKuisController;
 use App\Http\Controllers\Peserta\TugasController as PesertaTugasController;
 use App\Http\Controllers\AdminMicrocredential\KursusController as AdminKursusController;
 use App\Http\Controllers\AdminMicrocredential\ProgramController as AdminProgramController;
+use App\Http\Controllers\AdminMicrocredential\VerifikasiController as AdminVerifikasiController;
 use App\Models\JenisMicrocredential;
 use App\Models\Semester;
 use App\Models\ProgramMicrocredential;
@@ -202,5 +203,7 @@ Route::prefix('admin')->name('admin.')->middleware('check.session:admin_microcre
     Route::put('/program/{id}/kursus/{kursus}', [AdminKursusController::class, 'update'])->name('program.kursus.update');
     Route::delete('/program/{id}/kursus/{kursus}', [AdminKursusController::class, 'destroy'])->name('program.kursus.destroy');
 
-    Route::get('/verifikasi', fn() => view('admin.verifikasiIndex', ['registrations' => []]))->name('verifikasi.index');
+    // Verifikasi Pendaftaran (F008 - Admin meninjau/menyetujui/menolak pendaftaran peserta)
+    Route::get('/verifikasi', [AdminVerifikasiController::class, 'index'])->name('verifikasi.index');
+    Route::post('/verifikasi/{id}', [AdminVerifikasiController::class, 'verify'])->name('verifikasi.verify');
 });
