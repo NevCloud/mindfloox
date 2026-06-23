@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use App\Models\Pengguna;
+use App\Models\ProgramMicrocredential;
 
 /**
  * ProfilController
@@ -24,7 +25,17 @@ class ProfilController extends Controller
     public function show()
     {
         $user = Auth::user();
-        return view('profil', compact('user'));
+
+        // Fetch programs assigned to this admin (only for admin_microcredential role)
+        $programs = collect();
+        if ($user->role === 'admin_microcredential' && $user->adminMicrocredential) {
+            $programs = ProgramMicrocredential::with(['jenisMicrocredential', 'semester'])
+                ->where('id_admin_microcredential', $user->adminMicrocredential->id)
+                ->orderBy('dibuat_pada', 'desc')
+                ->get();
+        }
+
+        return view('profil', compact('user', 'programs'));
     }
 
     /**

@@ -41,6 +41,17 @@
                     </div>
                 @endif
 
+                {{-- Flash Message Error --}}
+                @if (session('error'))
+                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 6000)"
+                        x-transition class="mb-5 p-4 bg-red-100 dark:bg-red-500/10 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 rounded-lg text-sm flex items-center gap-2">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 {{-- Validation Errors - ditampilkan di dalam modal, bukan di sini --}}
 
                 <!-- Header -->
@@ -65,15 +76,26 @@
                                     placeholder="Cari admin atau instruktur..."
                                     class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 w-full py-0.5">
                             </div>
-                            <select name="role"
-                                class="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-sm text-gray-800 dark:text-white focus:ring-2 focus:ring-primary outline-none transition">
-                                <option value="">Semua Role</option>
-                                <option value="admin_microcredential" {{ request('role') === 'admin_microcredential' ? 'selected' : '' }}>Admin Microcredential</option>
-                                <option value="instruktur" {{ request('role') === 'instruktur' ? 'selected' : '' }}>Instruktur</option>
-                            </select>
-                            <button type="submit" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition text-gray-700 dark:text-white">
-                                Cari
-                            </button>
+                            <div x-data="{ open: false, current: '{{ request('role', '') }}', options: [{id:'',nama:'Semua Role'},{id:'admin_microcredential',nama:'Admin Microcredential'},{id:'instruktur',nama:'Instruktur'}], get selectedLabel() { const f = this.options.find(o => o.id == this.current); return f ? f.nama : 'Semua Role' }, selectRole(id) { const url = new URL(window.location); if(id) { url.searchParams.set('role', id); } else { url.searchParams.delete('role'); } window.location = url; } }">
+                                <div class="relative">
+                                    <div @click="open = !open" @click.outside="open = false"
+                                        :class="open ? 'border-[#6C63FF]' : 'border-gray-200 dark:border-gray-700'"
+                                        class="px-3 py-2 rounded-lg border bg-white dark:bg-[#0F0F1A] text-sm text-gray-800 dark:text-white cursor-pointer flex items-center gap-2 transition">
+                                        <span x-text="selectedLabel"></span>
+                                        <svg class="w-3.5 h-3.5 text-gray-400 transition" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </div>
+                                    <div x-show="open" x-transition class="absolute z-50 mt-1 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden min-w-[180px]">
+                                        <div class="max-h-[84px] overflow-y-auto">
+                                            <template x-for="o in options" :key="o.id">
+                                                <div @click="selectRole(o.id)"
+                                                    class="px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition whitespace-nowrap"
+                                                    :class="current == o.id ? 'bg-primary/10 text-primary font-medium' : 'text-gray-800 dark:text-white'"
+                                                    x-text="o.nama"></div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             @if (request('search') || request('role'))
                                 <a href="{{ route('superAdmin.adminInstruktur') }}" class="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm font-medium transition text-gray-500">
                                     Reset
@@ -81,7 +103,7 @@
                             @endif
                         </form>
                         <button @click="openCreateModal()"
-                            class="px-4 py-2 bg-[#6C63FF] hover:bg-[#282ff3] dark:hover:bg-[#4b4bd9] rounded-lg text-sm font-medium transition flex items-center gap-2 text-white">
+                            class="px-4 py-2 bg-[#6C63FF] hover:bg-[#5A52D9] dark:hover:bg-[#4b4bd9] rounded-lg text-sm font-medium transition flex items-center gap-2 text-white">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -111,7 +133,7 @@
                                         <td class="py-3 px-4">{{ $admins->firstItem() + $index }}</td>
                                         <td class="py-3 px-4">
                                             <div class="flex items-center gap-3">
-                                                <img src="{{ $admin->foto_profil ? asset('storage/' . $admin->foto_profil) : 'https://i.pravatar.cc/40?u=' . $admin->id }}"
+                                                <img src="{{ $admin->foto_profil ? asset('storage/' . $admin->foto_profil) : 'https://ui-avatars.com/api/?name=' . urlencode($admin->nama) . '&background=6C63FF&color=fff&size=64&font-size=0.4' }}"
                                                     class="w-8 h-8 rounded-full object-cover flex-shrink-0" alt="">
                                                 <span class="font-medium break-words">{{ $admin->nama }}</span>
                                             </div>
@@ -199,7 +221,7 @@
     <div x-show="modal.show" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
         style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
         <div @click.away="modal.show = false" x-show="modal.show" x-transition
-            class="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-2xl w-full max-w-lg p-6">
+            class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-lg p-6 border border-gray-100 dark:border-gray-800">
 
             <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6" x-text="modal.title"></h3>
 
@@ -223,7 +245,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama <span class="text-red-500">*</span></label>
                         <input type="text" name="nama" x-model="modal.data.nama" required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:outline-none focus:border-primary focus:ring-0 transition"
                             placeholder="Nama lengkap">
                     </div>
 
@@ -231,7 +253,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username <span class="text-red-500">*</span></label>
                         <input type="text" name="username" x-model="modal.data.username" required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:outline-none focus:border-primary focus:ring-0 transition"
                             placeholder="Username untuk login">
                     </div>
 
@@ -239,7 +261,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email <span class="text-red-500">*</span></label>
                         <input type="email" name="email" x-model="modal.data.email" required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:outline-none focus:border-primary focus:ring-0 transition"
                             placeholder="email@example.com">
                     </div>
 
@@ -247,42 +269,79 @@
 
                     {{-- Role --}}
                     {{-- Role tidak bisa diubah saat edit (disabled) --}}
-                    <div>
+                    <div x-data="{ open: false, options: [{id:'admin_microcredential',nama:'Admin Microcredential'},{id:'instruktur',nama:'Instruktur'}], get selectedLabel() { const f = this.options.find(o => o.id == modal.data.role); return f ? f.nama : '' } }">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Role <span class="text-red-500">*</span>
                             <span x-show="modal.mode === 'edit'" class="text-gray-400 text-xs">(tidak dapat diubah)</span>
                         </label>
                         {{-- Hidden input: kirim nilai role saat select disabled (disabled input tidak ter-submit) --}}
-                        <input type="hidden" name="role" :value="modal.data.role" x-show="modal.mode === 'edit'">
-                        <select x-model="modal.data.role"
-                            :disabled="modal.mode === 'edit'"
-                            :class="modal.mode === 'edit' ? 'opacity-50 cursor-not-allowed bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-[#0F0F1A]'"
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                            <option value="admin_microcredential">Admin Microcredential</option>
-                            <option value="instruktur">Instruktur</option>
-                        </select>
+                        <input type="hidden" name="role" :value="modal.data.role">
+                        <div class="relative">
+                            <div @click="if (modal.mode !== 'edit') open = !open" @click.outside="open = false"
+                                :class="[open ? 'border-[#6C63FF]' : 'border-gray-300 dark:border-gray-700', modal.mode === 'edit' ? 'opacity-50 cursor-not-allowed' : '']"
+                                class="w-full px-4 py-3 rounded-lg border bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white cursor-pointer flex items-center justify-between transition">
+                                <span x-text="selectedLabel || 'Pilih role'" :class="!selectedLabel && 'text-gray-400'"></span>
+                                <svg class="w-4 h-4 text-gray-400 transition" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div x-show="open" x-transition class="absolute z-50 w-full mt-1 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
+                                <div class="max-h-[84px] overflow-y-auto">
+                                    <template x-for="o in options" :key="o.id">
+                                        <div @click="modal.data.role = o.id; open = false"
+                                            class="px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                                            :class="modal.data.role == o.id ? 'bg-primary/10 text-primary font-medium' : 'text-gray-800 dark:text-white'"
+                                            x-text="o.nama"></div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {{-- Jenis Microcredential (hanya muncul jika role = admin_microcredential) --}}
-                    <div x-show="modal.data.role === 'admin_microcredential'">
+                    <div x-show="modal.data.role === 'admin_microcredential'" x-data="{ open: false, options: [], init() { this.options = jenisList.map(j => ({id: j.id, nama: j.nama})); }, get selectedLabel() { const f = this.options.find(j => j.id == modal.data.id_jenis_microcredential); return f ? f.nama : '' } }">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Jenis Microcredential <span class="text-red-500">*</span></label>
-                        <select name="id_jenis_microcredential" x-model="modal.data.id_jenis_microcredential"
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                            <option value="">-- Pilih Jenis --</option>
-                            @foreach ($jenisList as $jenis)
-                                <option value="{{ $jenis->id }}">{{ $jenis->nama }}</option>
-                            @endforeach
-                        </select>
+                        <div class="relative">
+                            <div @click="open = !open" @click.outside="open = false"
+                                :class="open ? 'border-[#6C63FF]' : 'border-gray-300 dark:border-gray-700'"
+                                class="w-full px-4 py-3 rounded-lg border bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white cursor-pointer flex items-center justify-between transition">
+                                <span x-text="selectedLabel || '-- Pilih Jenis --'" :class="!selectedLabel && 'text-gray-400'"></span>
+                                <svg class="w-4 h-4 text-gray-400 transition" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div x-show="open" x-transition class="absolute z-50 w-full mt-1 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
+                                <div class="max-h-[84px] overflow-y-auto">
+                                    <template x-for="j in options" :key="j.id">
+                                        <div @click="modal.data.id_jenis_microcredential = j.id; open = false"
+                                            class="px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                                            :class="modal.data.id_jenis_microcredential == j.id ? 'bg-primary/10 text-primary font-medium' : 'text-gray-800 dark:text-white'"
+                                            x-text="j.nama"></div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id_jenis_microcredential" :value="modal.data.id_jenis_microcredential">
                     </div>
 
                     {{-- Status (hanya muncul saat edit) --}}
-                    <div x-show="modal.mode === 'edit'">
+                    <div x-show="modal.mode === 'edit'" x-data="{ open: false, options: [{id:'aktif',nama:'Aktif'},{id:'nonaktif',nama:'Nonaktif'}], get selectedLabel() { const f = this.options.find(o => o.id == modal.data.aktif); return f ? f.nama : '' } }">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status <span class="text-red-500">*</span></label>
-                        <select name="aktif" x-model="modal.data.aktif"
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                            <option value="aktif">Aktif</option>
-                            <option value="nonaktif">Nonaktif</option>
-                        </select>
+                        <div class="relative">
+                            <div @click="open = !open" @click.outside="open = false"
+                                :class="open ? 'border-[#6C63FF]' : 'border-gray-300 dark:border-gray-700'"
+                                class="w-full px-4 py-3 rounded-lg border bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white cursor-pointer flex items-center justify-between transition">
+                                <span x-text="selectedLabel || 'Pilih status'" :class="!selectedLabel && 'text-gray-400'"></span>
+                                <svg class="w-4 h-4 text-gray-400 transition" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div x-show="open" x-transition class="absolute z-50 w-full mt-1 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
+                                <div class="max-h-[84px] overflow-y-auto">
+                                    <template x-for="o in options" :key="o.id">
+                                        <div @click="modal.data.aktif = o.id; open = false"
+                                            class="px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                                            :class="modal.data.aktif == o.id ? 'bg-primary/10 text-primary font-medium' : 'text-gray-800 dark:text-white'"
+                                            x-text="o.nama"></div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="aktif" :value="modal.data.aktif">
                     </div>
                 </div>
 
@@ -295,7 +354,8 @@
                         <span>Batal</span>
                     </button>
                     <button type="submit"
-                        class="flex-1 px-4 py-3 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition font-medium">
+                        class="flex-1 px-4 py-3 rounded-lg bg-[#6C63FF] hover:bg-[#5A52D9] text-white transition font-medium inline-flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                         Simpan
                     </button>
                 </div>
@@ -307,7 +367,7 @@
     <div x-show="deleteModal.show" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
         style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
         <div @click.away="deleteModal.show = false" x-show="deleteModal.show" x-transition
-            class="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-2xl max-w-md w-full p-6">
+            class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-800">
             <div
                 class="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-500/20">
                 <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -353,6 +413,7 @@
                 },
 
                 dataList: serverData,
+                jenisList: @json($jenisList),
 
                 modal: {
                     show: false,
@@ -364,7 +425,7 @@
                         nama: '',
                         username: '',
                         email: '',
-                        role: 'admin_microcredential',
+                        role: '',
                         id_jenis_microcredential: '',
                         aktif: 'aktif',
                     }
@@ -399,7 +460,7 @@
                         nama: '',
                         username: '',
                         email: '',
-                        role: 'admin_microcredential',
+                        role: '',
                         id_jenis_microcredential: '',
                         aktif: 'aktif',
                     };

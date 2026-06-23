@@ -84,7 +84,17 @@ class SemesterController extends Controller
     public function destroy($id)
     {
         $semester = Semester::findOrFail($id);
-        $semester->delete();
+        
+        try {
+            $semester->delete();
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == '23000') {
+                return redirect()
+                    ->route('superAdmin.semester')
+                    ->with('error', "Gagal menghapus! Periode pembelajaran ini tidak bisa dihapus karena sudah ada Program Microcredential yang menggunakan periode ini.");
+            }
+            throw $e;
+        }
 
         return redirect()
             ->route('superAdmin.semester')

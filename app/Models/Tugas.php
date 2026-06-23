@@ -14,20 +14,29 @@ class Tugas extends Model
     protected $fillable = [
         "id_kursus",
         "id_kursus_instruktur",
+        "id_minggu",
+        "nomor_urut",
         "judul",
         "deskripsi",
         "nilai",
+        "tanggal_mulai",
         "batas_waktu",
     ];
 
     protected $casts = [
         "nilai" => "decimal:2",
+        "tanggal_mulai" => "datetime",
         "batas_waktu" => "datetime",
     ];
 
     public function kursus()
     {
         return $this->belongsTo(Kursus::class, 'id_kursus');
+    }
+
+    public function minggu()
+    {
+        return $this->belongsTo(Minggu::class, 'id_minggu');
     }
 
     public function kursusInstruktur()

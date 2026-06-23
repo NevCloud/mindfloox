@@ -13,6 +13,9 @@
             document.documentElement.classList.remove('dark');
         }
     </script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 
 <body x-data="{
@@ -103,8 +106,17 @@
                     <section x-data="{
                         files: [],
                         isDragOver: false,
+                        showResetModal: false,
                         addFiles(fileList) {
+                            const allowedExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip'];
+                            let hasError = false;
+                            
                             for (let f of fileList) {
+                                const ext = f.name.split('.').pop().toLowerCase();
+                                if (!allowedExtensions.includes(ext)) {
+                                    hasError = true;
+                                    continue;
+                                }
                                 this.files.push({
                                     name: f.name,
                                     size: f.size,
@@ -113,9 +125,17 @@
                                     raw: f
                                 });
                             }
+                            
+                            if (hasError) {
+                                alert('Format file tidak didukung! Hanya bisa PDF, DOCX, PPTX, dan ZIP.');
+                                this.$refs.fileInput.value = '';
+                            }
                         },
                         removeFile(index) {
                             this.files.splice(index, 1);
+                            if (this.files.length === 0) {
+                                this.$refs.fileInput.value = '';
+                            }
                         }
                     }">
                         <div class="flex items-center justify-between mb-4">
@@ -213,7 +233,7 @@
                                 <div class="mb-3">
                                     @if($tugas->batas_waktu)
                                         <span class="inline-block px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-semibold rounded-full">
-                                            Deadline: {{ $tugas->batas_waktu->format('d M Y') }}
+                                            Deadline: {{ $tugas->batas_waktu->format('d M Y, H:i') }} WIB
                                         </span>
                                     @endif
                                 </div>
@@ -226,9 +246,9 @@
                                 </label>
                                 <div @dragover.prevent="isDragOver = true"
                                     @dragleave.prevent="isDragOver = false"
-                                    @drop.prevent="isDragOver = false; addFiles($event.dataTransfer.files)"
-                                    class="border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-200 cursor-pointer"
-                                    :class="isDragOver ? 'border-primary bg-primary/10 dark:bg-primary/20' : 'border-gray-300 dark:border-gray-600'"
+                                    @drop.prevent="isDragOver = false; files = []; addFiles($event.dataTransfer.files)"
+                                    class="border-2 border-dashed rounded-lg p-6 text-center transition-all duration-200 cursor-pointer hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/10"
+                                    :class="isDragOver ? 'border-primary bg-primary/10 dark:bg-primary/20 scale-[1.02]' : 'border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#1A1A2E]'"
                                     @click="$refs.fileInput.click()">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="w-12 h-12 mx-auto mb-4 text-gray-400 dark:text-gray-500"
@@ -237,8 +257,9 @@
                                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
                                     <p class="text-gray-600 dark:text-gray-400 mb-2">Drag and drop files here</p>
-                                    <p class="text-sm text-gray-500">or <span class="text-primary underline">click</span> to choose files</p>
-                                    <input x-ref="fileInput" type="file" name="file_tugas" class="hidden"
+                                    <p class="text-xs text-gray-500 mt-2">PDF, DOCX, PPTX, ZIP (Maks. 50MB)</p>
+                                    <p class="text-sm text-gray-500 mt-1">or <span class="text-primary underline">click</span> to choose files</p>
+                                    <input x-ref="fileInput" type="file" name="file_tugas" class="hidden" accept=".pdf,.docx,.pptx,.zip"
                                         @change="files = []; addFiles($event.target.files)">
                                 </div>
 
@@ -298,13 +319,45 @@
                                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                                     <span>{{ $jawaban ? 'Kumpulkan Ulang' : 'Kumpulkan' }}</span>
                                 </button>
-                                <button type="button" @click="if(files.length && confirm('Reset semua file?')) files = []"
+                                <button type="button" @click="if(files.length) showResetModal = true"
                                     class="inline-flex items-center justify-center gap-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
                                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                                     <span>Reset</span>
                                 </button>
                             </div>
                         </form>
+
+                        {{-- ============ MODAL RESET CONFIRMATION ============ --}}
+                        <div x-show="showResetModal" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4"
+                            style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
+                            <div @click.away="showResetModal = false" x-show="showResetModal" x-transition
+                                class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-800">
+                                <div
+                                    class="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-500/20">
+                                    <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                </div>
+
+                                <h3 class="text-xl font-bold text-center text-gray-800 dark:text-white mb-2">Reset File?</h3>
+                                <p class="text-sm text-center text-gray-500 mb-6">
+                                    File yang sudah Anda pilih akan dibatalkan. Apakah Anda yakin ingin mengulang?
+                                </p>
+
+                                <div class="flex gap-3">
+                                    <button type="button" @click="showResetModal = false"
+                                        class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition font-medium">
+                                        Batal
+                                    </button>
+                                    <button type="button" @click="files = []; $refs.fileInput.value = ''; showResetModal = false"
+                                        class="flex-1 px-4 py-3 rounded-lg bg-red-600 text-white hover:bg-red-700 transition font-medium">
+                                        Ya, Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                     </section>
 
                 </div><!-- end scrollable -->

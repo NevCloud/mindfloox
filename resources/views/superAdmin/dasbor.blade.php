@@ -84,7 +84,7 @@
 
                             <div class="p-5 max-h-[250px] overflow-y-auto">
                                 <table class="w-full text-xs">
-                                    <thead class="text-gray-500 border-b border-gray-200 dark:border-gray-800 sticky top-0 bg-white dark:bg-[#1A1A2E]">
+                                    <thead class="text-gray-500 border-b border-gray-200 dark:border-gray-800 sticky top-0 bg-white dark:bg-gray-900">
                                         <tr class="text-left">
                                             <th class="pb-3 font-medium">Jenis</th>
                                             <th class="pb-3 font-medium">Deskripsi</th>
@@ -92,7 +92,7 @@
                                     </thead>
                                     <tbody class="text-gray-800 dark:text-gray-300">
                                         @forelse ($jenisMicrocredentials as $item)
-                                            <tr class="border-b border-gray-100 dark:border-gray-800">
+                                            <tr class="border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
                                                 <td class="py-3 font-medium">{{ $item->nama }}</td>
                                                 <td class="py-3 text-gray-500">{{ Str::limit($item->deskripsi, 40) }}</td>
                                             </tr>
@@ -141,7 +141,7 @@
                                     <div
                                         class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                                         <div class="flex items-center gap-3 min-w-0">
-                                            <img src="{{ $user->foto_profil ? asset('storage/' . $user->foto_profil) : 'https://i.pravatar.cc/40?u=' . $user->id }}"
+                                            <img src="{{ $user->foto_profil ? asset('storage/' . $user->foto_profil) : 'https://ui-avatars.com/api/?name=' . urlencode($user->nama) . '&background=6C63FF&color=fff&size=64&font-size=0.4' }}"
                                                 class="w-10 h-10 rounded-full object-cover flex-shrink-0" alt="User">
                                             <div class="min-w-0">
                                                 <p class="font-medium text-gray-800 dark:text-white break-words">{{ $user->nama }}</p>
@@ -247,10 +247,10 @@
                                 </a>
                             </div>
 
-                            <div class="p-5 space-y-3 max-h-[250px] overflow-y-auto">
+                            <div class="p-5 space-y-4">
                                 @forelse ($semesters as $sem)
                                     <div
-                                        class="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                                        class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                                         <div class="flex-1">
                                             <p class="font-semibold text-gray-800 dark:text-white">
                                                 {{ ucfirst($sem->jenis) }} ({{ $sem->tahun }})
@@ -327,7 +327,8 @@
                             <span>Batal</span>
                         </button>
                         <button @click="saveData()"
-                            class="flex-1 px-4 py-3 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition font-medium">
+                            class="flex-1 px-4 py-3 rounded-lg bg-[#6C63FF] hover:bg-[#5A52D9] text-white transition font-medium inline-flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Simpan
                         </button>
                     </div>

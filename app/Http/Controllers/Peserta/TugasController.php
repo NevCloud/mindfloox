@@ -36,29 +36,44 @@ class TugasController extends Controller
 
         $tugas = Tugas::whereIn('id_kursus', $kursusIds)
             ->with('kursus')
-            ->orderBy('batas_waktu')
+            ->get();
+
+        $kuis = \App\Models\Kuis::whereIn('id_kursus', $kursusIds)
+            ->with('kursus')
             ->get();
 
         $pendaftaranIds = $pendaftaranList->pluck('id')->toArray();
 
-        $jawabanMap = JawabanTugas::whereIn('id_pendaftaran', $pendaftaranIds)
+        // Tugas Status
+        $jawabanTugasMap = JawabanTugas::whereIn('id_pendaftaran', $pendaftaranIds)
             ->where('status', 'final')
             ->get()
             ->keyBy('id_tugas');
 
-        $nilaiMap = NilaiTugas::whereIn('id_pendaftaran', $pendaftaranIds)
+        $nilaiTugasMap = NilaiTugas::whereIn('id_pendaftaran', $pendaftaranIds)
             ->get()
             ->keyBy('id_tugas');
 
-        $tugasList = $tugas->map(function (Tugas $t) use ($pendaftaranList, $jawabanMap, $nilaiMap) {
-            $pendaftaran = $pendaftaranList->first(
-                fn($p) => $p->programMicrocredential->kursus->contains('id', $t->id_kursus)
-            );
-            $jawaban = $jawabanMap->get($t->id);
-            $nilai   = $nilaiMap->get($t->id);
+        // Kuis Status
+        $sesiKuisList = \App\Models\SesiKuis::whereIn('id_pendaftaran', $pendaftaranIds)
+            ->with(['nilaiKuis', 'jawabanKuis'])
+            ->get()
+            ->keyBy('id_kuis');
+
+        $tugasList = $tugas->map(function (Tugas $t) use ($pendaftaranList, $jawabanTugasMap, $nilaiTugasMap) {
+            $jawaban = $jawabanTugasMap->get($t->id);
+            $nilai   = $nilaiTugasMap->get($t->id);
+
+            $btnLabel = 'Kumpulkan';
+            if ($nilai !== null) {
+                $btnLabel = 'Lihat Nilai';
+            } elseif ($jawaban) {
+                $btnLabel = 'Kumpulkan Ulang';
+            }
 
             return [
                 'id'          => $t->id,
+                'type'        => 'tugas',
                 'judul'       => $t->judul,
                 'deskripsi'   => $t->deskripsi,
                 'kursus'      => $t->kursus->nama,
@@ -68,10 +83,43 @@ class TugasController extends Controller
                 'disubmit_pada' => $jawaban?->disubmit_pada,
                 'nilai'       => $nilai?->nilai_mentah,
                 'dinilai_pada'=> $nilai?->dinilai_pada,
+                'url'         => route('peserta.tugas.show', $t->id),
+                'btn_label'   => $btnLabel,
             ];
-        })->values();
+        });
 
-        return view('peserta.tugas', compact('tugasList'));
+        $kuisList = $kuis->map(function (\App\Models\Kuis $k) use ($sesiKuisList) {
+            $sesi = $sesiKuisList->get($k->id);
+            $jawabanCount = $sesi ? $sesi->jawabanKuis->count() : 0;
+            $nilai = $sesi ? $sesi->nilaiKuis : null;
+            
+            $dikumpulkan = $nilai !== null || $jawabanCount > 0;
+
+            $btnLabel = 'Kerjakan';
+            if ($nilai !== null || $dikumpulkan) {
+                $btnLabel = 'Lihat Hasil';
+            }
+
+            return [
+                'id'          => $k->id,
+                'type'        => 'kuis',
+                'judul'       => 'Quiz: ' . $k->judul,
+                'deskripsi'   => $k->deskripsi,
+                'kursus'      => $k->kursus->nama,
+                'nilai_maks'  => 100, // assuming kuis is out of 100
+                'batas_waktu' => $k->batas_waktu,
+                'dikumpulkan' => $dikumpulkan,
+                'disubmit_pada' => $sesi?->diselesaikan_pada ?? $sesi?->dimulai_pada,
+                'nilai'       => $nilai?->nilai_mentah,
+                'dinilai_pada'=> $nilai?->dihitung_pada,
+                'url'         => route('peserta.kuis.show', $k->id),
+                'btn_label'   => $btnLabel,
+            ];
+        });
+
+        $gabunganList = $tugasList->concat($kuisList)->sortBy('batas_waktu')->values();
+
+        return view('peserta.tugas', ['tugasList' => $gabunganList]);
     }
 
     private function getPendaftaran(Tugas $tugas): Pendaftaran

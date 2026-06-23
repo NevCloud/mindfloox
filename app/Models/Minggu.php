@@ -13,9 +13,18 @@ class Minggu extends Model
     const UPDATED_AT = 'diperbarui_pada';
 
     protected $fillable = [
+        'id_kursus',
         'nomor_minggu',
+        'nama',
+        'judul',
+        'deskripsi',
         'status',
     ];
+
+    public function kursus()
+    {
+        return $this->belongsTo(Kursus::class, 'id_kursus');
+    }
 
     public function materiPembelajaran()
     {
@@ -25,5 +34,10 @@ class Minggu extends Model
     public function kuis()
     {
         return $this->hasMany(Kuis::class, 'id_minggu');
+    }
+
+    public function tugas()
+    {
+        return $this->hasMany(Tugas::class, 'id_minggu');
     }
 }

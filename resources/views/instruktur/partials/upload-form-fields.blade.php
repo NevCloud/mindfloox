@@ -40,16 +40,9 @@
         <textarea name="deskripsi" x-model="deskripsi" rows="3" placeholder="Deskripsi atau instruksi..." class="textarea"></textarea>
     </div>
 
-    {{-- Minggu (untuk materi + kuis) --}}
-    <div x-show="tipeMateri === 'dokumen' || tipeMateri === 'video' || tipeMateri === 'tautan' || tipeMateri === 'kuis'" x-transition>
-        <label class="label dark:text-white">Minggu Ke <span class="text-red-500">*</span></label>
-        <select name="minggu_ke" x-model="minggu" class="input">
-            <option value="">Pilih Minggu</option>
-            @foreach($mingguList as $m)
-                <option value="{{ $m }}">Minggu {{ $m }}</option>
-            @endforeach
-        </select>
-    </div>
+    {{-- Minggu (Hidden since it's pre-selected from the URL) --}}
+    <input type="hidden" name="minggu_ke" x-model="minggu">
+    <input type="hidden" name="posisi" x-model="posisi">
 
     {{-- Nilai / bobot (untuk tugas & kuis) --}}
     <div x-show="tipeMateri === 'tugas' || tipeMateri === 'kuis'" x-transition>
@@ -58,16 +51,38 @@
         <p class="text-xs text-gray-400 mt-1">Bobot kumulatif semua tugas/kuis sebaiknya = 100.</p>
     </div>
 
+    {{-- Tanggal Mulai (tugas) --}}
+    <div x-show="tipeMateri === 'tugas'" x-transition>
+        <label class="label dark:text-white">Tanggal Mulai</label>
+        <input type="text" name="tanggal_mulai" x-model="tanggalMulaiTugas" class="input flatpickr-datetime" placeholder="Pilih tanggal dan waktu">
+        <p class="text-xs text-gray-400 mt-1">Kapan tugas mulai bisa diakses peserta.</p>
+    </div>
+
     {{-- Deadline (tugas) --}}
     <div x-show="tipeMateri === 'tugas'" x-transition>
-        <label class="label dark:text-white">Batas Waktu</label>
-        <input type="datetime-local" name="batas_waktu" x-model="deadline" class="input">
+        <label class="label dark:text-white">Batas Waktu (Deadline)</label>
+        <input type="text" name="batas_waktu" x-model="deadline" class="input flatpickr-datetime" placeholder="Pilih tanggal dan waktu">
+        <p class="text-xs text-gray-400 mt-1">Kapan tugas terakhir bisa dikumpulkan.</p>
     </div>
 
     {{-- Durasi (kuis) --}}
     <div x-show="tipeMateri === 'kuis'" x-transition>
         <label class="label dark:text-white">Durasi Pengerjaan (menit)</label>
         <input type="number" name="batas_waktu_menit" x-model="batas_waktu_menit" placeholder="Contoh: 30" min="1" max="300" class="input">
+    </div>
+
+    {{-- Tanggal Mulai (kuis) --}}
+    <div x-show="tipeMateri === 'kuis'" x-transition>
+        <label class="label dark:text-white">Tanggal Mulai</label>
+        <input type="text" name="tanggal_mulai" x-model="tanggalMulaiKuis" class="input flatpickr-datetime" placeholder="Pilih tanggal dan waktu">
+        <p class="text-xs text-gray-400 mt-1">Kapan kuis mulai bisa diakses peserta.</p>
+    </div>
+
+    {{-- Batas Waktu / Deadline (kuis) --}}
+    <div x-show="tipeMateri === 'kuis'" x-transition>
+        <label class="label dark:text-white">Batas Waktu (Deadline)</label>
+        <input type="text" name="batas_waktu_kuis" x-model="batasWaktuKuis" class="input flatpickr-datetime" placeholder="Pilih tanggal dan waktu">
+        <p class="text-xs text-gray-400 mt-1">Kapan kuis ditutup / tidak bisa diakses lagi.</p>
     </div>
 
     {{-- ===== MATERI: Link / File ===== --}}
@@ -81,8 +96,15 @@
 
     <div x-show="tipeMateri === 'dokumen'" x-transition>
         <label class="label dark:text-white">Upload File</label>
-        <label class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-200 hover:border-primary"
-            :class="fileName ? 'border-primary bg-primary/5 dark:bg-primary/10' : 'border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#1A1A2E]'">
+        <label class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-200 hover:border-primary relative"
+            x-data="{ isDragging: false }"
+            @dragover.prevent="isDragging = true"
+            @dragleave.prevent="isDragging = false"
+            @drop.prevent="isDragging = false; if($event.dataTransfer.files.length) { $refs.fileInput.files = $event.dataTransfer.files; handleFile({target: {files: $event.dataTransfer.files}}) }"
+            :class="[
+                fileName ? 'border-primary bg-primary/5 dark:bg-primary/10' : 'border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#1A1A2E]',
+                isDragging ? 'border-primary bg-primary/10 dark:bg-primary/20 scale-[1.02]' : ''
+            ]">
             <template x-if="!fileName">
                 <div class="flex flex-col items-center py-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -103,7 +125,7 @@
                     </div>
                 </div>
             </template>
-            <input type="file" name="file" class="hidden" accept=".pdf,.docx,.pptx,.zip" @change="handleFile($event)">
+            <input type="file" x-ref="fileInput" name="file" class="hidden" accept=".pdf,.docx,.pptx,.zip" @change="handleFile($event)">
         </label>
         @if($tipe === 'materi' && $item && $item->url_file)
             <p class="text-xs text-gray-400 mt-2">File saat ini: <span class="text-primary">{{ basename($item->url_file) }}</span> (kosongkan untuk mempertahankan)</p>

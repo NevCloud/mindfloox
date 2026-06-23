@@ -46,4 +46,16 @@ class Instruktur extends Model
     {
         return $this->hasMany(NilaiTugas::class, 'dinilai_oleh');
     }
+
+    public function getTotalPesertaAttribute()
+    {
+        $kiIds = $this->kursusInstruktur()->pluck('id')->toArray();
+        $programIds = \App\Models\Kursus::whereIn('id', function($q) use ($kiIds) {
+            $q->select('id_kursus')->from('kursus_instruktur')->whereIn('id', $kiIds);
+        })->pluck('id_program_microcredential')->unique();
+
+        return \App\Models\Pendaftaran::whereIn('id_program_microcredential', $programIds)
+            ->where('status', 'diterima')
+            ->count();
+    }
 }

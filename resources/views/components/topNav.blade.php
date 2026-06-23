@@ -13,19 +13,7 @@
             </svg>
         </button>
 
-        <!-- Search -->
-        <div
-            class="flex-1 flex items-center gap-2 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 transition-all duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input type="text" placeholder="Cari admin, course, instruktur, dll..."
-                class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500">
-        </div>
-
-
+        <div class="flex-1"></div>
 
         <!-- Dark mode toggle -->
         <button @click="toggleDark()" class="w-14 h-8 flex items-center rounded-full p-1 transition-all duration-300"
@@ -81,19 +69,7 @@
             </svg>
         </button>
 
-        <!-- Search -->
-        <div
-            class="flex-1 flex items-center gap-2 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 transition-all duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input type="text" placeholder="Cari verifikasi peserta, course, instruktur, dll..."
-                class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500">
-        </div>
-
-
+        <div class="flex-1"></div>
 
         <!-- Dark mode toggle -->
         <button @click="toggleDark()" class="w-14 h-8 flex items-center rounded-full p-1 transition-all duration-300"
@@ -149,19 +125,7 @@
             </svg>
         </button>
 
-        <!-- Search -->
-        <div
-            class="flex-1 flex items-center gap-2 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 transition-all duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input type="text" placeholder="Cari course saya, tugas, nilai..."
-                class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500">
-        </div>
-
-
+        <div class="flex-1"></div>
 
         <!-- Dark mode toggle -->
         <button @click="toggleDark()" class="w-14 h-8 flex items-center rounded-full p-1 transition-all duration-300"
@@ -217,19 +181,7 @@
             </svg>
         </button>
 
-        <!-- Search -->
-        <div
-            class="flex-1 flex items-center gap-2 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 transition-all duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input type="text" placeholder="Cari course, tugas, materi..."
-                class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500">
-        </div>
-
-
+        <div class="flex-1"></div>
 
         <!-- Dark mode toggle -->
         <button @click="toggleDark()" class="w-14 h-8 flex items-center rounded-full p-1 transition-all duration-300"

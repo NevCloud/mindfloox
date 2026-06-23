@@ -47,7 +47,7 @@
             </main>
 
             <!-- ===== RIGHT PANEL ===== -->
-            <x-rightPanel/>
+            <x-rightPanel />
 
         </div>
 

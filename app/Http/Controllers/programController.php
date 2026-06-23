@@ -3,15 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
+use App\Models\ProgramMicrocredential;
+use App\Models\JenisMicrocredential;
 
 class programController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $program = config('program');
+        $search = $request->input('search');
+        $jenis_id = $request->input('jenis');
 
-        return view('program', compact('program'));
+        $query = ProgramMicrocredential::with(['adminMicrocredential.pengguna', 'jenisMicrocredential'])
+            ->withCount(['pendaftaran' => function ($query) {
+                $query->where('status', 'diterima');
+            }]);
+
+        if ($search) {
+            $query->where('nama', 'like', '%' . $search . '%');
+        }
+
+        if ($jenis_id) {
+            $query->where('id_jenis_microcredential', $jenis_id);
+        }
+
+        $program = $query->latest('dibuat_pada')->get();
+        $kategori = JenisMicrocredential::all();
+
+        return view('program', compact('program', 'kategori'));
     }
 }

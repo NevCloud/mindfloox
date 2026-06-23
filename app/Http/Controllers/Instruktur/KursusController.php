@@ -38,11 +38,8 @@ class KursusController extends Controller
     {
         $kursusInstruktur = $this->getKursusInstruktur($kursus);
 
-        $mingguIds = MateriPembelajaran::where('id_kursus', $kursus->id)->pluck('id_minggu')
-            ->merge(Kuis::where('id_kursus', $kursus->id)->pluck('id_minggu'))
-            ->unique()->filter()->values();
-
-        $minggu = Minggu::whereIn('id', $mingguIds)
+        // Load all weeks for this course (including empty ones)
+        $minggu = Minggu::where('id_kursus', $kursus->id)
             ->orderBy('nomor_minggu')
             ->with([
                 'materiPembelajaran' => fn($q) => $q->where('id_kursus', $kursus->id)->orderBy('nomor_urut'),
@@ -50,13 +47,34 @@ class KursusController extends Controller
             ])
             ->get();
 
+        // If no weeks exist yet (old courses), create 14 on the fly
+        if ($minggu->isEmpty()) {
+            for ($i = 1; $i <= 14; $i++) {
+                Minggu::create([
+                    'id_kursus'    => $kursus->id,
+                    'nomor_minggu' => $i,
+                    'nama'         => 'Minggu ' . $i,
+                    'judul'        => null,
+                    'deskripsi'    => 'Materi minggu ke-' . $i,
+                    'status'       => $i <= 3 ? 'aktif' : 'nonaktif',
+                ]);
+            }
+            $minggu = Minggu::where('id_kursus', $kursus->id)
+                ->orderBy('nomor_minggu')
+                ->with([
+                    'materiPembelajaran' => fn($q) => $q->where('id_kursus', $kursus->id)->orderBy('nomor_urut'),
+                    'kuis'               => fn($q) => $q->where('id_kursus', $kursus->id),
+                ])
+                ->get();
+        }
+
         $tugas = Tugas::where('id_kursus', $kursus->id)
             ->where('id_kursus_instruktur', $kursusInstruktur->id)
             ->orderBy('dibuat_pada')
             ->get();
 
         // Transform for Alpine.js consumption
-        $weeksJs = $minggu->map(function (Minggu $m) {
+        $weeksJs = $minggu->map(function (Minggu $m) use ($tugas) {
             $items = [];
 
             foreach ($m->materiPembelajaran as $materi) {
@@ -79,8 +97,22 @@ class KursusController extends Controller
                     'tipe_materi'=> 'kuis',
                     'judul'      => $k->judul,
                     'url_file'   => null,
-                    'nomor_urut' => 9999,
+                    'nomor_urut' => $k->nomor_urut ?? 999,
                     'meta1'      => $k->batas_waktu_menit ? $k->batas_waktu_menit . ' Menit' : null,
+                    'meta2'      => null,
+                ];
+            }
+
+            $mingguTugas = $tugas->where('id_minggu', $m->id);
+            foreach ($mingguTugas as $t) {
+                $items[] = [
+                    'id'         => $t->id,
+                    'tipe'       => 'tugas',
+                    'tipe_materi'=> 'tugas',
+                    'judul'      => $t->judul,
+                    'url_file'   => null,
+                    'nomor_urut' => $t->nomor_urut ?? 999,
+                    'meta1'      => $t->batas_waktu ? 'Tenggat: ' . $t->batas_waktu->format('d M Y, H:i') : null,
                     'meta2'      => null,
                 ];
             }
@@ -88,21 +120,17 @@ class KursusController extends Controller
             usort($items, fn($a, $b) => $a['nomor_urut'] <=> $b['nomor_urut']);
 
             return [
-                'id'     => $m->id,
-                'nomor'  => $m->nomor_minggu,
-                'status' => $m->status,
-                'open'   => false,
-                'items'  => array_values($items),
+                'id'        => $m->id,
+                'nomor'     => $m->nomor_minggu,
+                'judul'     => $m->judul,
+                'deskripsi' => $m->deskripsi,
+                'status'    => $m->status,
+                'open'      => false,
+                'items'     => array_values($items),
             ];
         })->values();
 
-        $tugasJs = $tugas->map(fn(Tugas $t) => [
-            'id'          => $t->id,
-            'judul'       => $t->judul,
-            'deskripsi'   => $t->deskripsi,
-            'nilai'       => $t->nilai,
-            'batas_waktu' => $t->batas_waktu?->format('d M Y H:i'),
-        ])->values();
+        $tugasJs = [];
 
         return view('instruktur.detail-kursus', compact(
             'kursus', 'kursusInstruktur', 'weeksJs', 'tugasJs'

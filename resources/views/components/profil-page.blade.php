@@ -4,7 +4,7 @@
      Routes auto-detected from $user->role.
      ============================================================ --}}
 
-@props(['user'])
+@props(['user', 'programs'])
 
 @php
     // Auto-detect route prefix & page title from user role
@@ -46,6 +46,8 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil - {{ $pageTitle }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
@@ -55,6 +57,9 @@
             document.documentElement.classList.remove('dark');
         }
     </script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 
 <body x-data="profilApp()" x-init="init(); document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray-50 dark:bg-[#0F0F1A]">
@@ -299,6 +304,7 @@
                                 </section>
 
                                 <!-- PROGRAM MICROCREDENTIAL -->
+                                @if($user->role === 'admin_microcredential')
                                 <section>
 
                                     <div class="flex items-center justify-between mb-4">
@@ -307,18 +313,42 @@
                                         </h3>
                                     </div>
 
-                                    <div class="card-fix p-8 text-center">
-                                        <svg class="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                                        </svg>
-                                        <p class="text-sm text-gray-400 dark:text-gray-500">
-                                            Belum ada program microcredential yang terdaftar.
-                                        </p>
-                                        <p class="text-xs text-gray-400 dark:text-gray-600 mt-1">
-                                            Data akan muncul setelah Anda terdaftar di suatu program.
-                                        </p>
-                                    </div>
+                                    @if(isset($programs) && $programs->count())
+                                        <div class="space-y-3">
+                                            @foreach($programs as $program)
+                                                <div class="card-fix p-4">
+                                                    <h4 class="text-sm font-semibold dark:text-white">{{ $program->nama }}</h4>
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                        {{ $program->jenisMicrocredential->nama ?? '-' }}
+                                                        @if($program->semester)
+                                                            · {{ $program->semester->jenis }} {{ $program->semester->tahun }}
+                                                        @endif
+                                                    </p>
+                                                    <div class="mt-2">
+                                                        @if($program->status_pendaftaran === 'buka')
+                                                            <span class="px-2 py-1 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-medium rounded-full">Buka</span>
+                                                        @else
+                                                            <span class="px-2 py-1 bg-red-100 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-medium rounded-full">Tutup</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="card-fix p-8 text-center">
+                                            <svg class="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                            </svg>
+                                            <p class="text-sm text-gray-400 dark:text-gray-500">
+                                                Belum ada program microcredential yang terdaftar.
+                                            </p>
+                                            <p class="text-xs text-gray-400 dark:text-gray-600 mt-1">
+                                                Data akan muncul setelah Super Admin menugaskan program kepada Anda.
+                                            </p>
+                                        </div>
+                                    @endif
                                 </section>
+                                @endif
 
                             </div>
 
@@ -340,11 +370,11 @@
     {{-- ========================================= --}}
     {{-- MODAL EDIT PROFIL --}}
     {{-- ========================================= --}}
-    <div x-show="showEditModal" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
+    <div x-show="showEditModal" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="background:rgba(0,0,0,0.5)">
 
-        <div @click.outside="showEditModal = false" x-show="showEditModal"
+        <div @click.outside="if (!$event.target.closest('.flatpickr-calendar')) showEditModal = false" x-show="showEditModal"
             x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95"
             x-transition:enter-end="opacity-100 scale-100"
             class="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-[#1A1A2E] shadow-2xl p-6">
@@ -439,8 +469,9 @@
                     {{-- Tanggal Lahir --}}
                     <div>
                         <label class="text-xs text-gray-400 mb-1 block">Tanggal Lahir</label>
-                        <input type="date" name="tanggal_lahir" x-model="form.tanggal_lahir"
-                            class="w-full input text-sm dark:text-white bg-gray-50 dark:bg-[#0F0F1A] border border-gray-200 dark:border-white/5 rounded-xl focus:outline-none focus:border-primary">
+                        <input type="text" id="flatpickrTanggalLahir" name="tanggal_lahir" x-model="form.tanggal_lahir" readonly
+                            placeholder="Pilih tanggal lahir"
+                            class="w-full input text-sm dark:text-white bg-gray-50 dark:bg-[#0F0F1A] border border-gray-200 dark:border-white/5 rounded-xl focus:outline-none focus:border-primary cursor-pointer">
                     </div>
 
                     {{-- Alamat --}}
@@ -552,7 +583,25 @@
                 init() {
                     @if($errors->any())
                         this.showEditModal = true;
+                        this.$nextTick(() => this.initFlatpickr());
                     @endif
+                },
+
+                initFlatpickr() {
+                    const el = document.getElementById('flatpickrTanggalLahir');
+                    if (el) {
+                        // Destroy existing instance if any
+                        if (el._flatpickr) el._flatpickr.destroy();
+                        flatpickr(el, {
+                            dateFormat: 'Y-m-d',
+                            altInput: true,
+                            altFormat: 'd F Y',
+                            defaultDate: this.form.tanggal_lahir || null,
+                            onChange: (selectedDates, dateStr) => {
+                                this.form.tanggal_lahir = dateStr;
+                            }
+                        });
+                    }
                 },
 
                 openEditModal() {
@@ -560,6 +609,9 @@
                     this.photoPreview = null;
                     this.usernameStatus = null;
                     this.usernameMessage = '';
+
+                    // Initialize flatpickr when modal opens
+                    this.$nextTick(() => this.initFlatpickr());
                 },
 
                 async checkUsername() {

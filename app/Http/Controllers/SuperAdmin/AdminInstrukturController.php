@@ -239,18 +239,28 @@ class AdminInstrukturController extends Controller
 
         // LANGKAH 1 & 2: Hapus dalam transaction agar atomic
         // Jika salah satu gagal, semua rollback
-        DB::transaction(function () use ($pengguna) {
-            // Hapus record relasi di tabel role-specific terlebih dahulu
-            // Ini penting untuk menghindari error Foreign Key Constraint
-            if ($pengguna->role === 'admin_microcredential') {
-                AdminMicrocredential::where('id_pengguna', $pengguna->id)->delete();
-            } elseif ($pengguna->role === 'instruktur') {
-                Instruktur::where('id_pengguna', $pengguna->id)->delete();
-            }
+        try {
+            DB::transaction(function () use ($pengguna) {
+                // Hapus record relasi di tabel role-specific terlebih dahulu
+                // Ini penting untuk menghindari error Foreign Key Constraint
+                if ($pengguna->role === 'admin_microcredential') {
+                    AdminMicrocredential::where('id_pengguna', $pengguna->id)->delete();
+                } elseif ($pengguna->role === 'instruktur') {
+                    Instruktur::where('id_pengguna', $pengguna->id)->delete();
+                }
 
-            // Baru hapus record di tabel pengguna
-            $pengguna->delete();
-        });
+                // Baru hapus record di tabel pengguna
+                $pengguna->delete();
+            });
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == '23000') {
+                $roleLabel = $pengguna->role === 'admin_microcredential' ? 'Admin Microcredential' : 'Instruktur';
+                return redirect()
+                    ->route('superAdmin.adminInstruktur')
+                    ->with('error', "Gagal menghapus! Akun {$roleLabel} ini tidak bisa dihapus karena masih terikat dengan data lain di sistem (misal: sudah ditugaskan ke kursus atau memiliki data aktivitas). Lepaskan akses tersebut terlebih dahulu.");
+            }
+            throw $e;
+        }
 
         $roleLabel = $pengguna->role === 'admin_microcredential' ? 'Admin Microcredential' : 'Instruktur';
 

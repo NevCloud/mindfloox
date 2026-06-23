@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $item ? 'Edit Konten' : 'Tambah Konten' }} - Instruktur</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
@@ -12,6 +14,9 @@
             document.documentElement.classList.remove('dark');
         }
     </script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 
 <body x-data="uploadApp()" x-init="init()"
@@ -150,7 +155,13 @@
                 judulMateri: @json($item?->judul ?? ''),
                 deskripsi: @json($item?->deskripsi ?? ''),
                 minggu: _initialMinggu ?? '',
+                posisi: @json(request('posisi') ?? ''),
                 validationError: '',
+                tanggalMulaiTugas: @json(
+                    $tipe === 'tugas' && $item && $item->tanggal_mulai
+                        ? $item->tanggal_mulai->format('Y-m-d\TH:i')
+                        : ''
+                ),
                 deadline: @json(
                     $tipe === 'tugas' && $item && $item->batas_waktu
                         ? $item->batas_waktu->format('Y-m-d\TH:i')
@@ -158,6 +169,16 @@
                 ),
                 nilai: @json($item?->nilai ?? ''),
                 batas_waktu_menit: @json($tipe === 'kuis' && $item ? $item->batas_waktu_menit : ''),
+                tanggalMulaiKuis: @json(
+                    $tipe === 'kuis' && $item && $item->tanggal_mulai
+                        ? $item->tanggal_mulai->format('Y-m-d\TH:i')
+                        : ''
+                ),
+                batasWaktuKuis: @json(
+                    $tipe === 'kuis' && $item && $item->batas_waktu
+                        ? $item->batas_waktu->format('Y-m-d\TH:i')
+                        : ''
+                ),
                 fileName: '',
                 linkVideo: @json($tipe === 'materi' && $item ? ($item->url_file ?? '') : ''),
 
@@ -169,6 +190,29 @@
                 init() {
                     document.documentElement.classList.toggle('dark', this.dark);
                     if (_initialTipe) this.tipeMateri = _initialTipe;
+
+                    this.$watch('tipeMateri', () => {
+                        this.$nextTick(() => this.initFlatpickr());
+                    });
+                    this.$nextTick(() => this.initFlatpickr());
+                },
+
+                initFlatpickr() {
+                    const elems = document.querySelectorAll('.flatpickr-datetime');
+                    elems.forEach(el => {
+                        if (el._flatpickr) el._flatpickr.destroy();
+                        
+                        const modelName = el.getAttribute('x-model');
+                        
+                        flatpickr(el, {
+                            enableTime: true,
+                            dateFormat: "Y-m-d H:i",
+                            defaultDate: this[modelName] || null,
+                            onChange: (selectedDates, dateStr) => {
+                                this[modelName] = dateStr;
+                            }
+                        });
+                    });
                 },
 
                 toggleDark() {
@@ -201,7 +245,19 @@
 
                 handleFile(e) {
                     const file = e.target.files[0];
-                    if (file) this.fileName = file.name;
+                    if (file) {
+                        const allowedExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip'];
+                        const ext = file.name.split('.').pop().toLowerCase();
+                        if (!allowedExtensions.includes(ext)) {
+                            this.validationError = 'Format file tidak didukung! Hanya bisa PDF, DOCX, PPTX, dan ZIP.';
+                            this.fileName = '';
+                            if (this.$refs && this.$refs.fileInput) this.$refs.fileInput.value = '';
+                            else e.target.value = '';
+                            return;
+                        }
+                        this.fileName = file.name;
+                        this.validationError = '';
+                    }
                 },
 
                 submitForm(e) {

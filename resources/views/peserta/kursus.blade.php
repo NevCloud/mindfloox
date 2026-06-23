@@ -51,15 +51,17 @@
                                         $bgRgba   = 'rgba(' . implode(',', sscanf(substr($color,1), '%02x%02x%02x')) . ',0.15)';
                                         $btnMap   = ['#2196f3'=>'bg-blue-500 hover:bg-blue-600','#9c27b0'=>'bg-purple-500 hover:bg-purple-600','#ff9800'=>'bg-orange-500 hover:bg-orange-600','#f44336'=>'bg-red-500 hover:bg-red-600','#4caf50'=>'bg-green-500 hover:bg-green-600','#00bcd4'=>'bg-cyan-500 hover:bg-cyan-600'];
                                         $btnClass = $btnMap[$color] ?? 'bg-blue-500 hover:bg-blue-600';
-                                        $imgSrc   = $k->foto_kursus
+                                        $imgSrc = $k->foto_kursus 
                                             ? (str_starts_with($k->foto_kursus, 'http') ? $k->foto_kursus : asset('storage/' . $k->foto_kursus))
-                                            : 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400';
+                                            : ($k->programMicrocredential && $k->programMicrocredential->foto_program 
+                                                ? (str_starts_with($k->programMicrocredential->foto_program, 'http') ? $k->programMicrocredential->foto_program : asset('storage/' . $k->programMicrocredential->foto_program)) 
+                                                : 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400');
                                     @endphp
                                     <a href="{{ route('peserta.kursus.show', $k->id) }}"
                                         class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
                                         <div class="flex-1 p-4">
                                             <div class="flex items-stretch gap-3">
-                                                <div class="w-24 flex-shrink-0 rounded-xl overflow-hidden" style="background:{{ $bgRgba }}">
+                                                <div class="w-36 h-24 flex-shrink-0 rounded-xl overflow-hidden" style="background:{{ $bgRgba }}">
                                                     <img src="{{ $imgSrc }}" class="w-full h-full object-cover" alt="{{ $k->nama }}">
                                                 </div>
                                                 <div class="flex-1 min-w-0">

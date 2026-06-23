@@ -26,10 +26,10 @@ class VerifikasiController extends Controller
             'diverifikasiOleh.pengguna',
         ]);
 
-        // Filter: admin hanya melihat pendaftaran program sesuai jenis microcredential-nya
-        if ($admin && $admin->id_jenis_microcredential) {
+        // Filter: admin hanya melihat pendaftaran untuk program yang di-assign langsung
+        if ($admin) {
             $query->whereHas('programMicrocredential', function ($q) use ($admin) {
-                $q->where('id_jenis_microcredential', $admin->id_jenis_microcredential);
+                $q->where('id_admin_microcredential', $admin->id);
             });
         }
 
@@ -105,6 +105,7 @@ class VerifikasiController extends Controller
         $message     = "Pendaftaran {$pesertaName} berhasil {$statusLabel}.";
 
         if ($request->expectsJson()) {
+            session()->flash('success', $message);
             return response()->json([
                 'success'          => true,
                 'message'          => $message,

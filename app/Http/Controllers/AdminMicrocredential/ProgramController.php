@@ -10,36 +10,29 @@ use Illuminate\Support\Facades\Auth;
 class ProgramController extends Controller
 {
     /**
-     * Menampilkan daftar program akademik yang dapat dikelola oleh admin microcredential.
-     * Admin hanya melihat program yang sesuai dengan jenis microcredential yang di-assign kepadanya.
+     * Redirect admin langsung ke halaman kursus program yang di-assign kepadanya.
+     * Admin hanya mengelola 1 program sesuai jenis microcredential-nya.
      */
     public function index(Request $request)
     {
         $user = Auth::user();
         $admin = $user->adminMicrocredential;
 
-        $query = ProgramMicrocredential::with(['jenisMicrocredential', 'semester', 'kursus']);
+        $query = ProgramMicrocredential::query();
 
-        // Filter: admin hanya melihat program sesuai jenis microcredential-nya
-        if ($admin && $admin->id_jenis_microcredential) {
-            $query->where('id_jenis_microcredential', $admin->id_jenis_microcredential);
+        // Filter: admin melihat program yang di-assign langsung
+        if ($admin) {
+            $query->where('id_admin_microcredential', $admin->id);
         }
 
-        // Search filter
-        if ($search = $request->input('search')) {
-            $query->where(function ($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('status_pendaftaran', 'like', "%{$search}%");
-            });
+        $program = $query->first();
+
+        // Langsung redirect ke halaman kursus program tersebut
+        if ($program) {
+            return redirect()->route('admin.program.kursus.index', $program->id);
         }
 
-        // Status filter
-        if ($status = $request->input('status')) {
-            $query->where('status_pendaftaran', $status);
-        }
-
-        $programs = $query->orderBy('dibuat_pada', 'desc')->get();
-
-        return view('admin.programIndex', compact('programs'));
+        // Fallback jika belum ada program yang di-assign
+        return redirect()->route('admin.dasbor')->with('info', 'Belum ada program yang di-assign ke Anda.');
     }
 }

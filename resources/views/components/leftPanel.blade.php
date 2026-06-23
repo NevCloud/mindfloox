@@ -24,7 +24,9 @@
     // Foto profil: pakai foto asli kalau ada, atau fallback ke avatar API (inisial)
     $avatarUrl = $user->foto_profil
         ? asset('storage/' . $user->foto_profil)
-        : 'https://ui-avatars.com/api/?name=' . urlencode($user->nama) . '&background=6C63FF&color=fff&size=64&font-size=0.4';
+        : 'https://ui-avatars.com/api/?name=' .
+            urlencode($user->nama) .
+            '&background=6C63FF&color=fff&size=64&font-size=0.4';
 @endphp
 
 
@@ -108,7 +110,8 @@
         <!-- User info + Logout -->
         <div class="px-3 py-4 border-t border-black/5 dark:border-white/5 space-y-1 flex-shrink-0">
             <!-- Profil: klik untuk ke halaman profil -->
-            <a href="{{ $profileLink }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 transition">
+            <a href="{{ $profileLink }}"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 transition">
                 <img src="{{ $avatarUrl }}"
                     class="w-8 h-8 rounded-full object-cover ring-2 ring-offset-0 flex-shrink-0"
                     style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
@@ -165,7 +168,7 @@
                 Dashboard
             </a>
 
-            <!-- Program Microcredential -->
+            <!-- Kelola Kursus -->
             <a href="{{ url('/admin/program') }}"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->is('admin/program*') ? 'bg-primary/10 text-primary' : 'text-gray-500 dark:text-gray-400 hover:bg-primary/5 hover:text-primary' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0" fill="none"
@@ -173,7 +176,7 @@
                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                 </svg>
-                Program Microcredential
+                Kelola Kursus
             </a>
 
             <!-- Verifikasi Pendaftaran -->
@@ -192,7 +195,8 @@
         <!-- User info + Logout -->
         <div class="px-3 py-4 border-t border-black/5 dark:border-white/5 space-y-1 flex-shrink-0">
             <!-- Profil: klik untuk ke halaman profil -->
-            <a href="{{ $profileLink }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 transition">
+            <a href="{{ $profileLink }}"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 transition">
                 <img src="{{ $avatarUrl }}"
                     class="w-8 h-8 rounded-full object-cover ring-2 ring-offset-0 flex-shrink-0"
                     style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
@@ -257,7 +261,7 @@
                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                 </svg>
-                Courses
+                Kursus
             </a>
 
             <!-- Tugas -->
@@ -286,7 +290,8 @@
         <!-- User info + Logout -->
         <div class="px-3 py-4 border-t border-black/5 dark:border-white/5 space-y-1 flex-shrink-0">
             <!-- Profil: klik untuk ke halaman profil -->
-            <a href="{{ $profileLink }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 transition">
+            <a href="{{ $profileLink }}"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 transition">
                 <img src="{{ $avatarUrl }}"
                     class="w-8 h-8 rounded-full object-cover ring-2 ring-offset-0 flex-shrink-0"
                     style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">
@@ -370,7 +375,8 @@
         <!-- User info + Logout -->
         <div class="px-3 py-4 border-t border-black/5 dark:border-white/5 space-y-1 flex-shrink-0">
             <!-- Profil: klik untuk ke halaman profil -->
-            <a href="{{ $profileLink }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 transition">
+            <a href="{{ $profileLink }}"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 transition">
                 <img src="{{ $avatarUrl }}"
                     class="w-8 h-8 rounded-full object-cover ring-2 ring-offset-0 flex-shrink-0"
                     style="box-shadow:0 0 0 2px rgba(108,99,255,0.3)">

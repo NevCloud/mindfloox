@@ -16,7 +16,7 @@ class AdminMicrocredential extends Model
         "id_dibuat_oleh",
         "id_pengguna",
     ];
-    
+
     public function pengguna()
     {
         return $this->belongsTo(Pengguna::class, 'id_pengguna');
@@ -40,5 +40,10 @@ class AdminMicrocredential extends Model
     public function pesertaYangDiaktifkan()
     {
         return $this->hasMany(Peserta::class, 'diaktifkan_oleh');
+    }
+
+    public function programs()
+    {
+        return $this->hasMany(ProgramMicrocredential::class, 'id_admin_microcredential');
     }
 }

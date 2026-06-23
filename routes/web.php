@@ -11,9 +11,10 @@ use App\Http\Controllers\SuperAdmin\JenisMicrocredentialController;
 use App\Http\Controllers\SuperAdmin\SemesterController;
 use App\Http\Controllers\SuperAdmin\ProgramMicrocredentialController;
 use App\Http\Controllers\SuperAdmin\AdminInstrukturController;
-use App\Http\Controllers\tugasController;
+
 use App\Http\Controllers\Instruktur\KursusController as InstrukturKursusController;
 use App\Http\Controllers\Instruktur\KontenController;
+use App\Http\Controllers\Instruktur\MingguController;
 use App\Http\Controllers\Instruktur\EvaluasiController;
 use App\Http\Controllers\Peserta\KursusController as PesertaKursusController;
 use App\Http\Controllers\Peserta\KuisController as PesertaKuisController;
@@ -47,11 +48,17 @@ Route::get('/login', function () {
 
     // 2. TAMPILKAN FORM
     // Jika belum login sama sekali, barulah kita tampilkan halaman form login.
-    return view('login');})->name('login');
+    return view('login');
+})->name('login');
 
-    Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/register', function () { return view('register');})->name('register.process');
+Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/register', function () {
+    return view('register');
+})->name('register.process');
+
+Route::get('/cek-akun', [\App\Http\Controllers\CekAkunController::class, 'index'])->name('cek-akun');
+Route::post('/cek-akun', [\App\Http\Controllers\CekAkunController::class, 'check'])->name('cek-akun.process');
 
 /*
 |--------------------------------------------------------------------------
@@ -60,17 +67,21 @@ Route::get('/login', function () {
 */
 Route::get('/', [homeController::class, 'index'])->name('index');
 Route::get('/tentang', fn() => view('tentang'))->name('tentang');
-Route::get('/instruktur', [instrukturController::class, 'instruktur'])->name('instruktur');
+Route::get('/instruktur', [instrukturController::class, 'instruktur'])->name('instruktur.public.index');
 
 /*
 |--------------------------------------------------------------------------
 | PROGRAM
 |--------------------------------------------------------------------------
 */
+Route::get('/program/{id}', [\App\Http\Controllers\ProgramPublicController::class, 'show'])->name('program.public.show');
+Route::post('/program/{id}/daftar', [\App\Http\Controllers\ProgramPublicController::class, 'daftar'])->name('program.public.daftar');
+
 Route::prefix('program')->name('program.')->group(function () {
     Route::get('/', [programController::class, 'index'])->name('index');
     Route::get('/saya', fn() => view('programsaya'))->name('saya');
-    Route::get('/pendaftaran', fn() => view('pendaftaran'))->name('pendaftaran');
+    // Deprecated old pendaftaran route
+    // Route::get('/pendaftaran', fn() => view('pendaftaran'))->name('pendaftaran');
 });
 
 /*
@@ -81,7 +92,7 @@ Route::prefix('program')->name('program.')->group(function () {
 
 Route::prefix('instruktur')->name('instruktur.')->middleware('check.session:instruktur')->group(function () {
 
-    Route::get('/dasbor', fn() => view('instruktur.dasbor'))->name('dasbor');
+    Route::get('/dasbor', [App\Http\Controllers\Instruktur\DasborController::class, 'index'])->name('dasbor');
     Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
     Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
@@ -97,6 +108,10 @@ Route::prefix('instruktur')->name('instruktur.')->middleware('check.session:inst
     Route::put('/kursus/{kursus}/konten/{tipe}/{id}', [KontenController::class, 'update'])->name('kursus.konten.update');
     Route::delete('/kursus/{kursus}/konten/{tipe}/{id}', [KontenController::class, 'destroy'])->name('kursus.konten.destroy');
 
+    // Minggu management (AJAX)
+    Route::put('/kursus/{kursus}/minggu/{minggu}', [MingguController::class, 'update'])->name('kursus.minggu.update');
+    Route::post('/kursus/{kursus}/minggu/{minggu}/reorder', [MingguController::class, 'reorderMateri'])->name('kursus.minggu.reorder');
+
     // Toggle visibility minggu
     Route::patch('/kursus/{kursus}/minggu/{minggu}/toggle', [KontenController::class, 'toggleMinggu'])->name('kursus.minggu.toggle');
 
@@ -104,9 +119,14 @@ Route::prefix('instruktur')->name('instruktur.')->middleware('check.session:inst
     Route::get('/tugas', [EvaluasiController::class, 'tugasList'])->name('tugas');
     Route::get('/evaluasi/tugas/{jawabanTugas}', [EvaluasiController::class, 'tugasDetail'])->name('evaluasi.tugas.detail');
     Route::post('/evaluasi/tugas/{jawabanTugas}/nilai', [EvaluasiController::class, 'storeNilaiTugas'])->name('evaluasi.tugas.nilai');
+    Route::get('/evaluasi/tugas/workspace/{tugas}', [EvaluasiController::class, 'tugasWorkspace'])->name('evaluasi.tugas.workspace');
+    Route::post('/evaluasi/tugas/workspace/{tugas}/nilai/{pendaftaran}', [EvaluasiController::class, 'storeNilaiWorkspaceTugas'])->name('evaluasi.tugas.workspace.nilai');
+
     Route::get('/evaluasi/kuis', [EvaluasiController::class, 'kuisList'])->name('evaluasi.kuis');
     Route::get('/evaluasi/kuis/{sesiKuis}', [EvaluasiController::class, 'kuisDetail'])->name('evaluasi.kuis.detail');
     Route::post('/evaluasi/kuis/{sesiKuis}/nilai', [EvaluasiController::class, 'storeNilaiKuis'])->name('evaluasi.kuis.nilai');
+    Route::get('/evaluasi/kuis/workspace/{kuis}', [EvaluasiController::class, 'kuisWorkspace'])->name('evaluasi.kuis.workspace');
+    Route::post('/evaluasi/kuis/workspace/{kuis}/nilai/{pendaftaran}', [EvaluasiController::class, 'storeNilaiWorkspaceKuis'])->name('evaluasi.kuis.workspace.nilai');
 });
 
 /*
@@ -120,6 +140,7 @@ Route::prefix('peserta')->name('peserta.')->middleware('check.session:peserta')-
 
     Route::get('/kursus', [PesertaKursusController::class, 'index'])->name('kursus');
     Route::get('/kursus/{kursus}', [PesertaKursusController::class, 'show'])->name('kursus.show');
+    Route::post('/kursus/{kursus}/materi/{materi}/viewed', [PesertaKursusController::class, 'markMateriViewed'])->name('kursus.materi.viewed');
 
     // Kuis (F017)
     Route::get('/kuis/{kuis}', [PesertaKuisController::class, 'show'])->name('kuis.show');
@@ -128,16 +149,11 @@ Route::prefix('peserta')->name('peserta.')->middleware('check.session:peserta')-
     // Tugas (F017)
     Route::get('/tugas/{tugas}', [PesertaTugasController::class, 'show'])->name('tugas.show');
     Route::post('/tugas/{tugas}/submit', [PesertaTugasController::class, 'submit'])->name('tugas.submit');
-    Route::get('/profil', fn() => view('peserta.profil'))->name('profil');
+    Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
+    Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+    Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
 
     Route::get('/tugas', [PesertaTugasController::class, 'index'])->name('tugas');
-    Route::get('/tugas-detail', fn() => view('peserta.tugas-detail'))->name('tugas-detail');
-    Route::get('/tugas-kumpul', fn() => view('peserta.tugas-kumpul'))->name('tugas-kumpul');
-
-    Route::get('/kuis-mulai', [tugasController::class, 'kuis'])->name('kuis-mulai');
-    Route::get('/kuis-detail', [tugasController::class, 'kuisDetail'])->name('kuis-detail');
-
-    Route::get('/nilai-detail', fn() => view('peserta.nilai-detail'))->name('nilai-detail');
 
     // Pendaftaran Program (F009 - Peserta mendaftar ke Program Microcredential)
     Route::get('/pendaftaran', [PesertaPendaftaranController::class, 'index'])->name('pendaftaran.index');
@@ -152,8 +168,8 @@ Route::prefix('peserta')->name('peserta.')->middleware('check.session:peserta')-
 */
 Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session:super_admin')->group(function () {
     Route::get('/dasbor', function () {
-        $jenisMicrocredentials = JenisMicrocredential::orderBy('dibuat_pada', 'desc')->get();
-        $semesters = Semester::orderBy('dibuat_pada', 'desc')->get();
+        $jenisMicrocredentials = JenisMicrocredential::orderBy('dibuat_pada', 'desc')->take(4)->get();
+        $semesters = Semester::orderBy('dibuat_pada', 'desc')->take(3)->get();
         $programs = ProgramMicrocredential::with(['jenisMicrocredential', 'semester'])->orderBy('dibuat_pada', 'desc')->get();
         $adminInstrukturs = Pengguna::whereIn('role', ['admin_microcredential', 'instruktur'])->orderBy('dibuat_pada', 'desc')->get();
         return view('superAdmin.dasbor', compact('jenisMicrocredentials', 'semesters', 'programs', 'adminInstrukturs'));
@@ -161,7 +177,7 @@ Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session:sup
     Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
     Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
-    
+
     // Admin Microcredential & Instruktur CRUD (F004 + F005)
     Route::get('/admin-instruktur', [AdminInstrukturController::class, 'index'])->name('adminInstruktur');
     Route::post('/admin-instruktur', [AdminInstrukturController::class, 'store'])->name('adminInstruktur.store');
@@ -193,7 +209,42 @@ Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session:sup
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->name('admin.')->middleware('check.session:admin_microcredential')->group(function () {
-    Route::get('/dasbor', fn() => view('admin.dasbor'))->name('dasbor');
+    Route::get('/dasbor', function () {
+        $admin = Auth::user()->adminMicrocredential;
+
+        // Find programs assigned to this admin (via id_admin_microcredential, fallback to id_jenis_microcredential)
+        $programs = collect();
+        if ($admin) {
+            $query = \App\Models\ProgramMicrocredential::with('jenisMicrocredential');
+            $query->where('id_admin_microcredential', $admin->id);
+            $programs = $query->get();
+        }
+        $programIds = $programs->pluck('id')->toArray();
+
+        $totalKursus = \App\Models\Kursus::whereIn('id_program_microcredential', $programIds)->count();
+        $pendingVerifikasi = \App\Models\Pendaftaran::whereIn('id_program_microcredential', $programIds)
+            ->where('status', 'menunggu')->count();
+
+        $kursusList = \App\Models\Kursus::with(['programMicrocredential', 'instruktur.pengguna'])
+            ->whereIn('id_program_microcredential', $programIds)
+            ->latest('dibuat_pada')->take(4)->get()
+            ->map(fn($k) => [
+                'name' => $k->nama,
+                'instruktur' => $k->instruktur->map(fn($i) => $i->pengguna->nama ?? '-')->implode(', ') ?: '-',
+            ])->values();
+
+        $pendaftaranList = \App\Models\Pendaftaran::with(['peserta.pengguna', 'programMicrocredential'])
+            ->whereIn('id_program_microcredential', $programIds)
+            ->where('status', 'menunggu')
+            ->latest('dibuat_pada')->take(3)->get()
+            ->map(fn($p) => [
+                'name' => $p->peserta->pengguna->nama ?? '-',
+                'course' => $p->programMicrocredential->nama ?? '-',
+                'initial' => mb_strtoupper(mb_substr($p->peserta->pengguna->nama ?? '?', 0, 1)),
+            ])->values();
+
+        return view('admin.dasbor', compact('totalKursus', 'pendingVerifikasi', 'kursusList', 'pendaftaranList', 'programs'));
+    })->name('dasbor');
     Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
     Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
@@ -203,9 +254,7 @@ Route::prefix('admin')->name('admin.')->middleware('check.session:admin_microcre
 
     // Kursus CRUD dalam Program (F007 - Admin menambah banyak kursus ke 1 program)
     Route::get('/program/{id}/kursus', [AdminKursusController::class, 'index'])->name('program.kursus.index');
-    Route::get('/program/{id}/kursus/create', [AdminKursusController::class, 'create'])->name('program.kursus.create');
     Route::post('/program/{id}/kursus', [AdminKursusController::class, 'store'])->name('program.kursus.store');
-    Route::get('/program/{id}/kursus/{kursus}/edit', [AdminKursusController::class, 'edit'])->name('program.kursus.edit');
     Route::put('/program/{id}/kursus/{kursus}', [AdminKursusController::class, 'update'])->name('program.kursus.update');
     Route::delete('/program/{id}/kursus/{kursus}', [AdminKursusController::class, 'destroy'])->name('program.kursus.destroy');
 

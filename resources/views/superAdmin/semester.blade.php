@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Periode Pembelajaran - Super Admin</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
                 '(prefers-color-scheme: dark)').matches)) {
@@ -42,6 +44,21 @@
                     </div>
                 @endif
 
+                {{-- Flash Error --}}
+                @if (session('error'))
+                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 6000)"
+                        x-transition
+                        class="flex items-center gap-3 p-4 rounded-lg bg-red-100 dark:bg-red-500/10 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 text-sm">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        <span>{{ session('error') }}</span>
+                        <button @click="show = false" class="ml-auto text-red-600 hover:text-red-800">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                @endif
+
                 {{-- Validation Errors --}}
                 @if ($errors->any())
                     <div class="flex items-center gap-3 p-4 rounded-lg bg-red-100 dark:bg-red-500/10 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 text-sm">
@@ -74,7 +91,7 @@
                             </svg>
                             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari periode pembelajaran..." class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 w-full py-0.5">
                         </form>
-                        <button @click="openCreate()" class="px-4 py-2 bg-[#6C63FF] hover:bg-[#282ff3] dark:hover:bg-[#4b4bd9] rounded-lg text-sm font-medium transition flex items-center gap-2 text-white">
+                        <button @click="openCreate()" class="px-4 py-2 bg-[#6C63FF] hover:bg-[#5A52D9] dark:hover:bg-[#4b4bd9] rounded-lg text-sm font-medium transition flex items-center gap-2 text-white">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             Tambah Periode
                         </button>
@@ -151,12 +168,11 @@
 
     <x-rightPanel />
 
-    {{-- CREATE / EDIT MODAL --}}
-    <div x-show="modal.show" x-cloak
-        class="fixed inset-0 z-50 flex items-center justify-center p-4"
+    {{-- ============ MODAL CREATE / EDIT ============ --}}
+    <div x-show="modal.show" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
         style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
-        <div @click.away="modal.show = false" x-show="modal.show" x-transition
-            class="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-2xl w-full max-w-lg p-6">
+        <div @click.away="if (!$event.target.closest('.flatpickr-calendar')) modal.show = false" x-show="modal.show" x-transition
+            class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-lg p-6 border border-gray-100 dark:border-gray-800">
 
             <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6" x-text="modal.title"></h3>
 
@@ -171,33 +187,48 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tahun Ajaran <span class="text-red-500">*</span></label>
                         <input type="text" name="tahun" x-model="modal.data.tahun" required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:outline-none focus:border-primary focus:ring-0 transition"
                             placeholder="Contoh: 2024/2025">
                     </div>
 
                     {{-- Jenis Semester --}}
-                    <div>
+                    <div x-data="{ open: false, options: [{id:'ganjil',nama:'Ganjil'},{id:'genap',nama:'Genap'}], get selectedLabel() { const f = this.options.find(o => o.id == modal.data.jenis); return f ? f.nama.charAt(0).toUpperCase() + f.nama.slice(1) : '' } }">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Jenis Periode <span class="text-red-500">*</span></label>
-                        <select name="jenis" x-model="modal.data.jenis" required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                            <option value="" disabled>Pilih jenis periode</option>
-                            <option value="ganjil">Ganjil</option>
-                            <option value="genap">Genap</option>
-                        </select>
+                        <div class="relative">
+                            <div @click="open = !open" @click.outside="open = false"
+                                :class="open ? 'border-[#6C63FF]' : 'border-gray-300 dark:border-gray-700'"
+                                class="w-full px-4 py-3 rounded-lg border bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white cursor-pointer flex items-center justify-between transition">
+                                <span x-text="selectedLabel || 'Pilih jenis periode'" :class="!selectedLabel && 'text-gray-400'"></span>
+                                <svg class="w-4 h-4 text-gray-400 transition" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div x-show="open" x-transition class="absolute z-50 w-full mt-1 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
+                                <div class="max-h-[84px] overflow-y-auto">
+                                    <template x-for="o in options" :key="o.id">
+                                        <div @click="modal.data.jenis = o.id; open = false"
+                                            class="px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                                            :class="modal.data.jenis == o.id ? 'bg-primary/10 text-primary font-medium' : 'text-gray-800 dark:text-white'"
+                                            x-text="o.nama"></div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="jenis" :value="modal.data.jenis">
                     </div>
 
                     {{-- Tanggal Mulai --}}
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tanggal Mulai <span class="text-red-500">*</span></label>
-                        <input type="date" name="tanggal_mulai" x-model="modal.data.tanggal_mulai" required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                        <input type="text" id="tanggal-mulai" name="tanggal_mulai" x-model="modal.data.tanggal_mulai" required
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:outline-none focus:border-primary focus:ring-0 transition"
+                            placeholder="Pilih tanggal mulai">
                     </div>
 
                     {{-- Tanggal Selesai --}}
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tanggal Selesai <span class="text-red-500">*</span></label>
-                        <input type="date" name="tanggal_selesai" x-model="modal.data.tanggal_selesai" required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                        <input type="text" id="tanggal-selesai" name="tanggal_selesai" x-model="modal.data.tanggal_selesai" required
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:outline-none focus:border-primary focus:ring-0 transition"
+                            placeholder="Pilih tanggal selesai">
                     </div>
                 </div>
 
@@ -210,7 +241,8 @@
                         Batal
                     </button>
                     <button type="submit"
-                        class="flex-1 px-4 py-3 rounded-lg bg-[#6C63FF] hover:bg-[#282ff3] text-white transition font-medium">
+                        class="flex-1 px-4 py-3 rounded-lg bg-[#6C63FF] hover:bg-[#5A52D9] text-white transition font-medium inline-flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                         Simpan
                     </button>
                 </div>
@@ -218,12 +250,11 @@
         </div>
     </div>
 
-    {{-- DELETE CONFIRMATION MODAL --}}
-    <div x-show="deleteModal.show" x-cloak
-        class="fixed inset-0 z-50 flex items-center justify-center p-4"
+    {{-- ============ MODAL DELETE CONFIRMATION ============ --}}
+    <div x-show="deleteModal.show" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
         style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
         <div @click.away="deleteModal.show = false" x-show="deleteModal.show" x-transition
-            class="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-2xl max-w-md w-full p-6">
+            class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-800">
             <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-500/20">
                 <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -279,6 +310,35 @@
                     document.documentElement.classList.toggle('dark', this.dark);
                 },
 
+                initFlatpickr() {
+                    this.$nextTick(() => {
+                        // Destroy existing instances
+                        const mulaiEl = document.getElementById('tanggal-mulai');
+                        const selesaiEl = document.getElementById('tanggal-selesai');
+                        if (mulaiEl && mulaiEl._flatpickr) mulaiEl._flatpickr.destroy();
+                        if (selesaiEl && selesaiEl._flatpickr) selesaiEl._flatpickr.destroy();
+
+                        if (mulaiEl) {
+                            flatpickr(mulaiEl, {
+                                dateFormat: 'Y-m-d',
+                                defaultDate: this.modal.data.tanggal_mulai || null,
+                                onChange: (selectedDates, dateStr) => {
+                                    this.modal.data.tanggal_mulai = dateStr;
+                                }
+                            });
+                        }
+                        if (selesaiEl) {
+                            flatpickr(selesaiEl, {
+                                dateFormat: 'Y-m-d',
+                                defaultDate: this.modal.data.tanggal_selesai || null,
+                                onChange: (selectedDates, dateStr) => {
+                                    this.modal.data.tanggal_selesai = dateStr;
+                                }
+                            });
+                        }
+                    });
+                },
+
                 openCreate() {
                     this.modal = {
                         show: true,
@@ -287,6 +347,7 @@
                         action: '{{ route('superAdmin.semester.store') }}',
                         data: { tahun: '', jenis: '', tanggal_mulai: '', tanggal_selesai: '' }
                     };
+                    this.initFlatpickr();
                 },
 
                 openEdit(item) {
@@ -311,6 +372,7 @@
                     this.$nextTick(() => {
                         this.modal.data.jenis = item.jenis || '';
                     });
+                    this.initFlatpickr();
                 },
 
                 openDelete(id, nama) {

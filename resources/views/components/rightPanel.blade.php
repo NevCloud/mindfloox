@@ -90,9 +90,8 @@
                                      :class="{
                                         'bg-red-500': type === 'terlambat',
                                         'bg-yellow-500': type === 'segera',
-                                        'bg-white': type === 'onTrack' && day === today,
-                                        'bg-[#6C63FF]': type === 'onTrack' && day !== today,
-                                        'bg-green-500': type === 'tugasBaru',
+                                        'bg-white': type === 'baru' && day === today,
+                                        'bg-green-500': type === 'baru' && day !== today,
                                      }"></div>
                             </template>
                         </div>
@@ -108,10 +107,9 @@
     <div>
         <div class="flex items-center justify-between mb-3">
             <h4 class="text-sm font-semibold dark:text-white">Semua Tugas</h4>
-            <button class="text-xs text-primary hover:underline">Filter</button>
         </div>
 
-    <!-- Tugas tiap role -->
+    <!-- Tugas & Kuis dinamis -->
         @php
             $status = [
                 'terlambat' => [
@@ -128,16 +126,7 @@
                     'badge_class' => 'bg-yellow-400 text-white',
                     'subtext_class' => 'text-yellow-600/70 dark:text-yellow-400/70',
                 ],
-                'onTrack' => [
-                    'badge_text' => 'On Track',
-                    'container_class' => 'border',
-                    'container_style' => 'background:rgba(108,99,255,0.05);border-color:rgba(108,99,255,0.20)',
-                    'title_class' => 'text-primary',
-                    'badge_class' => 'text-white',
-                    'badge_style' => 'background:#6C63FF',
-                    'subtext_class' => 'text-primary/70',
-                ],
-                'tugasBaru' => [
+                'baru' => [
                     'badge_text' => 'Baru',
                     'container_class' => 'bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20',
                     'title_class' => 'text-green-700 dark:text-green-400',
@@ -147,33 +136,174 @@
                 'selesai' => [
                     'badge_text' => 'Selesai',
                     'container_class' => 'bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10',
-                    'title_class' => 'text-gray-400 line-through',
+                    'title_class' => 'text-gray-500 dark:text-gray-400',
                     'badge_class' => 'bg-gray-300 dark:bg-white/20 text-gray-600 dark:text-white/60',
                     'subtext_class' => 'text-gray-400',
                 ],
             ];
 
-            // Daftar tugas berdasarkan role
+            // Build dynamic task list
             $tasks = [];
+            $calendarEvents = [];
+            $now = now();
+
             if (request()->is('instruktur/*')) {
-               $tasks = [
-                   ['title' => 'UI/UX Case Study',       'subtext' => 'UI/UX Design · 19 Apr',       ...$status['terlambat']],
-                   ['title' => 'Analisis Sorting',        'subtext' => 'DSA · 22 Apr',                ...$status['segera']],
-                   ['title' => 'Business Model Canvas',   'subtext' => 'Entrepreneurship · 25 Apr',   ...$status['onTrack']],
-                   ['title' => 'SEO Content Strategy',    'subtext' => 'Digital Marketing · 28 Apr',  ...$status['tugasBaru']],
-                   ['title' => 'Wireframe Prototype',     'subtext' => 'UI/UX Design · 15 Apr',      ...$status['selesai']],
-                   ['title' => 'Array & Linked List Quiz', 'subtext' => 'DSA · 10 Apr',              ...$status['selesai']]
-               ];
+                $instruktur = Auth::user()->instruktur;
+                if ($instruktur) {
+                    $kiIds = \App\Models\KursusInstruktur::where('id_instruktur', $instruktur->id)->pluck('id')->toArray();
+
+                    // Ambil tugas milik instruktur
+                    $tugasItems = \App\Models\Tugas::whereIn('id_kursus_instruktur', $kiIds)
+                        ->with('kursus')
+                        ->orderBy('batas_waktu', 'asc')
+                        ->get();
+
+                    foreach ($tugasItems as $t) {
+                        $deadline = $t->batas_waktu;
+                        if (!$deadline) {
+                            $sKey = 'baru';
+                        } elseif ($deadline->isPast()) {
+                            $sKey = 'terlambat';
+                        } elseif ($deadline->diffInDays($now) <= 3) {
+                            $sKey = 'segera';
+                        } else {
+                            $sKey = 'baru';
+                        }
+
+                        $tasks[] = [
+                            'title'   => $t->judul,
+                            'subtext' => ($t->kursus->nama ?? '') . ' · ' . ($deadline ? $deadline->format('d M') : 'Tanpa deadline'),
+                            ...$status[$sKey],
+                        ];
+
+                        // Calendar events
+                        if ($deadline && $deadline->month === $now->month && $deadline->year === $now->year) {
+                            $day = $deadline->day;
+                            $calendarEvents[$day] = array_unique(array_merge($calendarEvents[$day] ?? [], [$sKey]));
+                        }
+                    }
+
+                    // Ambil kuis milik instruktur
+                    $kuisItems = \App\Models\Kuis::whereIn('id_kursus_instruktur', $kiIds)
+                        ->with('kursus')
+                        ->orderBy('batas_waktu', 'asc')
+                        ->get();
+
+                    foreach ($kuisItems as $k) {
+                        $deadline = $k->batas_waktu;
+                        if (!$deadline) {
+                            $sKey = 'baru';
+                        } elseif ($deadline->isPast()) {
+                            $sKey = 'terlambat';
+                        } elseif ($deadline->diffInDays($now) <= 3) {
+                            $sKey = 'segera';
+                        } else {
+                            $sKey = 'baru';
+                        }
+
+                        $tasks[] = [
+                            'title'   => 'Quiz: ' . $k->judul,
+                            'subtext' => ($k->kursus->nama ?? '') . ' · ' . ($deadline ? $deadline->format('d M') : 'Tanpa deadline'),
+                            ...$status[$sKey],
+                        ];
+
+                        if ($deadline && $deadline->month === $now->month && $deadline->year === $now->year) {
+                            $day = $deadline->day;
+                            $calendarEvents[$day] = array_unique(array_merge($calendarEvents[$day] ?? [], [$sKey]));
+                        }
+                    }
+                }
             }
             elseif (request()->is('peserta/*')) {
-               $tasks = [
-                   ['title' => 'UI/UX Case Study',       'subtext' => 'UI/UX Design · 19 Apr',       ...$status['terlambat']],
-                   ['title' => 'Analisis Sorting',        'subtext' => 'DSA · 22 Apr',                ...$status['segera']],
-                   ['title' => 'Business Model Canvas',   'subtext' => 'Entrepreneurship · 25 Apr',   ...$status['onTrack']],
-                   ['title' => 'SEO Content Strategy',    'subtext' => 'Digital Marketing · 28 Apr',  ...$status['tugasBaru']],
-                   ['title' => 'Wireframe Prototype',     'subtext' => 'UI/UX Design · 15 Apr',      ...$status['selesai']],
-                   ['title' => 'Array & Linked List Quiz', 'subtext' => 'DSA · 10 Apr',              ...$status['selesai']]
-               ];
+                $peserta = Auth::user()->peserta;
+                if ($peserta) {
+                    $pendaftaranList = \App\Models\Pendaftaran::where('id_peserta', $peserta->id)
+                        ->where('status', 'diterima')
+                        ->get();
+                    $pendaftaranIds = $pendaftaranList->pluck('id')->toArray();
+                    $programIds = $pendaftaranList->pluck('id_program_microcredential')->toArray();
+
+                    $kursusIds = \App\Models\Kursus::whereIn('id_program_microcredential', $programIds)
+                        ->pluck('id')
+                        ->toArray();
+
+                    $jawabanTugas = \App\Models\JawabanTugas::whereIn('id_pendaftaran', $pendaftaranIds)
+                        ->where('status', 'final')
+                        ->pluck('id_tugas')
+                        ->toArray();
+
+                    $sesiKuis = \App\Models\SesiKuis::whereIn('id_pendaftaran', $pendaftaranIds)
+                        ->with('jawabanKuis')
+                        ->get()
+                        ->keyBy('id_kuis');
+
+                    $tugasItems = \App\Models\Tugas::whereIn('id_kursus', $kursusIds)
+                        ->with('kursus')
+                        ->orderBy('batas_waktu', 'asc')
+                        ->get();
+
+                    foreach ($tugasItems as $t) {
+                        $deadline = $t->batas_waktu;
+                        $isSelesai = in_array($t->id, $jawabanTugas);
+
+                        if ($isSelesai) {
+                            $sKey = 'selesai';
+                        } elseif (!$deadline) {
+                            $sKey = 'baru';
+                        } elseif ($deadline->isPast()) {
+                            $sKey = 'terlambat';
+                        } elseif ($deadline->diffInDays($now) <= 3) {
+                            $sKey = 'segera';
+                        } else {
+                            $sKey = 'baru';
+                        }
+
+                        $tasks[] = [
+                            'title'   => $t->judul,
+                            'subtext' => ($t->kursus->nama ?? '') . ' · ' . ($deadline ? $deadline->format('d M') : 'Tanpa deadline'),
+                            ...$status[$sKey],
+                        ];
+
+                        if ($deadline && $deadline->month === $now->month && $deadline->year === $now->year) {
+                            $day = $deadline->day;
+                            $calendarEvents[$day] = array_unique(array_merge($calendarEvents[$day] ?? [], [$sKey]));
+                        }
+                    }
+
+                    $kuisItems = \App\Models\Kuis::whereIn('id_kursus', $kursusIds)
+                        ->with('kursus')
+                        ->orderBy('batas_waktu', 'asc')
+                        ->get();
+
+                    foreach ($kuisItems as $k) {
+                        $deadline = $k->batas_waktu;
+                        $sesi = $sesiKuis->get($k->id);
+                        $isSelesai = $sesi && ($sesi->id_nilai_kuis !== null || $sesi->jawabanKuis->count() > 0);
+
+                        if ($isSelesai) {
+                            $sKey = 'selesai';
+                        } elseif (!$deadline) {
+                            $sKey = 'baru';
+                        } elseif ($deadline->isPast()) {
+                            $sKey = 'terlambat';
+                        } elseif ($deadline->diffInDays($now) <= 3) {
+                            $sKey = 'segera';
+                        } else {
+                            $sKey = 'baru';
+                        }
+
+                        $tasks[] = [
+                            'title'   => 'Quiz: ' . $k->judul,
+                            'subtext' => ($k->kursus->nama ?? '') . ' · ' . ($deadline ? $deadline->format('d M') : 'Tanpa deadline'),
+                            ...$status[$sKey],
+                        ];
+
+                        if ($deadline && $deadline->month === $now->month && $deadline->year === $now->year) {
+                            $day = $deadline->day;
+                            $calendarEvents[$day] = array_unique(array_merge($calendarEvents[$day] ?? [], [$sKey]));
+                        }
+                    }
+                }
             }
         @endphp
 
@@ -193,6 +323,10 @@
             </div>
         @endforeach
     </div>
+    @else
+    <div class="text-center py-6 text-gray-400 dark:text-gray-500">
+        <p class="text-xs">Belum ada tugas atau kuis.</p>
+    </div>
     @endif
     </div>
     @endif
@@ -208,15 +342,8 @@
             monthYear: '',
             calendarDays: [],
 
-            // Data mockup events: { tanggal: ['tipe1', 'tipe2'] }
-            events: {!! (!request()->is('super-admin/*') && !request()->is('admin/*')) ? json_encode([
-                10 => ['selesai'],
-                15 => ['selesai'],
-                19 => ['terlambat'],
-                22 => ['segera'],
-                25 => ['onTrack'],
-                28 => ['tugasBaru']
-            ]) : '{}' !!},
+            // Data events dari database
+            events: {!! json_encode($calendarEvents ?? []) !!},
 
             init() {
                 this.updateCalendar();

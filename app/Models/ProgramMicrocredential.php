@@ -14,6 +14,7 @@ class ProgramMicrocredential extends Model
     protected $fillable = [
         'id_jenis_microcredential',
         'id_semester',
+        'id_admin_microcredential',
         'nama',
         'deskripsi',
         'foto_program',
@@ -28,6 +29,11 @@ class ProgramMicrocredential extends Model
     public function semester()
     {
         return $this->belongsTo(Semester::class, 'id_semester');
+    }
+
+    public function adminMicrocredential()
+    {
+        return $this->belongsTo(AdminMicrocredential::class, 'id_admin_microcredential');
     }
 
     public function kursus()

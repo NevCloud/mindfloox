@@ -42,6 +42,21 @@
                     </div>
                 @endif
 
+                {{-- Flash Error --}}
+                @if (session('error'))
+                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 6000)"
+                        x-transition
+                        class="flex items-center gap-3 p-4 rounded-lg bg-red-100 dark:bg-red-500/10 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 text-sm">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        <span>{{ session('error') }}</span>
+                        <button @click="show = false" class="ml-auto text-red-600 hover:text-red-800">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                @endif
+
                 {{-- Validation Errors --}}
                 @if ($errors->any())
                     <div class="flex items-center gap-3 p-4 rounded-lg bg-red-100 dark:bg-red-500/10 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 text-sm">
@@ -74,14 +89,27 @@
                             </svg>
                             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari program..." class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 w-full py-0.5">
                         </form>
-                        <select name="jenis" onchange="this.form ? this.form.submit() : window.location='?jenis='+this.value"
-                            class="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-sm text-gray-800 dark:text-white focus:ring-2 focus:ring-primary outline-none transition">
-                            <option value="">Semua Jenis</option>
-                            @foreach ($jenisList as $j)
-                                <option value="{{ $j->id }}" {{ request('jenis') == $j->id ? 'selected' : '' }}>{{ $j->nama }}</option>
-                            @endforeach
-                        </select>
-                        <button @click="openCreate()" class="px-4 py-2 bg-[#6C63FF] hover:bg-[#282ff3] dark:hover:bg-[#4b4bd9] rounded-lg text-sm font-medium transition flex items-center gap-2 text-white">
+                        <div x-data="{ open: false, current: '{{ request('jenis', '') }}', options: [{id:'',nama:'Semua Jenis'}, ...jenisList.map(j => ({id: String(j.id), nama: j.nama}))], get selectedLabel() { const f = this.options.find(o => o.id == this.current); return f ? f.nama : 'Semua Jenis' }, selectJenis(id) { const url = new URL(window.location); if(id) { url.searchParams.set('jenis', id); } else { url.searchParams.delete('jenis'); } window.location = url; } }">
+                            <div class="relative">
+                                <div @click="open = !open" @click.outside="open = false"
+                                    :class="open ? 'border-[#6C63FF]' : 'border-gray-200 dark:border-gray-700'"
+                                    class="px-3 py-2 rounded-lg border bg-white dark:bg-[#0F0F1A] text-sm text-gray-800 dark:text-white cursor-pointer flex items-center gap-2 transition">
+                                    <span x-text="selectedLabel" :class="!selectedLabel && 'text-gray-400'"></span>
+                                    <svg class="w-3.5 h-3.5 text-gray-400 transition" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </div>
+                                <div x-show="open" x-transition class="absolute z-50 mt-1 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden min-w-[180px]">
+                                    <div class="max-h-[84px] overflow-y-auto">
+                                        <template x-for="o in options" :key="o.id">
+                                            <div @click="selectJenis(o.id)"
+                                                class="px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition whitespace-nowrap"
+                                                :class="current == o.id ? 'bg-primary/10 text-primary font-medium' : 'text-gray-800 dark:text-white'"
+                                                x-text="o.nama"></div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button @click="openCreate()" class="px-4 py-2 bg-[#6C63FF] hover:bg-[#5A52D9] dark:hover:bg-[#4b4bd9] rounded-lg text-sm font-medium transition flex items-center gap-2 text-white">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             Tambah Program
                         </button>
@@ -95,8 +123,9 @@
                                     <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">No</th>
                                     <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Program</th>
                                     <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Jenis Microcredential</th>
-                                    <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Semester</th>
+                                    <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Periode Akademik</th>
                                     <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Status</th>
+                                    <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Admin</th>
                                     <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -120,6 +149,9 @@
                                                 <span class="px-2 py-1 bg-red-100 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-medium rounded-full">Tutup</span>
                                             @endif
                                         </td>
+                                        <td class="py-3 px-4 text-gray-500">
+                                            {{ $item->adminMicrocredential->pengguna->nama ?? '-' }}
+                                        </td>
                                         <td class="py-3 px-4">
                                             <div class="flex justify-center gap-1">
                                                 <button @click='openEdit(@json($item))'
@@ -141,7 +173,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="py-8 text-center text-gray-500 text-sm">
+                                        <td colspan="7" class="py-8 text-center text-gray-500 text-sm">
                                             Belum ada data program microcredential.
                                         </td>
                                     </tr>
@@ -164,12 +196,11 @@
 
     <x-rightPanel />
 
-    {{-- CREATE / EDIT MODAL --}}
-    <div x-show="modal.show" x-cloak
-        class="fixed inset-0 z-50 flex items-center justify-center p-4"
+    {{-- ============ MODAL CREATE / EDIT ============ --}}
+    <div x-show="modal.show" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
         style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
         <div @click.away="modal.show = false" x-show="modal.show" x-transition
-            class="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+            class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-800">
 
             <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6" x-text="modal.title"></h3>
 
@@ -184,57 +215,129 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nama Program <span class="text-red-500">*</span></label>
                         <input type="text" name="nama" x-model="modal.data.nama" required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:outline-none focus:border-primary focus:ring-0 transition"
                             placeholder="Contoh: UI/UX Design Specialist">
                     </div>
 
                     {{-- Deskripsi --}}
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deskripsi</label>
-                        <textarea name="deskripsi" x-model="modal.data.deskripsi" rows="3"
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deskripsi <span class="text-red-500">*</span></label>
+                        <textarea name="deskripsi" x-model="modal.data.deskripsi" rows="3" required
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:outline-none focus:border-primary focus:ring-0 transition"
                             placeholder="Deskripsi singkat program"></textarea>
                     </div>
 
                     {{-- Jenis Microcredential --}}
-                    <div>
+                    <div x-data="{ open: false, options: [], init() { this.options = jenisList.map(j => ({id: j.id, nama: j.nama})); }, get selectedLabel() { const f = this.options.find(j => j.id == modal.data.id_jenis_microcredential); return f ? f.nama : '' } }">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Jenis Microcredential <span class="text-red-500">*</span></label>
-                        <select name="id_jenis_microcredential" x-model="modal.data.id_jenis_microcredential" required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                            <option value="" disabled>Pilih jenis microcredential</option>
-                            <template x-for="j in jenisList" :key="j.id">
-                                <option :value="j.id" x-text="j.nama"></option>
-                            </template>
-                        </select>
+                        <div class="relative">
+                            <div @click="open = !open" @click.outside="open = false"
+                                :class="open ? 'border-[#6C63FF]' : 'border-gray-300 dark:border-gray-700'"
+                                class="w-full px-4 py-3 rounded-lg border bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white cursor-pointer flex items-center justify-between transition">
+                                <span x-text="selectedLabel || 'Pilih jenis microcredential'" :class="!selectedLabel && 'text-gray-400'"></span>
+                                <svg class="w-4 h-4 text-gray-400 transition" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div x-show="open" x-transition class="absolute z-50 w-full mt-1 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
+                                <div class="max-h-[84px] overflow-y-auto">
+                                    <template x-for="j in options" :key="j.id">
+                                        <div @click="modal.data.id_jenis_microcredential = j.id; open = false"
+                                            class="px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                                            :class="modal.data.id_jenis_microcredential == j.id ? 'bg-primary/10 text-primary font-medium' : 'text-gray-800 dark:text-white'"
+                                            x-text="j.nama"></div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id_jenis_microcredential" :value="modal.data.id_jenis_microcredential">
                     </div>
 
-                    {{-- Semester --}}
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Semester <span class="text-red-500">*</span></label>
-                        <select name="id_semester" x-model="modal.data.id_semester" required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                            <option value="" disabled>Pilih semester</option>
-                            <template x-for="s in semesterList" :key="s.id">
-                                <option :value="s.id" x-text="s.jenis + ' - ' + s.tahun"></option>
-                            </template>
-                        </select>
+                    {{-- Periode Akademik --}}
+                    <div x-data="{ open: false, options: [], init() { this.options = semesterList.map(s => ({id: s.id, label: s.jenis + ' - ' + s.tahun})); }, get selectedLabel() { const f = this.options.find(s => s.id == modal.data.id_semester); return f ? f.label : '' } }">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Periode Akademik <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <div @click="open = !open" @click.outside="open = false"
+                                :class="open ? 'border-[#6C63FF]' : 'border-gray-300 dark:border-gray-700'"
+                                class="w-full px-4 py-3 rounded-lg border bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white cursor-pointer flex items-center justify-between transition">
+                                <span x-text="selectedLabel || 'Pilih periode akademik'" :class="!selectedLabel && 'text-gray-400'"></span>
+                                <svg class="w-4 h-4 text-gray-400 transition" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div x-show="open" x-transition class="absolute z-50 w-full mt-1 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
+                                <div class="max-h-[84px] overflow-y-auto">
+                                    <template x-for="s in options" :key="s.id">
+                                        <div @click="modal.data.id_semester = s.id; open = false"
+                                            class="px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                                            :class="modal.data.id_semester == s.id ? 'bg-primary/10 text-primary font-medium' : 'text-gray-800 dark:text-white'"
+                                            x-text="s.label"></div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id_semester" :value="modal.data.id_semester">
                     </div>
 
                     {{-- Status Pendaftaran --}}
-                    <div>
+                    <div x-data="{ open: false, options: [{id:'buka',nama:'Buka'},{id:'tutup',nama:'Tutup'}], get selectedLabel() { const f = this.options.find(o => o.id == modal.data.status_pendaftaran); return f ? f.nama : '' } }">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status Pendaftaran <span class="text-red-500">*</span></label>
-                        <select name="status_pendaftaran" x-model="modal.data.status_pendaftaran" required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                            <option value="buka">Buka</option>
-                            <option value="tutup">Tutup</option>
-                        </select>
+                        <div class="relative">
+                            <div @click="open = !open" @click.outside="open = false"
+                                :class="open ? 'border-[#6C63FF]' : 'border-gray-300 dark:border-gray-700'"
+                                class="w-full px-4 py-3 rounded-lg border bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white cursor-pointer flex items-center justify-between transition">
+                                <span x-text="selectedLabel || 'Pilih status'" :class="!selectedLabel && 'text-gray-400'"></span>
+                                <svg class="w-4 h-4 text-gray-400 transition" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div x-show="open" x-transition class="absolute z-50 w-full mt-1 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
+                                <div class="max-h-[84px] overflow-y-auto">
+                                    <template x-for="o in options" :key="o.id">
+                                        <div @click="modal.data.status_pendaftaran = o.id; open = false"
+                                            class="px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                                            :class="modal.data.status_pendaftaran == o.id ? 'bg-primary/10 text-primary font-medium' : 'text-gray-800 dark:text-white'"
+                                            x-text="o.nama"></div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="status_pendaftaran" :value="modal.data.status_pendaftaran">
+                    </div>
+
+                    {{-- Kaitkan Admin --}}
+                    <div x-show="modal.data.id_jenis_microcredential" x-data="{ open: false, get selectedLabel() { const f = filteredAdmins.find(a => a.id == modal.data.id_admin_microcredential); return f ? f.nama : '' } }">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Kaitkan Admin <span class="text-red-500">*</span> <span class="text-xs text-gray-400">(sesuai jenis yang dipilih)</span></label>
+                        <div class="relative">
+                            <div @click="open = !open" @click.outside="open = false"
+                                :class="open ? 'border-[#6C63FF]' : 'border-gray-300 dark:border-gray-700'"
+                                class="w-full px-4 py-3 rounded-lg border bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white cursor-pointer flex items-center justify-between transition">
+                                <div class="flex items-center gap-2">
+                                    <template x-if="selectedLabel">
+                                        <img :src="filteredAdmins.find(a => a.id == modal.data.id_admin_microcredential)?.foto_profil ? '{{ asset('storage') }}/' + filteredAdmins.find(a => a.id == modal.data.id_admin_microcredential).foto_profil : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(selectedLabel) + '&background=6C63FF&color=fff&size=64&font-size=0.4'" class="w-6 h-6 rounded-full object-cover flex-shrink-0" alt="">
+                                    </template>
+                                    <span x-text="selectedLabel || 'Pilih admin'" :class="!selectedLabel && 'text-gray-400'"></span>
+                                </div>
+                                <svg class="w-4 h-4 text-gray-400 transition" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            <div x-show="open" x-transition class="absolute z-50 w-full mt-1 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
+                                <div class="max-h-[84px] overflow-y-auto">
+                                    <template x-for="admin in filteredAdmins" :key="admin.id">
+                                        <div @click="modal.data.id_admin_microcredential = admin.id; open = false"
+                                            class="px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition flex items-center gap-3"
+                                            :class="modal.data.id_admin_microcredential == admin.id ? 'bg-primary/10 text-primary font-medium' : 'text-gray-800 dark:text-white'">
+                                            <img :src="admin.foto_profil ? '{{ asset('storage') }}/' + admin.foto_profil : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(admin.nama) + '&background=6C63FF&color=fff&size=64&font-size=0.4'" class="w-6 h-6 rounded-full object-cover flex-shrink-0" alt="">
+                                            <span x-text="admin.nama"></span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id_admin_microcredential" :value="modal.data.id_admin_microcredential">
                     </div>
 
                     {{-- Foto Program --}}
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Foto Program <span class="text-xs text-gray-400">(opsional, maks 2MB)</span></label>
-                        <input type="file" name="foto_program" accept="image/*"
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Foto Program <span x-show="modal.mode === 'create'" class="text-red-400">*</span> <span class="text-xs text-gray-400">Maks. 2MB</span>
+                        </label>
+                        <input type="file" name="foto_program" accept="image/jpeg,image/png,image/jpg,image/webp" :required="modal.mode === 'create'"
+                            class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white text-sm outline-none focus:border-primary transition file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20">
+                        <p class="text-xs text-gray-400 mt-1.5">Gambar harus berorientasi landscape (Rekomendasi ukuran: 800x450 pixel atau Rasio 16:9)</p>
                     </div>
                 </div>
 
@@ -247,7 +350,8 @@
                         Batal
                     </button>
                     <button type="submit"
-                        class="flex-1 px-4 py-3 rounded-lg bg-[#6C63FF] hover:bg-[#282ff3] text-white transition font-medium">
+                        class="flex-1 px-4 py-3 rounded-lg bg-[#6C63FF] hover:bg-[#5A52D9] text-white transition font-medium inline-flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                         Simpan
                     </button>
                 </div>
@@ -255,12 +359,11 @@
         </div>
     </div>
 
-    {{-- DELETE CONFIRMATION MODAL --}}
-    <div x-show="deleteModal.show" x-cloak
-        class="fixed inset-0 z-50 flex items-center justify-center p-4"
+    {{-- ============ MODAL DELETE CONFIRMATION ============ --}}
+    <div x-show="deleteModal.show" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
         style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
         <div @click.away="deleteModal.show = false" x-show="deleteModal.show" x-transition
-            class="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-2xl max-w-md w-full p-6">
+            class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-800">
             <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-500/20">
                 <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -301,6 +404,7 @@
 
                 jenisList: @json($jenisList),
                 semesterList: @json($semesterList),
+                adminList: @json($adminList),
 
                 modal: {
                     show: false,
@@ -312,6 +416,7 @@
                         deskripsi: '',
                         id_jenis_microcredential: '',
                         id_semester: '',
+                        id_admin_microcredential: '',
                         status_pendaftaran: 'buka'
                     }
                 },
@@ -319,6 +424,12 @@
                     show: false,
                     action: '',
                     nama: ''
+                },
+
+                get filteredAdmins() {
+                    const jenisId = this.modal.data.id_jenis_microcredential;
+                    if (!jenisId) return [];
+                    return this.adminList.filter(a => String(a.id_jenis_microcredential) === String(jenisId));
                 },
 
                 init() {
@@ -336,6 +447,7 @@
                             deskripsi: '',
                             id_jenis_microcredential: '',
                             id_semester: '',
+                            id_admin_microcredential: '',
                             status_pendaftaran: 'buka'
                         }
                     };
@@ -352,6 +464,7 @@
                             deskripsi: item.deskripsi || '',
                             id_jenis_microcredential: item.id_jenis_microcredential || '',
                             id_semester: item.id_semester || '',
+                            id_admin_microcredential: item.id_admin_microcredential || '',
                             status_pendaftaran: item.status_pendaftaran || 'buka'
                         }
                     };
@@ -359,6 +472,7 @@
                     this.$nextTick(() => {
                         this.modal.data.id_jenis_microcredential = item.id_jenis_microcredential || '';
                         this.modal.data.id_semester = item.id_semester || '';
+                        this.modal.data.id_admin_microcredential = item.id_admin_microcredential || '';
                         this.modal.data.status_pendaftaran = item.status_pendaftaran || 'buka';
                     });
                 },

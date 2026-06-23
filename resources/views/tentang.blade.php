@@ -11,12 +11,12 @@
         }
     </script>
 </head>
-<body class="">
+<body class="min-h-screen flex flex-col">
 
     {{-- Navbar --}}
     <x-navbar />
 
-    <div class="max-w-7xl mx-auto px-4">
+    <div class="max-w-7xl mx-auto px-4 flex-1">
 
         {{-- SECTION 1: About Us --}}
         <section class="py-16 grid md:grid-cols-2 gap-12 items-center">
@@ -28,27 +28,36 @@
 
             {{-- Konten kanan --}}
             <div>
-                <p class="text-primary text-sm font-semibold uppercase tracking-widest mb-3">About Us</p>
+                <p class="text-primary text-sm font-semibold uppercase tracking-widest mb-3">Tentang Kami</p>
                 <h2 class="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                    Empowering Future Leaders Through Quality Education
+                    Memberdayakan Pemimpin Masa Depan Melalui Pendidikan Berkualitas
                 </h2>
                 <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm sm:text-base md:text-lg">
                     Mind Floox adalah platform digital pembelajaran daring yang memungkinkan mahasiswa mengikuti kursus sesuai bidang yang diminati dan mendapatkan sertifikat digital sebagai bukti pengakuan kompetensi resmi dari institusi.
                 </p>
 
-                {{-- Statistik --}}
-                <div class="flex gap-10">
+                <div class="flex gap-10" x-data="{
+                    count1: 0, count2: 0,
+                    animate() {
+                        let duration = 2000;
+                        let start = null;
+                        let step = (timestamp) => {
+                            if (!start) start = timestamp;
+                            let progress = Math.min((timestamp - start) / duration, 1);
+                            this.count1 = Math.floor(progress * 200);
+                            this.count2 = Math.floor(progress * 50);
+                            if (progress < 1) window.requestAnimationFrame(step);
+                        };
+                        window.requestAnimationFrame(step);
+                    }
+                }" x-init="animate()">
                     <div>
-                        <h3 class="text-primary font-bold text-3xl">15</h3>
-                        <p class="text-gray-500 text-sm mt-1">Years of Experience</p>
+                        <h3 class="text-primary font-bold text-3xl" x-text="count1 + '+'">200+</h3>
+                        <p class="text-gray-500 text-sm mt-1">Instruktur Ahli</p>
                     </div>
                     <div>
-                        <h3 class="text-primary font-bold text-3xl">200+</h3>
-                        <p class="text-gray-500 text-sm mt-1">Expert Instructors</p>
-                    </div>
-                    <div>
-                        <h3 class="text-primary font-bold text-3xl">50k+</h3>
-                        <p class="text-gray-500 text-sm mt-1">Students Worldwide</p>
+                        <h3 class="text-primary font-bold text-3xl" x-text="count2 + 'k+'">50k+</h3>
+                        <p class="text-gray-500 text-sm mt-1">Peserta di Seluruh Dunia</p>
                     </div>
                 </div>
             </div>
@@ -64,13 +73,13 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.25-8.25-3.286Z" />
                     </svg>
                 </div>
-                <h3 class="font-semibold text-lg mb-3">Our Mission</h3>
+                <h3 class="font-semibold text-lg mb-3">Misi Kami</h3>
                 <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
                     Menyediakan sistem terpusat yang mengintegrasikan pendaftaran, materi pembelajaran, penilaian, hingga penerbitan sertifikat digital secara otomatis dan efisien.
                 </p>
             </div>
 
-            {{-- Our Vision --}}
+            {{-- Visi Kami --}}
             <div class="group card p-8 text-center hover:-translate-y-2 transition-all duration-300 hover:border-primary/40 hover:shadow-[0_0_15px] hover:shadow-primary/40 dark:hover:shadow-primary/30">
                 <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-full flex items-center justify-center mx-auto mb-5 transition duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-primary group-hover:text-white transition duration-300">
@@ -78,20 +87,20 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                     </svg>
                 </div>
-                <h3 class="font-semibold text-lg mb-3">Our Vision</h3>
+                <h3 class="font-semibold text-lg mb-3">Visi Kami</h3>
                 <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
                    Menjadi platform unggulan dalam memberikan pengakuan resmi atas pencapaian kompetensi mahasiswa melalui mekanisme sertifikasi digital yang terstruktur dan terdokumentasi.
                 </p>
             </div>
 
-            {{-- Our Values --}}
+            {{-- Nilai-Nilai Kami --}}
             <div class="group card p-8 text-center hover:-translate-y-2 transition-all duration-300 hover:border-primary/40 hover:shadow-[0_0_15px] hover:shadow-primary/40 dark:hover:shadow-primary/30">
                 <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-full flex items-center justify-center mx-auto mb-5 transition duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-primary group-hover:text-white transition duration-300">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
                 </div>
-                <h3 class="font-semibold text-lg mb-3">Our Values</h3>
+                <h3 class="font-semibold text-lg mb-3">Nilai-Nilai Kami</h3>
                 <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
                    Mengutamakan aksesibilitas pembelajaran daring, transparansi penilaian oleh instruktur, dan kemudahan bagi peserta dalam meraih kompetensi tambahan.
                 </p>
@@ -99,7 +108,7 @@
 
         </section>
 
-        {{-- SECTION 3: Why Choose Us --}}
+        {{-- SECTION 3: Mengapa Memilih Kami --}}
         <section class="py-16 grid md:grid-cols-2 gap-12 items-center">
 
             {{-- Gambar kiri: grid 2 kolom --}}
@@ -111,9 +120,9 @@
 
             {{-- Konten kanan --}}
             <div>
-                <p class="text-primary text-sm font-semibold uppercase tracking-widest mb-3">Why Choose Us</p>
+                <p class="text-primary text-sm font-semibold uppercase tracking-widest mb-3">Mengapa Memilih Kami</p>
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4 leading-tight">
-                    Transforming Education for a Better Tomorrow
+                    Mentransformasi Pendidikan untuk Masa Depan yang Lebih Baik
                 </h2>
                 <p class="text-gray-500 dark:text-gray-400 mb-6 leading-relaxed">
                     Platform pembelajaran digital yang dirancang khusus untuk meningkatkan kompetensi mahasiswa melalui kursus fleksibel, instruktur ahli, dan sertifikasi digital otomatis yang diakui secara resmi. Kami menjembatani kesenjangan antara perkuliahan formal dan kebutuhan industri masa depan.
@@ -122,11 +131,11 @@
                 {{-- Checklist --}}
                 <ul class="space-y-3 mb-8">
                     @foreach([
-                        'Flexible learning options and schedules',
-                        'Industry-experienced instructors',
-                        'Interactive and engaging course content',
-                        'Career guidance and placement support',
-                        'State-of-the-art online learning platform',
+                        'Opsi dan jadwal pembelajaran yang fleksibel',
+                        'Instruktur berpengalaman di industri',
+                        'Konten kursus yang interaktif dan menarik',
+                        'Bimbingan karir dan dukungan penempatan',
+                        'Platform pembelajaran daring yang modern',
                     ] as $item)
                     <li class="flex items-center gap-3 text-gray-600 dark:text-gray-300 text-sm">
                         <span class="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
@@ -140,12 +149,12 @@
                 </ul>
 
                 {{-- CTA Button --}}
-                <button class="bg-primary text-white px-6 py-3 rounded-full hover:shadow-lg hover:-translate-y-1 transition duration-300 flex items-center gap-2">
-                    Discover More
+                <a href="{{ route('program.index') }}" class="inline-flex bg-primary text-white px-6 py-3 rounded-full hover:shadow-lg hover:-translate-y-1 transition duration-300 items-center gap-2">
+                    Temukan Program
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                     </svg>
-                </button>
+                </a>
             </div>
 
         </section>

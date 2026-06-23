@@ -32,10 +32,11 @@ class JenisMicrocredentialController extends Controller
     {
         $request->validate([
             'nama'      => 'required|string|max:255',
-            'deskripsi' => 'nullable|string|max:1000',
+            'deskripsi' => 'required|string|max:1000',
         ], [
-            'nama.required' => 'Nama jenis microcredential wajib diisi.',
-            'nama.max'      => 'Nama maksimal 255 karakter.',
+            'nama.required'      => 'Nama jenis microcredential wajib diisi.',
+            'nama.max'           => 'Nama maksimal 255 karakter.',
+            'deskripsi.required' => 'Deskripsi jenis microcredential wajib diisi.',
         ]);
 
         JenisMicrocredential::create([
@@ -55,10 +56,11 @@ class JenisMicrocredentialController extends Controller
     {
         $request->validate([
             'nama'      => 'required|string|max:255',
-            'deskripsi' => 'nullable|string|max:1000',
+            'deskripsi' => 'required|string|max:1000',
         ], [
-            'nama.required' => 'Nama jenis microcredential wajib diisi.',
-            'nama.max'      => 'Nama maksimal 255 karakter.',
+            'nama.required'      => 'Nama jenis microcredential wajib diisi.',
+            'nama.max'           => 'Nama maksimal 255 karakter.',
+            'deskripsi.required' => 'Deskripsi jenis microcredential wajib diisi.',
         ]);
 
         $jenis = JenisMicrocredential::findOrFail($id);
@@ -78,7 +80,17 @@ class JenisMicrocredentialController extends Controller
     public function destroy($id)
     {
         $jenis = JenisMicrocredential::findOrFail($id);
-        $jenis->delete();
+        
+        try {
+            $jenis->delete();
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == '23000') {
+                return redirect()
+                    ->route('superAdmin.jenisMicrocredential')
+                    ->with('error', "Gagal menghapus! Jenis Microcredential ini tidak bisa dihapus karena sudah ada Program Microcredential yang menggunakan jenis ini.");
+            }
+            throw $e;
+        }
 
         return redirect()
             ->route('superAdmin.jenisMicrocredential')

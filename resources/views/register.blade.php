@@ -19,13 +19,13 @@
     </style>
 </head>
 
-<body class="">
+<body class="min-h-screen flex flex-col">
 
     {{-- Navbar --}}
     <x-navbar />
 
     {{-- Section register --}}
-    <section class="flex items-center justify-center px-4 py-16">
+    <section class="flex items-center justify-center px-4 py-16 flex-1">
 
         {{-- Card register --}}
         <div class="w-full max-w-md p-8 card" x-data="{

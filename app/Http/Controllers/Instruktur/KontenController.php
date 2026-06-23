@@ -34,12 +34,46 @@ class KontenController extends Controller
         ])->firstOrFail();
     }
 
-    private function getOrCreateMinggu(int $nomorMinggu): Minggu
+    private function getOrCreateMinggu(int $nomorMinggu, int $kursusId): Minggu
     {
         return Minggu::firstOrCreate(
-            ['nomor_minggu' => $nomorMinggu],
-            ['status' => 'aktif']
+            ['nomor_minggu' => $nomorMinggu, 'id_kursus' => $kursusId],
+            ['nama' => 'Minggu ' . $nomorMinggu, 'status' => 'aktif', 'deskripsi' => 'Materi minggu ke-' . $nomorMinggu]
         );
+    }
+
+    private function resolveNomorUrut(Request $request, int $kursusId, int $mingguId): int
+    {
+        $posisi = $request->input('posisi');
+        
+        $materis = MateriPembelajaran::where('id_minggu', $mingguId)->get()->map(fn($m) => ['type' => 'materi', 'nomor_urut' => $m->nomor_urut, 'model' => $m]);
+        $tugas = Tugas::where('id_minggu', $mingguId)->get()->map(fn($t) => ['type' => 'tugas', 'nomor_urut' => $t->nomor_urut, 'model' => $t]);
+        $kuis = Kuis::where('id_minggu', $mingguId)->get()->map(fn($k) => ['type' => 'kuis', 'nomor_urut' => $k->nomor_urut, 'model' => $k]);
+        
+        $all = $materis->concat($tugas)->concat($kuis)->toArray();
+        usort($all, fn($a, $b) => $a['nomor_urut'] <=> $b['nomor_urut']);
+
+        if ($posisi) {
+            $posisi = (int) $posisi;
+            $currentPos = 1;
+            foreach ($all as $item) {
+                if ($currentPos === $posisi) {
+                    $currentPos++; // Skip the target position to leave a gap
+                }
+                $item['model']->update(['nomor_urut' => $currentPos]);
+                $currentPos++;
+            }
+            return $posisi;
+        }
+
+        // If no posisi is provided, just normalize and append to the end
+        $currentPos = 1;
+        foreach ($all as $item) {
+            $item['model']->update(['nomor_urut' => $currentPos]);
+            $currentPos++;
+        }
+        
+        return $currentPos;
     }
 
     public function create(Kursus $kursus)
@@ -51,7 +85,7 @@ class KontenController extends Controller
             'kursusInstruktur' => $kursusInstruktur,
             'item'             => null,
             'tipe'             => request('tipe'),
-            'mingguList'       => range(1, 16),
+            'mingguList'       => range(1, 14),
         ]);
     }
 
@@ -83,7 +117,7 @@ class KontenController extends Controller
             'file.mimes'         => 'File hanya boleh berformat PDF, DOCX, PPTX, atau ZIP.',
         ]);
 
-        $minggu  = $this->getOrCreateMinggu((int) $request->minggu_ke);
+        $minggu  = $this->getOrCreateMinggu((int) $request->minggu_ke, $kursus->id);
         $urlFile = null;
 
         if ($request->hasFile('file')) {
@@ -92,9 +126,7 @@ class KontenController extends Controller
             $urlFile = $request->url_file;
         }
 
-        $nomor = (MateriPembelajaran::where('id_kursus', $kursus->id)
-            ->where('id_minggu', $minggu->id)
-            ->max('nomor_urut') ?? 0) + 1;
+        $nomor = $this->resolveNomorUrut($request, $kursus->id, $minggu->id);
 
         MateriPembelajaran::create([
             'id_kursus'            => $kursus->id,
@@ -116,18 +148,28 @@ class KontenController extends Controller
             'judul'       => 'required|string|max:255',
             'deskripsi'   => 'nullable|string',
             'nilai'       => 'required|numeric|min:0|max:100',
+            'tanggal_mulai' => 'nullable|date',
             'batas_waktu' => 'nullable|date',
+            'minggu_ke'   => 'required|integer|min:1|max:52',
         ], [
-            'judul.required' => 'Judul tugas wajib diisi.',
-            'nilai.required' => 'Bobot nilai wajib diisi.',
+            'judul.required'     => 'Judul tugas wajib diisi.',
+            'nilai.required'     => 'Bobot nilai wajib diisi.',
+            'minggu_ke.required' => 'Minggu wajib dipilih.',
         ]);
+
+        $minggu = $this->getOrCreateMinggu((int) $request->minggu_ke, $kursus->id);
+
+        $nomor = $this->resolveNomorUrut($request, $kursus->id, $minggu->id);
 
         Tugas::create([
             'id_kursus'            => $kursus->id,
             'id_kursus_instruktur' => $ki->id,
+            'id_minggu'            => $minggu->id,
+            'nomor_urut'           => $nomor,
             'judul'                => $request->judul,
             'deskripsi'            => $request->deskripsi,
             'nilai'                => $request->nilai,
+            'tanggal_mulai'        => $request->tanggal_mulai,
             'batas_waktu'          => $request->batas_waktu,
         ]);
 
@@ -142,6 +184,8 @@ class KontenController extends Controller
             'nilai'             => 'required|numeric|min:0|max:100',
             'minggu_ke'         => 'required|integer|min:1|max:52',
             'batas_waktu_menit' => 'nullable|integer|min:1|max:300',
+            'tanggal_mulai'     => 'nullable|date',
+            'batas_waktu_kuis'  => 'nullable|date',
             'questions_json'    => 'required|string',
         ], [
             'judul.required'          => 'Judul kuis wajib diisi.',
@@ -156,16 +200,21 @@ class KontenController extends Controller
         }
 
         DB::transaction(function () use ($request, $kursus, $ki, $questions) {
-            $minggu = $this->getOrCreateMinggu((int) $request->minggu_ke);
+            $minggu = $this->getOrCreateMinggu((int) $request->minggu_ke, $kursus->id);
+
+            $nomor = $this->resolveNomorUrut($request, $kursus->id, $minggu->id);
 
             $kuis = Kuis::create([
                 'id_kursus'            => $kursus->id,
                 'id_kursus_instruktur' => $ki->id,
                 'id_minggu'            => $minggu->id,
+                'nomor_urut'           => $nomor,
                 'judul'                => $request->judul,
                 'deskripsi'            => $request->deskripsi,
                 'nilai'                => $request->nilai,
                 'batas_waktu_menit'    => $request->batas_waktu_menit,
+                'tanggal_mulai'        => $request->tanggal_mulai,
+                'batas_waktu'          => $request->batas_waktu_kuis,
             ]);
 
             $this->syncPertanyaan($kuis, $questions);
@@ -234,7 +283,7 @@ class KontenController extends Controller
             'kursusInstruktur' => $kursusInstruktur,
             'item'             => $item,
             'tipe'             => $tipe,
-            'mingguList'       => range(1, 16),
+            'mingguList'       => range(1, 14),
         ]);
     }
 
@@ -254,7 +303,7 @@ class KontenController extends Controller
                 ]);
 
                 $materi = MateriPembelajaran::where('id_kursus', $kursus->id)->findOrFail($id);
-                $minggu = $this->getOrCreateMinggu((int) $request->minggu_ke);
+                $minggu = $this->getOrCreateMinggu((int) $request->minggu_ke, $kursus->id);
 
                 $data = ['id_minggu' => $minggu->id, 'judul' => $request->judul];
 
@@ -275,6 +324,7 @@ class KontenController extends Controller
                     'judul'       => 'required|string|max:255',
                     'deskripsi'   => 'nullable|string',
                     'nilai'       => 'required|numeric|min:0|max:100',
+                    'tanggal_mulai' => 'nullable|date',
                     'batas_waktu' => 'nullable|date',
                 ]);
 
@@ -282,6 +332,7 @@ class KontenController extends Controller
                     'judul'       => $request->judul,
                     'deskripsi'   => $request->deskripsi,
                     'nilai'       => $request->nilai,
+                    'tanggal_mulai' => $request->tanggal_mulai,
                     'batas_waktu' => $request->batas_waktu,
                 ]);
                 break;
@@ -292,6 +343,8 @@ class KontenController extends Controller
                     'nilai'             => 'required|numeric|min:0|max:100',
                     'minggu_ke'         => 'required|integer|min:1|max:52',
                     'batas_waktu_menit' => 'nullable|integer|min:1|max:300',
+                    'tanggal_mulai'     => 'nullable|date',
+                    'batas_waktu_kuis'  => 'nullable|date',
                     'questions_json'    => 'required|string',
                 ]);
 
@@ -302,7 +355,7 @@ class KontenController extends Controller
 
                 DB::transaction(function () use ($request, $kursus, $id, $questions) {
                     $kuis   = Kuis::where('id_kursus', $kursus->id)->with('pertanyaanKuis.pilihanJawaban', 'pertanyaanKuis.kunciJawabanEsai')->findOrFail($id);
-                    $minggu = $this->getOrCreateMinggu((int) $request->minggu_ke);
+                    $minggu = $this->getOrCreateMinggu((int) $request->minggu_ke, $kursus->id);
 
                     $kuis->update([
                         'id_minggu'         => $minggu->id,
@@ -310,6 +363,8 @@ class KontenController extends Controller
                         'deskripsi'         => $request->deskripsi,
                         'nilai'             => $request->nilai,
                         'batas_waktu_menit' => $request->batas_waktu_menit,
+                        'tanggal_mulai'     => $request->tanggal_mulai,
+                        'batas_waktu'       => $request->batas_waktu_kuis,
                     ]);
 
                     foreach ($kuis->pertanyaanKuis as $p) {

@@ -52,44 +52,27 @@
             <p class="text-xs text-gray-400 mt-0.5">Total Instruktur</p>
         </div>
 
-        <!-- Total Peserta -->
+        <!-- Total Jenis Microcredential -->
         <div class="card p-4">
             <div class="flex items-start justify-between mb-3">
                 <div class="w-9 h-9 rounded-xl flex items-center justify-center"
                     style="background:rgba(233,30,140,0.15)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" style="color:#e91e8c" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                        <circle cx="9" cy="7" r="4" />
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        <path d="M4 7V4h16v3" />
+                        <path d="M9 20h6" />
+                        <path d="M12 4v16" />
                     </svg>
                 </div>
             </div>
-            <p class="text-2xl font-bold dark:text-white">{{ \App\Models\Peserta::count() ?? 0 }}</p>
-            <p class="text-xs text-gray-400 mt-0.5">Total Peserta</p>
+            <p class="text-2xl font-bold dark:text-white">{{ \App\Models\JenisMicrocredential::count() ?? 0 }}</p>
+            <p class="text-xs text-gray-400 mt-0.5">Total Jenis Microcredential</p>
         </div>
     </div>
 
     <!--STATS ADMIN-->
 @elseif(request()->is('admin/*'))
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <!-- Total Program -->
-        <div class="card p-4">
-            <div class="flex items-start justify-between mb-3">
-                <div
-                    class="w-9 h-9 rounded-xl flex items-center justify-center bg-purple-100 dark:bg-purple-500/20 text-purple-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2">
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                    </svg>
-                </div>
-            </div>
-            <p class="text-2xl font-bold dark:text-white">{{ \App\Models\ProgramMicrocredential::count() ?? 0 }}</p>
-            <p class="text-xs text-gray-400 mt-0.5">Total Program</p>
-        </div>
-
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <!-- Total Kursus -->
         <div class="card p-4">
             <div class="flex items-start justify-between mb-3">
@@ -102,11 +85,11 @@
                     </svg>
                 </div>
             </div>
-            <p class="text-2xl font-bold dark:text-white">{{ \App\Models\Kursus::count() ?? 0 }}</p>
+            <p class="text-2xl font-bold dark:text-white">{{ $totalKursus ?? 0 }}</p>
             <p class="text-xs text-gray-400 mt-0.5">Total Kursus</p>
         </div>
 
-        <!-- Pending Verifikasi -->
+        <!-- Menunggu Verifikasi -->
         <div class="card p-4">
             <div class="flex items-start justify-between mb-3">
                 <div
@@ -120,9 +103,8 @@
                     </svg>
                 </div>
             </div>
-            <p class="text-2xl font-bold dark:text-white">
-                {{ \App\Models\Pendaftaran::where('status', 'pending')->count() ?? 0 }}</p>
-            <p class="text-xs text-gray-400 mt-0.5">Pending Verifikasi</p>
+            <p class="text-2xl font-bold dark:text-white">{{ $pendingVerifikasi ?? 0 }}</p>
+            <p class="text-xs text-gray-400 mt-0.5">Menunggu Verifikasi</p>
         </div>
     </div>
 
@@ -130,7 +112,7 @@
 
     <!--STATS INSTRUUKTUR-->
 @elseif(request()->is('instruktur/*'))
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
         <!-- Course Diajar -->
         <div class="card p-4">
             <div class="flex items-start justify-between mb-3">
@@ -145,11 +127,11 @@
                 <span
                     class="text-[10px] font-medium text-green-600 bg-green-100 dark:bg-green-500/20 dark:text-green-400 px-2 py-0.5 rounded-full">Aktif</span>
             </div>
-            <p class="text-2xl font-bold dark:text-white">4</p>
-            <p class="text-xs text-gray-400 mt-0.5">Course Diajar</p>
+            <p class="text-2xl font-bold dark:text-white">{{ $kursusDiajar ?? 0 }}</p>
+            <p class="text-xs text-gray-400 mt-0.5">Kursus Diajar</p>
         </div>
 
-        <!-- Terlambat Evaluasi -->
+        <!-- Total Peserta -->
         <div class="card p-4">
             <div class="flex items-start justify-between mb-3">
                 <div class="w-9 h-9 rounded-xl flex items-center justify-center"
@@ -157,18 +139,22 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16 3.13a4 4 0 0 1 0 7.75" />
                     </svg>
                 </div>
                 <span
-                    class="text-[10px] font-medium text-red-600 bg-red-100 dark:bg-red-500/20 dark:text-red-400 px-2 py-0.5 rounded-full">Perlu
-                    Tindakan</span>
+                    class="text-[10px] font-medium text-red-600 bg-red-100 dark:bg-red-500/20 dark:text-red-400 px-2 py-0.5 rounded-full">Siswa Terdaftar</span>
             </div>
-            <p class="text-2xl font-bold dark:text-white">2</p>
-            <p class="text-xs text-gray-400 mt-0.5">Terlambat Evaluasi</p>
+            <p class="text-2xl font-bold dark:text-white">{{ $totalPeserta ?? 0 }}</p>
+            <p class="text-xs text-gray-400 mt-0.5">Total Peserta</p>
         </div>
 
-        <!-- Menunggu Penilaian -->
+        <!-- Tugas Perlu Dinilai -->
         <div class="card p-4">
             <div class="flex items-start justify-between mb-3">
                 <div class="w-9 h-9 rounded-xl flex items-center justify-center"
@@ -180,34 +166,40 @@
                     </svg>
                 </div>
                 <span
-                    class="text-[10px] font-medium text-yellow-600 bg-yellow-100 dark:bg-yellow-500/20 dark:text-yellow-400 px-2 py-0.5 rounded-full">Pending</span>
+                    class="text-[10px] font-medium text-yellow-600 bg-yellow-100 dark:bg-yellow-500/20 dark:text-yellow-400 px-2 py-0.5 rounded-full">Menunggu Penilaian</span>
             </div>
-            <p class="text-2xl font-bold dark:text-white">15</p>
-            <p class="text-xs text-gray-400 mt-0.5">Menunggu Penilaian</p>
-        </div>
-
-        <!-- Deadline -->
-        <div class="card p-4">
-            <div class="flex items-start justify-between mb-3">
-                <div class="w-9 h-9 rounded-xl flex items-center justify-center"
-                    style="background:rgba(108,99,255,0.15)">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                </div>
-                <span class="text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">Minggu
-                    Ini</span>
-            </div>
-            <p class="text-2xl font-bold dark:text-white">3</p>
-            <p class="text-xs text-gray-400 mt-0.5">Deadline</p>
+            <p class="text-2xl font-bold dark:text-white">{{ ($menungguPenilaian ?? 0) + ($terlambatEvaluasi ?? 0) }}</p>
+            <p class="text-xs text-gray-400 mt-0.5">Tugas & Kuis Perlu Dinilai</p>
         </div>
     </div>
 
     <!--STATS PESERTA-->
 @elseif(request()->is('peserta/*'))
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+        @php
+            $peserta = Auth::user()->peserta;
+            $totalKursus = 0;
+            $totalSemuaTugas = 0;
+            $totalSertifikat = 0;
+
+            if ($peserta) {
+                $pendaftaranList = \App\Models\Pendaftaran::where('id_peserta', $peserta->id)
+                    ->where('status', 'diterima')
+                    ->get();
+                $pendaftaranIds = $pendaftaranList->pluck('id')->toArray();
+                $programIds = $pendaftaranList->pluck('id_program_microcredential')->toArray();
+
+                $kursusIds = \App\Models\Kursus::whereIn('id_program_microcredential', $programIds)->pluck('id')->toArray();
+                $totalKursus = count($kursusIds);
+
+                $totalTugas = \App\Models\Tugas::whereIn('id_kursus', $kursusIds)->count();
+                $totalKuis = \App\Models\Kuis::whereIn('id_kursus', $kursusIds)->count();
+                $totalSemuaTugas = $totalTugas + $totalKuis;
+
+                $totalSertifikat = \App\Models\SertifikatKursus::whereIn('id_pendaftaran', $pendaftaranIds)->count();
+            }
+        @endphp
+
         <div class="card p-4">
             <div class="flex items-start justify-between mb-3">
                 <div class="w-9 h-9 rounded-xl flex items-center justify-center"
@@ -221,8 +213,8 @@
                 <span
                     class="text-[10px] font-medium text-green-600 bg-green-100 dark:bg-green-500/20 dark:text-green-400 px-2 py-0.5 rounded-full">Aktif</span>
             </div>
-            <p class="text-2xl font-bold dark:text-white">4</p>
-            <p class="text-xs text-gray-400 mt-0.5">Course Diambil</p>
+            <p class="text-2xl font-bold dark:text-white">{{ $totalKursus }}</p>
+            <p class="text-xs text-gray-400 mt-0.5">Kursus</p>
         </div>
         <div class="card p-4">
             <div class="flex items-start justify-between mb-3">
@@ -234,29 +226,11 @@
                         <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                     </svg>
                 </div>
-                <span
-                    class="text-[10px] font-medium text-orange-600 bg-orange-100 dark:bg-orange-500/20 dark:text-orange-400 px-2 py-0.5 rounded-full">3
-                    pending</span>
             </div>
-            <p class="text-2xl font-bold dark:text-white">12</p>
+            <p class="text-2xl font-bold dark:text-white">{{ $totalSemuaTugas }}</p>
             <p class="text-xs text-gray-400 mt-0.5">Total Tugas</p>
         </div>
-        <div class="card p-4">
-            <div class="flex items-start justify-between mb-3">
-                <div class="w-9 h-9 rounded-xl flex items-center justify-center"
-                    style="background:rgba(76,175,80,0.15)">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" style="color:#4caf50" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-                    </svg>
-                </div>
-                <span
-                    class="text-[10px] font-medium text-green-600 bg-green-100 dark:bg-green-500/20 dark:text-green-400 px-2 py-0.5 rounded-full">↑
-                    Baik</span>
-            </div>
-            <p class="text-2xl font-bold dark:text-white">87.5</p>
-            <p class="text-xs text-gray-400 mt-0.5">Rata-rata Nilai</p>
-        </div>
+
         <div class="card p-4">
             <div class="flex items-start justify-between mb-3">
                 <div class="w-9 h-9 rounded-xl flex items-center justify-center"
@@ -267,11 +241,8 @@
                         <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
                     </svg>
                 </div>
-                <span
-                    class="text-[10px] font-medium text-purple-600 bg-purple-100 dark:bg-purple-500/20 dark:text-purple-400 px-2 py-0.5 rounded-full">2
-                    baru</span>
             </div>
-            <p class="text-2xl font-bold dark:text-white">5</p>
+            <p class="text-2xl font-bold dark:text-white">{{ $totalSertifikat }}</p>
             <p class="text-xs text-gray-400 mt-0.5">Sertifikat</p>
         </div>
     </div>

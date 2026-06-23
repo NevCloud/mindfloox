@@ -19,13 +19,13 @@
     </style>
 </head>
 
-<body class="">
+<body class="min-h-screen flex flex-col">
 
     {{-- Navbar --}}
     <x-navbar />
 
     {{-- Section login --}}
-    <section class="flex items-center justify-center px-4 py-16">
+    <section class="flex items-center justify-center px-4 py-16 flex-1">
 
         {{-- Card login --}}
         <div class="w-full max-w-md p-8 card" x-data="{
@@ -154,8 +154,8 @@
 
                 {{-- Link daftar --}}
                 <p class="text-center text-sm text-gray-400 mt-4">
-                    Belum punya akun?
-                    <a href="/register" class="text-primary font-medium hover:underline">Daftar sekarang</a>
+                    Kamu peserta?
+                    <a href="{{ route('cek-akun') }}" class="text-primary font-medium hover:underline">Cek akun</a>
                 </p>
 
             </form>
