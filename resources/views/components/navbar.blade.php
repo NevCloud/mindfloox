@@ -41,7 +41,7 @@
                 </a></li>
             <li><a href="/instruktur" class="relative group py-1 block">Instruktur
                     <span
-                        class="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary duration-300 group-hover:w-full {{ request()->routeIs('instruktur') ? 'w-full' : 'w-0' }}"></span>
+                        class="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary duration-300 group-hover:w-full {{ request()->routeIs('instruktur.public.index') ? 'w-full' : 'w-0' }}"></span>
                 </a></li>
         </ul>
 

@@ -30,7 +30,27 @@
 
             <div class="w-20 h-1 bg-gradient-to-r from-primary to-accent mb-10"></div>
 
-            <form method="GET" action="{{ route('program.index') }}" class="flex flex-col sm:flex-row items-center gap-3 mb-8 w-full">
+            <form method="GET" action="{{ route('program.index') }}" 
+                x-data="{ 
+                    openJenis: false, 
+                    currentJenis: '{{ request('jenis', '') }}', 
+                    jenisOptions: [
+                        {id:'', nama:'Semua Jenis'},
+                        @foreach($kategori as $cat)
+                        {id:'{{ $cat->id }}', nama:'{{ addslashes($cat->nama) }}'},
+                        @endforeach
+                    ],
+                    get selectedJenisLabel() { 
+                        const f = this.jenisOptions.find(o => o.id == this.currentJenis); 
+                        return f ? f.nama : 'Semua Jenis'; 
+                    },
+                    selectJenis(id) { 
+                        this.currentJenis = id;
+                        $refs.jenisInput.value = id;
+                        this.$el.submit();
+                    }
+                }"
+                class="flex flex-col sm:flex-row items-center gap-3 mb-8 w-full z-10 relative">
                 <div class="flex-1 flex items-center gap-2 bg-white dark:bg-[#1A1A2E] border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-2 transition-all duration-300 focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent w-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8" />
@@ -39,13 +59,24 @@
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama program..."
                         class="flex-1 bg-transparent border-0 outline-none text-sm text-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 w-full py-0.5">
                 </div>
-                <select name="jenis" onchange="this.form.submit()"
-                    class="px-3 py-2 w-full sm:w-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1A1A2E] text-sm text-gray-800 dark:text-white focus:ring-2 focus:ring-primary outline-none transition">
-                    <option value="">Semua Jenis</option>
-                    @foreach($kategori as $cat)
-                        <option value="{{ $cat->id }}" {{ request('jenis') == $cat->id ? 'selected' : '' }}>{{ $cat->nama }}</option>
-                    @endforeach
-                </select>
+
+                <div class="relative w-full sm:w-auto">
+                    <input type="hidden" name="jenis" x-ref="jenisInput" :value="currentJenis">
+                    <div @click="openJenis = !openJenis" @click.outside="openJenis = false"
+                        :class="openJenis ? 'border-primary ring-2 ring-primary/20' : 'border-gray-200 dark:border-gray-800'"
+                        class="px-4 py-2 min-w-[160px] rounded-lg border bg-white dark:bg-[#1A1A2E] text-sm text-gray-800 dark:text-white cursor-pointer flex justify-between items-center gap-3 transition">
+                        <span x-text="selectedJenisLabel"></span>
+                        <svg class="w-4 h-4 text-gray-400 transition" :class="openJenis && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                    <div x-cloak x-show="openJenis" x-transition class="absolute left-0 right-0 mt-2 w-full sm:min-w-[160px] bg-white dark:bg-[#1A1A2E] border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg z-50 overflow-hidden">
+                        <template x-for="opt in jenisOptions" :key="opt.id">
+                            <div @click="selectJenis(opt.id)"
+                                class="px-4 py-2.5 text-sm cursor-pointer hover:bg-primary/10 transition"
+                                :class="currentJenis == opt.id ? 'text-primary font-medium bg-primary/5' : 'text-gray-700 dark:text-gray-300'"
+                                x-text="opt.nama"></div>
+                        </template>
+                    </div>
+                </div>
             </form>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
