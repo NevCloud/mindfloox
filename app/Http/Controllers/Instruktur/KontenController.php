@@ -147,13 +147,11 @@ class KontenController extends Controller
         $request->validate([
             'judul'       => 'required|string|max:255',
             'deskripsi'   => 'nullable|string',
-            'nilai'       => 'required|numeric|min:0|max:100',
             'tanggal_mulai' => 'nullable|date',
             'batas_waktu' => 'nullable|date',
             'minggu_ke'   => 'required|integer|min:1|max:52',
         ], [
             'judul.required'     => 'Judul tugas wajib diisi.',
-            'nilai.required'     => 'Bobot nilai wajib diisi.',
             'minggu_ke.required' => 'Minggu wajib dipilih.',
         ]);
 
@@ -168,7 +166,7 @@ class KontenController extends Controller
             'nomor_urut'           => $nomor,
             'judul'                => $request->judul,
             'deskripsi'            => $request->deskripsi,
-            'nilai'                => $request->nilai,
+            'nilai'                => 0,
             'tanggal_mulai'        => $request->tanggal_mulai,
             'batas_waktu'          => $request->batas_waktu,
         ]);
@@ -181,7 +179,6 @@ class KontenController extends Controller
     {
         $request->validate([
             'judul'             => 'required|string|max:255',
-            'nilai'             => 'required|numeric|min:0|max:100',
             'minggu_ke'         => 'required|integer|min:1|max:52',
             'batas_waktu_menit' => 'nullable|integer|min:1|max:300',
             'tanggal_mulai'     => 'nullable|date',
@@ -189,7 +186,6 @@ class KontenController extends Controller
             'questions_json'    => 'required|string',
         ], [
             'judul.required'          => 'Judul kuis wajib diisi.',
-            'nilai.required'          => 'Bobot nilai wajib diisi.',
             'minggu_ke.required'      => 'Minggu wajib dipilih.',
             'questions_json.required' => 'Kuis harus memiliki minimal 1 pertanyaan.',
         ]);
@@ -211,7 +207,7 @@ class KontenController extends Controller
                 'nomor_urut'           => $nomor,
                 'judul'                => $request->judul,
                 'deskripsi'            => $request->deskripsi,
-                'nilai'                => $request->nilai,
+                'nilai'                => 0,
                 'batas_waktu_menit'    => $request->batas_waktu_menit,
                 'tanggal_mulai'        => $request->tanggal_mulai,
                 'batas_waktu'          => $request->batas_waktu_kuis,
@@ -323,7 +319,6 @@ class KontenController extends Controller
                 $request->validate([
                     'judul'       => 'required|string|max:255',
                     'deskripsi'   => 'nullable|string',
-                    'nilai'       => 'required|numeric|min:0|max:100',
                     'tanggal_mulai' => 'nullable|date',
                     'batas_waktu' => 'nullable|date',
                 ]);
@@ -331,7 +326,7 @@ class KontenController extends Controller
                 Tugas::where('id_kursus', $kursus->id)->findOrFail($id)->update([
                     'judul'       => $request->judul,
                     'deskripsi'   => $request->deskripsi,
-                    'nilai'       => $request->nilai,
+                    'nilai'       => 0,
                     'tanggal_mulai' => $request->tanggal_mulai,
                     'batas_waktu' => $request->batas_waktu,
                 ]);
@@ -340,7 +335,6 @@ class KontenController extends Controller
             case 'kuis':
                 $request->validate([
                     'judul'             => 'required|string|max:255',
-                    'nilai'             => 'required|numeric|min:0|max:100',
                     'minggu_ke'         => 'required|integer|min:1|max:52',
                     'batas_waktu_menit' => 'nullable|integer|min:1|max:300',
                     'tanggal_mulai'     => 'nullable|date',
@@ -361,7 +355,7 @@ class KontenController extends Controller
                         'id_minggu'         => $minggu->id,
                         'judul'             => $request->judul,
                         'deskripsi'         => $request->deskripsi,
-                        'nilai'             => $request->nilai,
+                        'nilai'             => 0,
                         'batas_waktu_menit' => $request->batas_waktu_menit,
                         'tanggal_mulai'     => $request->tanggal_mulai,
                         'batas_waktu'       => $request->batas_waktu_kuis,

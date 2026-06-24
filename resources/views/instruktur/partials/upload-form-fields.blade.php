@@ -44,12 +44,7 @@
     <input type="hidden" name="minggu_ke" x-model="minggu">
     <input type="hidden" name="posisi" x-model="posisi">
 
-    {{-- Nilai / bobot (untuk tugas & kuis) --}}
-    <div x-show="tipeMateri === 'tugas' || tipeMateri === 'kuis'" x-transition>
-        <label class="label dark:text-white">Bobot Nilai <span class="text-red-500">*</span></label>
-        <input type="number" name="nilai" x-model="nilai" placeholder="Contoh: 30" min="0" max="100" step="0.01" class="input">
-        <p class="text-xs text-gray-400 mt-1">Bobot kumulatif semua tugas/kuis sebaiknya = 100.</p>
-    </div>
+
 
     {{-- Tanggal Mulai (tugas) --}}
     <div x-show="tipeMateri === 'tugas'" x-transition>
