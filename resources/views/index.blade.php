@@ -132,12 +132,13 @@
         </section>
 
         {{-- program --}}
-        <section class="px-4 py-16 text-left max-w-7xl mx-auto">
-            <h2 class="text-2xl md:text-3xl font-bold mb-4 dark:text-white ">
-                Daftar <span class="text-primary">Program</span>
-            </h2>
-
-            <div class="w-20 h-1 bg-gradient-to-r from-primary to-accent mb-10"></div>
+        <section class="px-4 py-16 max-w-7xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4 dark:text-white">
+                    Daftar <span class="text-primary">Program</span>
+                </h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
+            </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 
