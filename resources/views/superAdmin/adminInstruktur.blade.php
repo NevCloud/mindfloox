@@ -132,11 +132,7 @@
                                         class="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
                                         <td class="py-3 px-4">{{ $admins->firstItem() + $index }}</td>
                                         <td class="py-3 px-4">
-                                            <div class="flex items-center gap-3">
-                                                <img src="{{ $admin->foto_profil ? asset('storage/' . $admin->foto_profil) : 'https://ui-avatars.com/api/?name=' . urlencode($admin->nama) . '&background=6C63FF&color=fff&size=64&font-size=0.4' }}"
-                                                    class="w-8 h-8 rounded-full object-cover flex-shrink-0" alt="">
-                                                <span class="font-medium break-words">{{ $admin->nama }}</span>
-                                            </div>
+                                            <span class="font-medium break-words">{{ $admin->nama }}</span>
                                         </td>
                                         <td class="py-3 px-4 text-gray-500">
                                             <code class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs text-gray-700 dark:text-white break-words">{{ $admin->username }}</code>

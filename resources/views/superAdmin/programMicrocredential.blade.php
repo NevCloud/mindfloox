@@ -429,7 +429,12 @@
                 get filteredAdmins() {
                     const jenisId = this.modal.data.id_jenis_microcredential;
                     if (!jenisId) return [];
-                    return this.adminList.filter(a => String(a.id_jenis_microcredential) === String(jenisId));
+                    return this.adminList.filter(a => {
+                        if (String(a.id_jenis_microcredential) !== String(jenisId)) return false;
+                        if (!a.assigned_program_ids || a.assigned_program_ids.length === 0) return true;
+                        if (this.modal.mode === 'edit' && a.assigned_program_ids.includes(this.modal.current_program_id)) return true;
+                        return false;
+                    });
                 },
 
                 init() {
@@ -440,6 +445,7 @@
                     this.modal = {
                         show: true,
                         mode: 'create',
+                        current_program_id: null,
                         title: 'Tambah Program Microcredential',
                         action: '{{ route('superAdmin.programMicrocredential.store') }}',
                         data: {
@@ -457,6 +463,7 @@
                     this.modal = {
                         show: true,
                         mode: 'edit',
+                        current_program_id: item.id,
                         title: 'Edit Program Microcredential',
                         action: '/super-admin/program-microcredential/' + item.id,
                         data: {

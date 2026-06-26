@@ -387,6 +387,8 @@ class KontenController extends Controller
         switch ($tipe) {
             case 'materi':
                 $item = MateriPembelajaran::where('id_kursus', $kursus->id)->findOrFail($id);
+                // Hapus data riwayat dilihat oleh peserta terlebih dahulu
+                \App\Models\MateriDilihat::where('id_materi_pembelajaran', $item->id)->delete();
                 if ($item->url_file && !str_starts_with($item->url_file, 'http')) {
                     Storage::disk('public')->delete($item->url_file);
                 }
@@ -394,7 +396,11 @@ class KontenController extends Controller
                 break;
 
             case 'tugas':
-                Tugas::where('id_kursus', $kursus->id)->findOrFail($id)->delete();
+                $tugas = Tugas::where('id_kursus', $kursus->id)->findOrFail($id);
+                // Hapus data jawaban dan nilai tugas terlebih dahulu
+                \App\Models\JawabanTugas::where('id_tugas', $tugas->id)->delete();
+                \App\Models\NilaiTugas::where('id_tugas', $tugas->id)->delete();
+                $tugas->delete();
                 break;
 
             case 'kuis':
@@ -406,6 +412,11 @@ class KontenController extends Controller
                     $p->pilihanJawaban()->delete();
                     $p->kunciJawabanEsai()->delete();
                     $p->delete();
+                }
+                // Hapus nilai kuis dan sesi kuis
+                $sesiKuisIds = SesiKuis::where('id_kuis', $kuis->id)->pluck('id');
+                if ($sesiKuisIds->isNotEmpty()) {
+                    \App\Models\NilaiKuis::whereIn('id_sesi_kuis', $sesiKuisIds)->delete();
                 }
                 SesiKuis::where('id_kuis', $kuis->id)->delete();
                 $kuis->delete();

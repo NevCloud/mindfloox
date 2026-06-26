@@ -154,6 +154,14 @@ class TugasController extends Controller
         $tugas->load('kursus');
         $pendaftaran = $this->getPendaftaran($tugas);
 
+        $nilaiTugas = NilaiTugas::where('id_pendaftaran', $pendaftaran->id)
+            ->where('id_tugas', $tugas->id)
+            ->first();
+
+        if ($nilaiTugas) {
+            return redirect()->back()->withErrors(['error' => 'Tugas sudah dinilai, tidak bisa mengumpulkan ulang.']);
+        }
+
         $path = Storage::disk('public')->putFile('tugas', $request->file('file_tugas'));
 
         JawabanTugas::updateOrCreate(

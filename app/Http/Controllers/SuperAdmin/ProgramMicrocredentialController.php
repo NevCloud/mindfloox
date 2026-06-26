@@ -31,12 +31,13 @@ class ProgramMicrocredentialController extends Controller
 
         $jenisList = JenisMicrocredential::orderBy('nama', 'asc')->get();
         $semesterList = Semester::orderBy('dibuat_pada', 'desc')->get();
-        $adminList = AdminMicrocredential::with(['pengguna', 'jenisMicrocredential'])->get()
+        $adminList = AdminMicrocredential::with(['pengguna', 'jenisMicrocredential', 'programs'])->get()
             ->map(fn($a) => [
                 'id' => $a->id,
                 'nama' => $a->pengguna->nama ?? '-',
                 'foto_profil' => $a->pengguna->foto_profil ?? null,
                 'id_jenis_microcredential' => $a->id_jenis_microcredential,
+                'assigned_program_ids' => $a->programs->pluck('id')->toArray(),
             ])->values();
 
         return view('superAdmin.programMicrocredential', compact('programs', 'jenisList', 'semesterList', 'adminList'));
