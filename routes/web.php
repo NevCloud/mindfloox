@@ -262,5 +262,3 @@ Route::prefix('admin')->name('admin.')->middleware('check.session:admin_microcre
     Route::get('/verifikasi', [AdminVerifikasiController::class, 'index'])->name('verifikasi.index');
     Route::post('/verifikasi/{id}', [AdminVerifikasiController::class, 'verify'])->name('verifikasi.verify');
 });
-
-Route::get('/preview-sertifikat', fn() => view('sertifikat-preview'))->name('preview.sertifikat');
