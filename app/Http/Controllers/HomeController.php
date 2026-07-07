@@ -19,16 +19,39 @@ class homeController extends Controller
             ->take(4);
 
         // Get programs
-        $program = ProgramMicrocredential::with(['adminMicrocredential.pengguna', 'jenisMicrocredential'])
-            ->withCount(['pendaftaran' => function ($query) {
-                $query->where('status', 'diterima');
-            }])
+        // Get programs
+        $program = ProgramMicrocredential::with([
+            'adminMicrocredential.pengguna',
+            'jenisMicrocredential',
+            'kursus.ulasanKursus'
+        ])
+            ->withCount([
+                'pendaftaran' => function ($query) {
+                    $query->where('status', 'diterima');
+                }
+            ])
             ->take(6)
-            ->get();
+            ->get()
+            ->map(function ($prog) {
+
+                $ratings = $prog->kursus
+                    ->flatMap(function ($kursus) {
+                        return $kursus->ulasanKursus;
+                    })
+                    ->pluck('rating_kursus');
+
+                $prog->rating = $ratings->isNotEmpty()
+                    ? round($ratings->avg(), 1)
+                    : 0;
+
+                $prog->jumlah_ulasan = $ratings->count();
+
+                return $prog;
+            });
 
         // Get categories
         $kategori = JenisMicrocredential::withCount('programMicrocredential')->get();
-        
+
         return view('index', compact('program', 'instruktur', 'kategori'));
     }
 }

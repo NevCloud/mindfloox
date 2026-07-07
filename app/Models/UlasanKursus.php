@@ -14,11 +14,8 @@ class UlasanKursus extends Model
     protected $fillable = [
         "id_pendaftaran",
         "id_kursus",
-        "id_kursus_instruktur",
         "komentar_kursus",
         "rating_kursus",
-        "komentar_instruktur",
-        "rating_instruktur",
     ];
 
     public function pendaftaran()
@@ -29,10 +26,5 @@ class UlasanKursus extends Model
     public function kursus()
     {
         return $this->belongsTo(Kursus::class, 'id_kursus');
-    }
-
-    public function kursusInstruktur()
-    {
-        return $this->belongsTo(KursusInstruktur::class, 'id_kursus_instruktur');
     }
 }

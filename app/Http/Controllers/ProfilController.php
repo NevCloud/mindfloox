@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
+use App\Models\UlasanKursus;
 use App\Models\Pengguna;
 use App\Models\ProgramMicrocredential;
 
@@ -26,18 +28,63 @@ class ProfilController extends Controller
     {
         $user = Auth::user();
 
-        // Fetch programs assigned to this admin (only for admin_microcredential role)
         $programs = collect();
+
         if ($user->role === 'admin_microcredential' && $user->adminMicrocredential) {
-            $programs = ProgramMicrocredential::with(['jenisMicrocredential', 'semester'])
+
+            $programs = ProgramMicrocredential::with([
+                'jenisMicrocredential',
+                'semester'
+            ])
                 ->where('id_admin_microcredential', $user->adminMicrocredential->id)
-                ->orderBy('dibuat_pada', 'desc')
-                ->get();
+                ->latest('dibuat_pada')
+                ->get()
+                ->map(function ($program) {
+
+                    $program->status_tampil = $program->status_pendaftaran;
+
+                    $program->program_selesai = $program->semester
+                        ? now()->greaterThanOrEqualTo(Carbon::parse($program->semester->tanggal_selesai))
+                        : false;
+
+                    return $program;
+                });
+        } elseif ($user->role === 'peserta' && $user->peserta) {
+
+            $programs = $user->peserta
+                ->pendaftaran()
+                ->with([
+                    'programMicrocredential.semester',
+                    'programMicrocredential.jenisMicrocredential',
+                    'programMicrocredential.kursus'
+                ])
+                ->where('status', 'diterima')
+                ->latest('dibuat_pada')
+                ->get()
+                ->map(function ($pendaftaran) {
+
+                    $program = $pendaftaran->programMicrocredential;
+
+                    // simpan id pendaftaran
+                    $program->id_pendaftaran = $pendaftaran->id;
+
+                    $program->status_tampil = $pendaftaran->status;
+
+                    $program->program_selesai = true;
+
+                    $program->sudah_rating =
+                        $pendaftaran->ulasanKursus()->exists();
+
+                    $program->boleh_download =
+                        $program->program_selesai &&
+                        $program->sudah_rating;
+
+                    return $program;
+                });
         }
 
         return view('profil', compact('user', 'programs'));
     }
-
     /**
      * AJAX: cek apakah username sudah dipakai user lain.
      * Dipanggil via fetch() dari form edit profil.

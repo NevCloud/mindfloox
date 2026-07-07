@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Peserta;
 
 use App\Http\Controllers\Controller;
 use App\Models\JawabanKuis;
+use App\Models\KunciJawabanEsai;
+use App\Http\Controllers\NilaiKursusController;
 use App\Models\Kuis;
 use App\Models\NilaiKuis;
 use App\Models\Pendaftaran;
@@ -25,6 +27,135 @@ class KuisController extends Controller
             ->where('id_program_microcredential', $kuis->kursus->id_program_microcredential)
             ->where('status', 'diterima')
             ->firstOrFail();
+    }
+
+    private function hitungNilaiKuis(SesiKuis $sesi): float
+    {
+        $sesi->load([
+            'kuis.pertanyaanKuis.pilihanJawaban',
+            'kuis.pertanyaanKuis.kunciJawabanEsai',
+            'jawabanKuis.pilihanJawaban',
+            'jawabanKuis.pertanyaanKuis',
+        ]);
+
+        $jumlahPg = 0;
+        $jumlahEsai = 0;
+
+        $benarPg = 0;
+        $benarEsai = 0;
+
+        foreach ($sesi->kuis->pertanyaanKuis as $pertanyaan) {
+
+            $jawaban = $sesi->jawabanKuis
+                ->where('id_pertanyaan', $pertanyaan->id)
+                ->first();
+
+            if (!$jawaban) {
+                continue;
+            }
+
+            /*
+        |--------------------------------------------------------------------------
+        | PILIHAN GANDA
+        |--------------------------------------------------------------------------
+        */
+
+            if ($pertanyaan->tipe_pertanyaan == 'pilihan_ganda') {
+
+                $jumlahPg++;
+
+                if (
+                    $jawaban->pilihanJawaban &&
+                    $jawaban->pilihanJawaban->adalah_benar
+                ) {
+                    $benarPg++;
+                }
+
+                continue;
+            }
+
+            /*
+        |--------------------------------------------------------------------------
+        | ESAI
+        |--------------------------------------------------------------------------
+        */
+
+            $jumlahEsai++;
+
+            $jawabanPeserta = trim($jawaban->teks_jawaban);
+
+            foreach ($pertanyaan->kunciJawabanEsai as $kunci) {
+
+                $kunciJawaban = trim($kunci->teks_kunci);
+
+                if ($kunci->case_sensitive) {
+
+                    if ($jawabanPeserta === $kunciJawaban) {
+                        $benarEsai++;
+                        break;
+                    }
+                } else {
+
+                    if (
+                        strtolower($jawabanPeserta)
+                        ==
+                        strtolower($kunciJawaban)
+                    ) {
+                        $benarEsai++;
+                        break;
+                    }
+                }
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Hitung Nilai PG
+        |--------------------------------------------------------------------------
+        */
+
+        $nilaiPg = 0;
+
+        if ($jumlahPg > 0) {
+            $nilaiPg = ($benarPg / $jumlahPg) * 100;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Hitung Nilai Esai
+        |--------------------------------------------------------------------------
+        */
+
+        $nilaiEsai = 0;
+
+        if ($jumlahEsai > 0) {
+            $nilaiEsai = ($benarEsai / $jumlahEsai) * 100;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Bobot
+        |--------------------------------------------------------------------------
+        */
+
+        if ($jumlahPg > 0 && $jumlahEsai > 0) {
+
+            return round(
+                ($nilaiPg * 0.4) +
+                    ($nilaiEsai * 0.6),
+                2
+            );
+        }
+
+        if ($jumlahPg > 0) {
+            return round($nilaiPg, 2);
+        }
+
+        if ($jumlahEsai > 0) {
+            return round($nilaiEsai, 2);
+        }
+
+        return 0;
     }
 
     public function show(Kuis $kuis)
@@ -61,43 +192,57 @@ class KuisController extends Controller
             $adaEsai      = false;
 
             foreach ($kuis->pertanyaanKuis as $pertanyaan) {
+
                 $fieldName = 'pertanyaan_' . $pertanyaan->id;
 
-                if ($pertanyaan->tipe_pertanyaan === 'pilihan_ganda') {
-                    $totalMc++;
-                    $pilihanId = $request->input($fieldName);
-                    $pilihan   = $pertanyaan->pilihanJawaban->find($pilihanId);
+                /*
+                |--------------------------------------------------------------------------
+                | Pilihan Ganda
+                |--------------------------------------------------------------------------
+                */
+
+                if ($pertanyaan->tipe_pertanyaan == 'pilihan_ganda') {
 
                     JawabanKuis::create([
                         'id_sesi_kuis'       => $sesi->id,
                         'id_pertanyaan'      => $pertanyaan->id,
-                        'id_pilihan_jawaban' => $pilihanId,
+                        'id_pilihan_jawaban' => $request->input($fieldName),
                         'teks_jawaban'       => null,
                     ]);
 
-                    if ($pilihan && $pilihan->adalah_benar) {
-                        $benarMc++;
-                    }
-                } else {
-                    $adaEsai = true;
-                    JawabanKuis::create([
-                        'id_sesi_kuis'       => $sesi->id,
-                        'id_pertanyaan'      => $pertanyaan->id,
-                        'id_pilihan_jawaban' => null,
-                        'teks_jawaban'       => $request->input($fieldName),
-                    ]);
+                    continue;
                 }
-            }
 
-            // Auto-grade if no esai questions
-            if (!$adaEsai && $totalMc > 0) {
-                $nilaiMentah = round(($benarMc / $totalMc) * ($kuis->nilai ?? 100), 2);
-                NilaiKuis::create([
-                    'id_sesi_kuis'  => $sesi->id,
-                    'nilai_mentah'  => $nilaiMentah,
-                    'dihitung_pada' => now(),
+                /*
+                |--------------------------------------------------------------------------
+                | Esai
+                |--------------------------------------------------------------------------
+                */
+
+                JawabanKuis::create([
+                    'id_sesi_kuis'       => $sesi->id,
+                    'id_pertanyaan'      => $pertanyaan->id,
+                    'id_pilihan_jawaban' => null,
+                    'teks_jawaban'       => trim($request->input($fieldName)),
                 ]);
             }
+
+            $nilai = $this->hitungNilaiKuis($sesi);
+
+            NilaiKuis::updateOrCreate(
+                [
+                    'id_sesi_kuis' => $sesi->id
+                ],
+                [
+                    'nilai_mentah' => $nilai,
+                    'dihitung_pada' => now(),
+                ]
+            );
+
+            (new NilaiKursusController())->updateNilaiKursus(
+                $pendaftaran->id,
+                $kuis->id_kursus
+            );
         });
 
         return redirect()->route('peserta.kuis.show', $kuis->id)

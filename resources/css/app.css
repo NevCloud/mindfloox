@@ -33,7 +33,7 @@
     }
 
     .card-fix {
-        @apply h-full flex flex-col bg-white dark:bg-gray-900 border border-[#e8e8e8] dark:border-gray-800 rounded-xl shadow-[0_0_25px_-10px_rgba(0,0,0,0.2)] overflow-hidden transition-all duration-300;
+        @apply h-full flex flex-col bg-white dark:bg-gray-900 border border-[#e8e8e8] dark:border-gray-800 rounded-xl shadow-[0_0_25px_-10px_rgba(0,0,0,0.2)] overflow-visible transition-all duration-300;
     }
 
     .badge {

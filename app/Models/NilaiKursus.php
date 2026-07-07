@@ -31,7 +31,7 @@ class NilaiKursus extends Model
     {
         return $this->belongsTo(Pendaftaran::class, 'id_pendaftaran');
     }
-
+    
     public function kursus()
     {
         return $this->belongsTo(Kursus::class, 'id_kursus');

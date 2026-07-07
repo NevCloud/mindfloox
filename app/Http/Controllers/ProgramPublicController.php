@@ -35,7 +35,7 @@ class ProgramPublicController extends Controller
             $baseUsername = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $request->nama_lengkap));
             // Default to 'user' if empty after regex
             if (empty($baseUsername)) $baseUsername = 'user';
-            
+
             $username = $baseUsername;
             $counter = 1;
             while (Pengguna::where('username', $username)->exists()) {

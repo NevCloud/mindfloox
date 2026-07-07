@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Instruktur;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\NilaiKursusController;
 use App\Models\Tugas;
 use App\Models\Kuis;
 use App\Models\JawabanTugas;
 use App\Models\Kursus;
 use App\Models\KursusInstruktur;
 use App\Models\NilaiKuis;
+use App\Models\NilaiKursus;
 use App\Models\NilaiTugas;
 use App\Models\SesiKuis;
 use Illuminate\Http\Request;
@@ -88,6 +90,11 @@ class EvaluasiController extends Controller
             ]
         );
 
+        (new NilaiKursusController())->updateNilaiKursus(
+            $jawabanTugas->id_pendaftaran,
+            $jawabanTugas->tugas->id_kursus
+        );
+
         return redirect()->route('instruktur.evaluasi.tugas.detail', $jawabanTugas->id)
             ->with('success', 'Nilai berhasil disimpan.');
     }
@@ -149,6 +156,11 @@ class EvaluasiController extends Controller
             ]
         );
 
+        (new NilaiKursusController())->updateNilaiKursus(
+            $pendaftaran->id,
+            $tugas->id_kursus
+        );
+
         // Langsung redirect kembali ke workspace dengan peserta tersebut terpilih, membawa session success
         return redirect()->route('instruktur.evaluasi.tugas.workspace', ['tugas' => $tugas->id, 'pendaftaran_id' => $pendaftaran->id])
             ->with('success', 'Nilai berhasil disimpan!');
@@ -206,6 +218,11 @@ class EvaluasiController extends Controller
             ['nilai_mentah' => $request->nilai, 'dihitung_pada' => now()]
         );
 
+        (new NilaiKursusController())->updateNilaiKursus(
+            $sesiKuis->id_pendaftaran,
+            $sesiKuis->kuis->id_kursus
+        );
+
         return redirect()->route('instruktur.evaluasi.kuis.detail', $sesiKuis->id)
             ->with('success', 'Nilai berhasil disimpan.');
     }
@@ -259,6 +276,11 @@ class EvaluasiController extends Controller
         NilaiKuis::updateOrCreate(
             ['id_sesi_kuis' => $sesiKuis->id],
             ['nilai_mentah' => $request->nilai, 'dihitung_pada' => now()]
+        );
+
+        (new NilaiKursusController())->updateNilaiKursus(
+            $pendaftaran->id,
+            $kuis->id_kursus
         );
 
         return redirect()->route('instruktur.evaluasi.kuis.workspace', ['kuis' => $kuis->id, 'pendaftaran_id' => $pendaftaran->id])

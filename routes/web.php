@@ -16,6 +16,7 @@ use App\Http\Controllers\Instruktur\KursusController as InstrukturKursusControll
 use App\Http\Controllers\Instruktur\KontenController;
 use App\Http\Controllers\Instruktur\MingguController;
 use App\Http\Controllers\Instruktur\EvaluasiController;
+use App\Http\Controllers\Peserta\SertifikatController;
 use App\Http\Controllers\Peserta\KursusController as PesertaKursusController;
 use App\Http\Controllers\Peserta\KuisController as PesertaKuisController;
 use App\Http\Controllers\Peserta\TugasController as PesertaTugasController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\Peserta\PendaftaranController as PesertaPendaftaranCont
 use App\Http\Controllers\AdminMicrocredential\KursusController as AdminKursusController;
 use App\Http\Controllers\AdminMicrocredential\ProgramController as AdminProgramController;
 use App\Http\Controllers\AdminMicrocredential\VerifikasiController as AdminVerifikasiController;
+use App\Http\Controllers\Peserta\RatingKursusController;
 use App\Models\JenisMicrocredential;
 use App\Models\Semester;
 use App\Models\ProgramMicrocredential;
@@ -130,34 +132,92 @@ Route::prefix('instruktur')->name('instruktur.')->middleware('check.session:inst
 });
 
 /*
+
 |--------------------------------------------------------------------------
+
 | PESERTA
+
 |--------------------------------------------------------------------------
+
 */
+
 Route::prefix('peserta')->name('peserta.')->middleware('check.session:peserta')->group(function () {
+
+
 
     Route::get('/dasbor', fn() => view('peserta.dasbor'))->name('dasbor');
 
+
+
     Route::get('/kursus', [PesertaKursusController::class, 'index'])->name('kursus');
+
     Route::get('/kursus/{kursus}', [PesertaKursusController::class, 'show'])->name('kursus.show');
+
     Route::post('/kursus/{kursus}/materi/{materi}/viewed', [PesertaKursusController::class, 'markMateriViewed'])->name('kursus.materi.viewed');
 
+
+
     // Kuis (F017)
+
     Route::get('/kuis/{kuis}', [PesertaKuisController::class, 'show'])->name('kuis.show');
+
     Route::post('/kuis/{kuis}/submit', [PesertaKuisController::class, 'submit'])->name('kuis.submit');
 
+
+
     // Tugas (F017)
+
     Route::get('/tugas/{tugas}', [PesertaTugasController::class, 'show'])->name('tugas.show');
+
     Route::post('/tugas/{tugas}/submit', [PesertaTugasController::class, 'submit'])->name('tugas.submit');
+
     Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
+
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+
     Route::post('/profil/check-username', [ProfilController::class, 'checkUsername'])->name('profil.checkUsername');
+
+
+
+    /*
+
+    |--------------------------------------------------------------------------
+
+    | Rating Kursus
+
+    |--------------------------------------------------------------------------
+
+    */
+
+
+
+    Route::get('/ulasan/{id}', [RatingKursusController::class, 'create'])
+
+        ->name('ulasan.create');
+
+
+
+    Route::post('/ulasan', [RatingKursusController::class, 'store'])
+
+        ->name('ulasan.store');
+
+
 
     Route::get('/tugas', [PesertaTugasController::class, 'index'])->name('tugas');
 
+    Route::get(
+        '/sertifikat/{id}',
+        [SertifikatController::class, 'show']
+    )->name('sertifikat.show');
+
+
+
     // Pendaftaran Program (F009 - Peserta mendaftar ke Program Microcredential)
+
     Route::get('/pendaftaran', [PesertaPendaftaranController::class, 'index'])->name('pendaftaran.index');
+
     Route::post('/pendaftaran/{programId}', [PesertaPendaftaranController::class, 'store'])->name('pendaftaran.store');
+
     Route::get('/riwayat-pendaftaran', [PesertaPendaftaranController::class, 'riwayat'])->name('pendaftaran.riwayat');
 });
 

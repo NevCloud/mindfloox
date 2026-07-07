@@ -172,7 +172,7 @@
                     <div x-show="q.open" x-transition class="p-4 space-y-4">
                         <div>
                             <label class="label dark:text-white">Pertanyaan <span class="text-red-500">*</span></label>
-                            <textarea x-model="q.question" rows="2" placeholder="Tuliskan pertanyaan..." class="textarea"></textarea>
+                            <textarea x-model="q.question" rows="2" placeholder="Tuliskan pertanyaan..." class="textarea" required></textarea>
                         </div>
 
                         <template x-if="q.type === 'multiple_choice'">
@@ -207,8 +207,8 @@
 
                         <template x-if="q.type === 'essay'">
                             <div>
-                                <label class="label dark:text-white">Kunci Jawaban (Opsional)</label>
-                                <textarea x-model="q.answer" rows="2" placeholder="Panduan penilaian untuk soal essay..." class="textarea"></textarea>
+                                <label class="label dark:text-white">Kunci Jawaban <span class="text-red-500">*</span></label>
+                                <textarea x-model="q.answer" rows="2" placeholder="Panduan penilaian untuk soal essay..." class="textarea" required></textarea>
                             </div>
                         </template>
                     </div>
