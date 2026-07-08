@@ -138,9 +138,10 @@
                                         </div>
 
                                     </div>
+                                @endforeach
 
                         </div>
-                        @endforeach
+
 
                         <div class="flex justify-end mt-8">
 
