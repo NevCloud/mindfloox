@@ -67,7 +67,7 @@
                                 <div
                                     class="mb-6 rounded-lg bg-red-100 text-red-700 px-4 py-3 dark:bg-red-500/20 dark:text-red-300">
                                     <ul class="list-disc list-inside">
-                                        @foreach ($errors->all() as $error)
+                                        @foreach ($errors->unique() as $error)
                                             <li>{{ $error }}</li>
                                         @endforeach
                                     </ul>
@@ -127,12 +127,6 @@
 
                                             @error("ulasan.$loop->index.rating_kursus")
                                                 <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
-                                            @enderror
-
-                                            @error("ulasan.$loop->index.rating_kursus")
-                                                <p class="text-red-500 text-sm mt-2">
-                                                    {{ $message }}
-                                                </p>
                                             @enderror
 
                                         </div>
