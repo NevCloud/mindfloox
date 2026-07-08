@@ -14,6 +14,7 @@
     </script>
 </head>
 <body class="bg-gray-50 dark:bg-[#0F0F1A]">
+    <x-toast />
 <div class="min-h-screen text-gray-900 dark:text-white flex flex-col font-sans">
     {{-- Navbar / Header --}}
     <header class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1A1A2E]">
@@ -34,14 +35,6 @@
             </a>
         </div>
     </header>
-
-    @if(session('success'))
-    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)"
-        class="fixed top-20 right-6 z-50 px-4 py-3 rounded-lg shadow-lg bg-green-500/20 border border-green-500/50 text-green-300 flex items-center gap-3">
-        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-        <span>{{ session('success') }}</span>
-    </div>
-    @endif
 
     <div class="flex flex-1 overflow-hidden">
         {{-- Sidebar Peserta --}}

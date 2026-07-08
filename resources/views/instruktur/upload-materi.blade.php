@@ -31,16 +31,7 @@
 
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">
 
-                    {{-- Validation Errors --}}
-                    @if($errors->any())
-                        <div class="p-4 rounded-xl bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 text-sm text-red-700 dark:text-red-300">
-                            <ul class="list-disc list-inside space-y-1">
-                                @foreach($errors->all() as $err)
-                                    <li>{{ $err }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+
 
                     {{-- Header --}}
                     <section>

@@ -137,15 +137,7 @@
             <div class="flex-1 overflow-y-auto" id="scrollContainer">
                 <div class="p-5 space-y-5">
 
-                    {{-- Flash messages --}}
-                    @if(session('success'))
-                        <div class="p-4 rounded-xl bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-sm text-green-700 dark:text-green-300 flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    {{-- Header --}}
+{{-- Header --}}
                     <div class="flex items-center justify-between flex-wrap gap-3">
                         <div>
                             <a href="{{ route('instruktur.kursus.index') }}" class="text-xs text-gray-400 hover:text-primary flex items-center gap-1 mb-1">
@@ -329,9 +321,15 @@
                                                             :class="typeStyle(item.tipe_materi).pillBg"
                                                             x-text="item.tipe_materi"></span>
                                                         <template x-if="item.meta1">
-                                                            <span class="flex items-center gap-1">
+                                                            <span class="flex items-center gap-1" :class="item.meta1 && item.meta1.startsWith('Tenggat') ? (item.is_overdue ? 'text-red-500 font-medium' : 'text-amber-500 font-medium') : ''">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                                                 <span x-text="item.meta1"></span>
+                                                            </span>
+                                                        </template>
+                                                        <template x-if="item.meta2">
+                                                            <span class="flex items-center gap-1">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                                <span x-text="item.meta2"></span>
                                                             </span>
                                                         </template>
                                                     </div>

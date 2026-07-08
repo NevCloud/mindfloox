@@ -19,6 +19,13 @@ class ProgramMicrocredential extends Model
         'deskripsi',
         'foto_program',
         'status_pendaftaran',
+        'tanggal_mulai_pendaftaran',
+        'tanggal_akhir_pendaftaran',
+    ];
+
+    protected $casts = [
+        'tanggal_mulai_pendaftaran' => 'date',
+        'tanggal_akhir_pendaftaran' => 'date',
     ];
 
     public function jenisMicrocredential()

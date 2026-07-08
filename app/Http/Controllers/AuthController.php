@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AuthController extends Controller
 {
@@ -38,6 +39,15 @@ class AuthController extends Controller
             
             // Ambil seluruh data user yang berhasil login tersebut
             $user = Auth::user();
+
+            $roles = [
+                'super_admin' => 'Super Admin',
+                'admin_microcredential' => 'Admin Microcredential',
+                'instruktur' => 'Instruktur',
+                'peserta' => 'Peserta',
+            ];
+            $roleLabel = $roles[$user->role] ?? ucfirst($user->role);
+            $request->session()->flash('success', "Berhasil login sebagai $roleLabel");
 
             // 4. PENGALIHAN HALAMAN (REDIRECT) BERDASARKAN ROLE
             // Arahkan user ke dasbor masing-masing sesuai hak aksesnya (kolom 'role')
@@ -74,6 +84,6 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         
         // Arahkan kembali ke halaman form login
-        return redirect('/login');
+        return redirect('/login')->with('success', 'Anda telah berhasil logout.');
     }
 }

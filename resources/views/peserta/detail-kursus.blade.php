@@ -94,7 +94,7 @@
                                         <template x-if="week.items.length === 0">
                                             <div class="text-center py-8">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto mb-2 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                                                 </svg>
                                                 <p class="text-sm text-gray-400 dark:text-gray-500 font-medium">Belum ada konten di minggu ini</p>
                                             </div>
@@ -123,7 +123,7 @@
                                                                 :class="typeStyle(item.tipe_materi).pillBg"
                                                                 x-text="item.tipe_materi"></span>
                                                             <template x-if="item.meta1">
-                                                                <span class="flex items-center gap-1">
+                                                                <span class="flex items-center gap-1" :class="item.meta1 && item.meta1.startsWith('Tenggat') ? (item.is_overdue ? 'text-red-500 font-medium' : 'text-amber-500 font-medium') : ''">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                                                     <span x-text="item.meta1"></span>
                                                                 </span>

@@ -29,6 +29,31 @@ class ProgramPublicController extends Controller
 
         $program = ProgramMicrocredential::findOrFail($id);
 
+        $now = now();
+        $startDate = $program->tanggal_mulai_pendaftaran ? \Carbon\Carbon::parse($program->tanggal_mulai_pendaftaran) : null;
+        $endDate = $program->tanggal_akhir_pendaftaran ? \Carbon\Carbon::parse($program->tanggal_akhir_pendaftaran) : null;
+        
+        $isOpen = false;
+        if ($program->status_pendaftaran === 'buka' && $startDate && $endDate) {
+            if ($now->between($startDate, $endDate)) {
+                $isOpen = true;
+            }
+        }
+        
+        if (!$isOpen) {
+            $pesan = 'Pendaftaran untuk program ini saat ini sudah ditutup.';
+            
+            if ($program->status_pendaftaran === 'tutup') {
+                $pesan = 'Pendaftaran sedang ditutup, mohon kembali lagi nanti.';
+            } elseif ($endDate && $now->gt($endDate)) {
+                $pesan = 'Waktu pendaftaran untuk program ini sudah berakhir.';
+            } elseif ($startDate && $now->lt($startDate)) {
+                $pesan = 'Waktu pendaftaran belum dibuka.';
+            }
+
+            return back()->with('error', $pesan);
+        }
+
         DB::beginTransaction();
         try {
             // Generate username based on nama_lengkap

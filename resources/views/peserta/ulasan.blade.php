@@ -66,11 +66,9 @@
                             @if ($errors->any())
                                 <div
                                     class="mb-6 rounded-lg bg-red-100 text-red-700 px-4 py-3 dark:bg-red-500/20 dark:text-red-300">
-                                    <ul class="list-disc list-inside">
-                                        @foreach ($errors->unique() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
+                                    @foreach ($errors->unique() as $error)
+                                        <p>{{ $error }}</p>
+                                    @endforeach
                                 </div>
                             @endif
 

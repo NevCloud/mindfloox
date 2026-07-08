@@ -85,17 +85,7 @@ document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray
                 <!-- Scrollable content -->
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">
 
-                    {{-- Flash message sukses --}}
-                    @if (session('success'))
-                        <div
-                            class="bg-green-500/10 border border-green-500/20 text-green-500 text-sm rounded-xl px-4 py-3 flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            {{ session('success') }}
-                        </div>
-                    @endif
+
 
                     <!-- PROFILE CONTENT -->
                     <section>
@@ -505,16 +495,7 @@ document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray
                 </button>
             </div>
 
-            {{-- Validation errors --}}
-            @if ($errors->any())
-                <div class="mb-4 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
-                    <ul class="text-sm text-red-500 space-y-1">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+
 
             {{-- Form edit profil --}}
             <form method="POST" action="{{ route($updateRoute) }}" enctype="multipart/form-data"

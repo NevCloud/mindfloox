@@ -38,17 +38,6 @@
                     </div>
 
                     <!-- Flash Messages -->
-                    @if(session('success'))
-                    <div class="px-4 py-3 rounded-lg bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-300 text-sm">
-                        {{ session('success') }}
-                    </div>
-                    @endif
-                    @if(session('error'))
-                    <div class="px-4 py-3 rounded-lg bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300 text-sm">
-                        {{ session('error') }}
-                    </div>
-                    @endif
-
                     <!-- Programs Grid -->
                     @forelse($programs as $program)
                         @php
