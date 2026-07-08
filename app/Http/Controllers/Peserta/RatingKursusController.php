@@ -55,7 +55,6 @@ class RatingKursusController extends Controller
             'ulasan'                       => 'required|array',
             'ulasan.*.id_kursus'           => 'required|exists:kursus,id',
             'ulasan.*.rating_kursus'       => 'required|integer|min:1|max:5',
-            'ulasan.*.komentar_kursus'     => 'nullable|string|max:1000',
         ], [
             'ulasan.*.rating_kursus.required' => 'Rating wajib dipilih.',
             'ulasan.*.rating_kursus.min'      => 'Minimal 1 bintang.',
@@ -91,7 +90,6 @@ class RatingKursusController extends Controller
 
                 [
                     'rating_kursus'   => $item['rating_kursus'],
-                    'komentar_kursus' => $item['komentar_kursus'] ?? null,
                 ]
 
             );

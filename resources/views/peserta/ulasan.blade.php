@@ -92,63 +92,37 @@
 
                                         <div class="mt-2">
 
-                                            <label class="block font-medium mb-4 dark:text-white">
-                                                {{ $item->nama }}
-                                            </label>
-
                                             <label class="block font-medium mb-2 dark:text-white">
-                                                Rating
+                                                Rating {{ $item->nama }}
                                             </label>
 
                                             <div x-data="{
-                                                open: false,
                                                 current: '{{ old("ulasan.$loop->index.rating_kursus", '') }}',
-                                                get label() {
-                                                    return this.current ? this.current + ' Bintang' : '-- Pilih Rating --';
-                                                },
+                                                hover: 0,
                                                 select(v) {
                                                     this.current = v;
                                                     this.$refs.rating.value = v;
-                                                    this.open = false;
                                                 }
-                                            }" class="relative">
+                                            }" class="flex items-center gap-1.5">
 
                                                 <input type="hidden" x-ref="rating"
                                                     name="ulasan[{{ $loop->index }}][rating_kursus]"
                                                     :value="current">
 
-                                                <!-- Button -->
-                                                <div @click="open=!open" @click.outside="open=false"
-                                                    :class="open ? 'border-primary ring-2 ring-primary/20' :
-                                                        'border-gray-200 dark:border-gray-800'"
-                                                    class="px-4 py-2 rounded-lg border bg-white dark:bg-[#1A1A2E] text-sm text-gray-800 dark:text-white cursor-pointer flex justify-between items-center gap-3 transition">
+                                                <template x-for="i in 5" :key="i">
+                                                    <button type="button" @click="select(i)" @mouseenter="hover = i"
+                                                        @mouseleave="hover = 0"
+                                                        class="w-8 h-8 transition-all duration-150 transform hover:scale-110 focus:outline-none">
 
-                                                    <span x-text="label"></span>
-
-                                                    <svg class="w-4 h-4 text-gray-400 transition"
-                                                        :class="open && 'rotate-180'" fill="none"
-                                                        stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M19 9l-7 7-7-7" />
-                                                    </svg>
-                                                </div>
-
-                                                <!-- Dropdown -->
-                                                <div x-cloak x-show="open" x-transition
-                                                    class="absolute left-0 right-0 mt-2 bg-white dark:bg-[#1A1A2E] border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg z-50 overflow-hidden">
-
-                                                    @for ($i = 5; $i >= 1; $i--)
-                                                        <div @click="select('{{ $i }}')"
-                                                            class="px-4 py-2.5 text-sm cursor-pointer hover:bg-primary/10 transition"
-                                                            :class="current == '{{ $i }}' ?
-                                                                'text-primary font-medium bg-primary/5' :
-                                                                'text-gray-700 dark:text-gray-300'">
-
-                                                            {{ $i }} Bintang
-                                                        </div>
-                                                    @endfor
-
-                                                </div>
+                                                        <svg class="w-full h-full stroke-2 transition-colors duration-150"
+                                                            :class="(hover || current) >= i ? 'text-amber-400 fill-amber-400' :
+                                                                'text-gray-300 dark:text-gray-600 fill-transparent'"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M11.48 3.499c.151-.326.623-.326.774 0l2.399 4.865 5.362.779c.36.052.504.494.243.747l-3.88 3.78 1.15 5.342c.078.363-.304.64-.627.469L12 16.732l-4.794 2.522c-.323.17-.705-.106-.627-.469l1.15-5.342-3.88-3.78c-.261-.253-.117-.7.243-.747l5.362-.779 2.399-4.865z" />
+                                                        </svg>
+                                                    </button>
+                                                </template>
                                             </div>
 
                                             @error("ulasan.$loop->index.rating_kursus")
@@ -163,47 +137,32 @@
 
                                         </div>
 
-                                        <div class="mt-5">
-
-                                            <label class="block font-medium mb-2 dark:text-white">
-                                                Komentar
-                                            </label>
-
-                                            <textarea rows="4" class="textarea" placeholder="Bagaimana pendapat Anda mengenai kursus ini?"
-                                                name="ulasan[{{ $loop->index }}][komentar_kursus]">{{ old("ulasan.$loop->index.komentar_kursus") }}</textarea>
-
-                                            @error("ulasan.$loop->index.komentar_kursus")
-                                                <p class="text-red-500 text-sm mt-2">
-                                                    {{ $message }}
-                                                </p>
-                                            @enderror
-
-                                        </div>
-
                                     </div>
-                                @endforeach
-
-                                <div class="flex justify-end mt-8">
-
-                                    <button type="submit"
-                                        class="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition">
-                                        Simpan Rating
-                                    </button>
-
-                                </div>
-
-                            </form>
 
                         </div>
+                        @endforeach
+
+                        <div class="flex justify-end mt-8">
+
+                            <button type="submit"
+                                class="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition">
+                                Simpan Rating
+                            </button>
+
+                        </div>
+
+                        </form>
 
                     </div>
 
                 </div>
-            </main>
-
-            <x-rightPanel />
 
         </div>
+        </main>
+
+        <x-rightPanel />
+
+    </div>
 
     </div>
 

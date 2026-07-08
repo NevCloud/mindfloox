@@ -409,10 +409,23 @@ document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray
 
                                                                     {{-- Sertifikat --}}
                                                                     @if ($program->boleh_download)
-                                                                        <a href="{{ route('peserta.sertifikat.show', $program->id_pendaftaran) }}"
-                                                                            class="px-3 py-2 rounded-lg bg-green-600 text-white text-xs hover:bg-green-700">
-                                                                            Download Sertifikat
-                                                                        </a>
+                                                                        <div class="flex gap-2">
+
+                                                                            <a href="{{ route('peserta.sertifikat.show', $program->id_pendaftaran) }}"
+                                                                                class="px-3 py-2 rounded-lg bg-blue-600 text-white text-xs hover:bg-blue-700">
+
+                                                                                Preview
+
+                                                                            </a>
+
+                                                                            <a href="{{ route('peserta.sertifikat.download', $program->id_pendaftaran) }}"
+                                                                                class="px-3 py-2 rounded-lg bg-green-600 text-white text-xs hover:bg-green-700 transition">
+
+                                                                                Download Sertifikat
+
+                                                                            </a>
+
+                                                                        </div>
                                                                     @else
                                                                         <button disabled
                                                                             class="px-3 py-2 rounded-lg bg-gray-300 dark:bg-gray-700 text-gray-500 text-xs cursor-not-allowed">

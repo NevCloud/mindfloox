@@ -370,15 +370,33 @@
 
                 {{-- QR Code --}}
                 <div class="text-center">
+                    @php
+                        // Mengambil data dinamis sesuai template sertifikat Anda
+                        $namaPeserta = $pendaftaran->peserta->pengguna->nama ?? 'Nama Peserta';
+                        $nomorTerformat = $sertifikat->nomor_sertifikat;
+                        $namaProgram = 'Sertifikat Partisipasi - ' . $program->nama;
 
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data={{ urlencode(route('peserta.sertifikat.show', $pendaftaran->id)) }}"
+                        // Menyusun format teks biasa (Plain Text) untuk QR Code
+                        $qrContent = "Nama: {$namaPeserta}\nNomor: {$nomorTerformat}\n {$namaProgram}";
+                    @endphp
+
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data={{ urlencode($qrContent) }}"
+                        width="100" height="100" class="mx-auto">
+
+                    <p class="text-[10px] text-gray-500 mt-2">
+                        Scan untuk verifikasi data
+                    </p>
+                </div>
+                {{-- <div class="text-center">
+
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data={{ urlencode(route('verify.sertifikat', ['nomor' => $sertifikat->nomor_sertifikat])) }}"
                         width="100" height="100" class="mx-auto">
 
                     <p class="text-[10px] text-gray-500 mt-2">
                         Scan untuk verifikasi
                     </p>
 
-                </div>
+                </div> --}}
 
 
             </div>
@@ -401,7 +419,7 @@
                 Sertifikat Microcredential Mindfloox
             </p>
 
-            
+
 
             <table class="w-full border text-sm">
 
