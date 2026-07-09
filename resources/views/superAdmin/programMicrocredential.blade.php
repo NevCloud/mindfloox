@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Program Microcredential - Super Admin</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
                 '(prefers-color-scheme: dark)').matches)) {
@@ -27,49 +29,6 @@
         <div class="flex-1 overflow-y-auto">
             <div class="p-5 space-y-5">
 
-                {{-- Flash Success --}}
-                @if (session('success'))
-                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)"
-                        x-transition
-                        class="flex items-center gap-3 p-4 rounded-lg bg-green-100 dark:bg-green-500/10 border border-green-300 dark:border-green-700 text-green-700 dark:text-green-400 text-sm">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <span>{{ session('success') }}</span>
-                        <button @click="show = false" class="ml-auto text-green-600 hover:text-green-800">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                        </button>
-                    </div>
-                @endif
-
-                {{-- Flash Error --}}
-                @if (session('error'))
-                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 6000)"
-                        x-transition
-                        class="flex items-center gap-3 p-4 rounded-lg bg-red-100 dark:bg-red-500/10 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 text-sm">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                        </svg>
-                        <span>{{ session('error') }}</span>
-                        <button @click="show = false" class="ml-auto text-red-600 hover:text-red-800">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                        </button>
-                    </div>
-                @endif
-
-                {{-- Validation Errors --}}
-                @if ($errors->any())
-                    <div class="flex items-center gap-3 p-4 rounded-lg bg-red-100 dark:bg-red-500/10 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 text-sm">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <ul class="list-disc list-inside space-y-1">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
 
                 {{-- Header --}}
                 <div class="flex items-center justify-between mb-5">
@@ -124,6 +83,7 @@
                                     <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Program</th>
                                     <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Jenis Microcredential</th>
                                     <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Periode Akademik</th>
+                                    <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Waktu Pendaftaran</th>
                                     <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Status</th>
                                     <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Admin</th>
                                     <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase text-center">Aksi</th>
@@ -142,8 +102,26 @@
                                                 -
                                             @endif
                                         </td>
+                                        <td class="py-3 px-4 text-gray-500 text-xs">
+                                            @if ($item->tanggal_mulai_pendaftaran && $item->tanggal_akhir_pendaftaran)
+                                                <span class="whitespace-nowrap">{{ $item->tanggal_mulai_pendaftaran->translatedFormat('d F Y') }} - {{ $item->tanggal_akhir_pendaftaran->translatedFormat('d F Y') }}</span>
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                         <td class="py-3 px-4">
-                                            @if ($item->status_pendaftaran === 'buka')
+                                            @php
+                                                $now = now();
+                                                $sd = $item->tanggal_mulai_pendaftaran ? \Carbon\Carbon::parse($item->tanggal_mulai_pendaftaran)->startOfDay() : null;
+                                                $ed = $item->tanggal_akhir_pendaftaran ? \Carbon\Carbon::parse($item->tanggal_akhir_pendaftaran)->endOfDay() : null;
+                                                
+                                                $isOpen = false;
+                                                if ($item->status_pendaftaran === 'buka' && $sd && $ed && $now->between($sd, $ed)) {
+                                                    $isOpen = true;
+                                                }
+                                            @endphp
+                                            
+                                            @if ($isOpen)
                                                 <span class="px-2 py-1 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-medium rounded-full">Buka</span>
                                             @else
                                                 <span class="px-2 py-1 bg-red-100 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-medium rounded-full">Tutup</span>
@@ -173,7 +151,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="py-8 text-center text-gray-500 text-sm">
+                                        <td colspan="8" class="py-8 text-center text-gray-500 text-sm">
                                             Belum ada data program microcredential.
                                         </td>
                                     </tr>
@@ -273,6 +251,22 @@
                             </div>
                         </div>
                         <input type="hidden" name="id_semester" :value="modal.data.id_semester">
+                    </div>
+
+                    {{-- Waktu Pendaftaran --}}
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tanggal Mulai Pendaftaran <span class="text-red-500">*</span></label>
+                            <input type="text" id="tanggal-mulai" name="tanggal_mulai_pendaftaran" x-model="modal.data.tanggal_mulai_pendaftaran" required
+                                class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:outline-none focus:border-primary focus:ring-0 transition"
+                                placeholder="Pilih tanggal mulai">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tanggal Akhir Pendaftaran <span class="text-red-500">*</span></label>
+                            <input type="text" id="tanggal-akhir" name="tanggal_akhir_pendaftaran" x-model="modal.data.tanggal_akhir_pendaftaran" required
+                                class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white focus:outline-none focus:border-primary focus:ring-0 transition"
+                                placeholder="Pilih tanggal akhir">
+                        </div>
                     </div>
 
                     {{-- Status Pendaftaran --}}
@@ -416,8 +410,11 @@
                         deskripsi: '',
                         id_jenis_microcredential: '',
                         id_semester: '',
+                        id_semester: '',
                         id_admin_microcredential: '',
-                        status_pendaftaran: 'buka'
+                        status_pendaftaran: 'buka',
+                        tanggal_mulai_pendaftaran: '',
+                        tanggal_akhir_pendaftaran: ''
                     }
                 },
                 deleteModal: {
@@ -441,6 +438,34 @@
                     document.documentElement.classList.toggle('dark', this.dark);
                 },
 
+                initFlatpickr() {
+                    this.$nextTick(() => {
+                        const mulaiEl = document.getElementById('tanggal-mulai');
+                        const akhirEl = document.getElementById('tanggal-akhir');
+                        if (mulaiEl && mulaiEl._flatpickr) mulaiEl._flatpickr.destroy();
+                        if (akhirEl && akhirEl._flatpickr) akhirEl._flatpickr.destroy();
+
+                        if (mulaiEl) {
+                            flatpickr(mulaiEl, {
+                                dateFormat: 'Y-m-d',
+                                defaultDate: this.modal.data.tanggal_mulai_pendaftaran || null,
+                                onChange: (selectedDates, dateStr) => {
+                                    this.modal.data.tanggal_mulai_pendaftaran = dateStr;
+                                }
+                            });
+                        }
+                        if (akhirEl) {
+                            flatpickr(akhirEl, {
+                                dateFormat: 'Y-m-d',
+                                defaultDate: this.modal.data.tanggal_akhir_pendaftaran || null,
+                                onChange: (selectedDates, dateStr) => {
+                                    this.modal.data.tanggal_akhir_pendaftaran = dateStr;
+                                }
+                            });
+                        }
+                    });
+                },
+
                 openCreate() {
                     this.modal = {
                         show: true,
@@ -454,12 +479,25 @@
                             id_jenis_microcredential: '',
                             id_semester: '',
                             id_admin_microcredential: '',
-                            status_pendaftaran: 'buka'
+                            status_pendaftaran: 'buka',
+                            tanggal_mulai_pendaftaran: '',
+                            tanggal_akhir_pendaftaran: ''
                         }
                     };
+                    this.initFlatpickr();
                 },
 
                 openEdit(item) {
+                    const fmt = (d) => {
+                        if (!d) return '';
+                        // d is ISO string, parse to local Date
+                        const dateObj = new Date(d);
+                        if (isNaN(dateObj)) return d.substring(0, 10);
+                        const yyyy = dateObj.getFullYear();
+                        const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+                        const dd = String(dateObj.getDate()).padStart(2, '0');
+                        return `${yyyy}-${mm}-${dd}`;
+                    };
                     this.modal = {
                         show: true,
                         mode: 'edit',
@@ -472,7 +510,9 @@
                             id_jenis_microcredential: item.id_jenis_microcredential || '',
                             id_semester: item.id_semester || '',
                             id_admin_microcredential: item.id_admin_microcredential || '',
-                            status_pendaftaran: item.status_pendaftaran || 'buka'
+                            status_pendaftaran: item.status_pendaftaran || 'buka',
+                            tanggal_mulai_pendaftaran: fmt(item.tanggal_mulai_pendaftaran),
+                            tanggal_akhir_pendaftaran: fmt(item.tanggal_akhir_pendaftaran)
                         }
                     };
                     // Force Alpine to re-evaluate select bindings after DOM update
@@ -482,6 +522,7 @@
                         this.modal.data.id_admin_microcredential = item.id_admin_microcredential || '';
                         this.modal.data.status_pendaftaran = item.status_pendaftaran || 'buka';
                     });
+                    this.initFlatpickr();
                 },
 
                 openDelete(id, nama) {

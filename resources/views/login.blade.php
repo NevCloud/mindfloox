@@ -166,7 +166,7 @@
     {{-- Footer --}}
     <x-footer />
 
-
+    <x-toast />
 </body>
 
 </html>

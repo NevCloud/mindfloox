@@ -30,29 +30,7 @@
         <div class="flex-1 overflow-y-auto">
             <div class="p-5 space-y-5">
 
-                {{-- Flash Message Success --}}
-                @if (session('success'))
-                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)"
-                        x-transition class="p-4 bg-green-100 dark:bg-green-500/10 border border-green-300 dark:border-green-700 text-green-700 dark:text-green-400 rounded-lg text-sm flex items-center gap-2">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                {{-- Flash Message Error --}}
-                @if (session('error'))
-                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 6000)"
-                        x-transition class="mb-5 p-4 bg-red-100 dark:bg-red-500/10 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 rounded-lg text-sm flex items-center gap-2">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                        </svg>
-                        {{ session('error') }}
-                    </div>
-                @endif
-
-                {{-- Validation Errors - ditampilkan di dalam modal, bukan di sini --}}
+{{-- Validation Errors - ditampilkan di dalam modal, bukan di sini --}}
 
                 <!-- Header -->
                 <div class="flex items-center justify-between mb-5">
@@ -221,16 +199,7 @@
 
             <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6" x-text="modal.title"></h3>
 
-            {{-- Validation Errors - di dalam modal --}}
-            @if ($errors->any())
-                <div class="mb-4 p-3 bg-red-100 dark:bg-red-500/10 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 rounded-lg text-sm">
-                    <ul class="list-disc list-inside space-y-1">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+
 
             <form :action="modal.action" method="POST">
                 @csrf

@@ -54,6 +54,8 @@ class ProgramMicrocredentialController extends Controller
             'id_jenis_microcredential' => 'required|exists:jenis_microcredential,id',
             'id_semester'           => 'required|exists:semester,id',
             'status_pendaftaran'    => 'required|in:buka,tutup',
+            'tanggal_mulai_pendaftaran' => 'required|date',
+            'tanggal_akhir_pendaftaran' => 'required|date|after_or_equal:tanggal_mulai_pendaftaran',
             'id_admin_microcredential' => 'required|exists:admin_microcredential,id',
             'foto_program'          => 'required|image|max:2048',
         ], [
@@ -65,6 +67,11 @@ class ProgramMicrocredentialController extends Controller
             'id_semester.exists'                => 'Semester tidak valid.',
             'status_pendaftaran.required'       => 'Status pendaftaran wajib dipilih.',
             'status_pendaftaran.in'             => 'Status harus buka atau tutup.',
+            'tanggal_mulai_pendaftaran.required' => 'Tanggal mulai pendaftaran wajib diisi.',
+            'tanggal_mulai_pendaftaran.date'     => 'Format tanggal mulai pendaftaran tidak valid.',
+            'tanggal_akhir_pendaftaran.required' => 'Tanggal akhir pendaftaran wajib diisi.',
+            'tanggal_akhir_pendaftaran.date'     => 'Format tanggal akhir pendaftaran tidak valid.',
+            'tanggal_akhir_pendaftaran.after_or_equal' => 'Tanggal akhir harus sama dengan atau setelah tanggal mulai.',
             'foto_program.required'             => 'Foto program wajib diunggah.',
             'foto_program.image'                => 'Foto harus berupa file gambar.',
             'foto_program.max'                  => 'Ukuran foto maksimal 2 MB.',
@@ -72,7 +79,7 @@ class ProgramMicrocredentialController extends Controller
             'id_admin_microcredential.exists'   => 'Admin microcredential tidak valid.',
         ]);
 
-        $data = $request->only('nama', 'deskripsi', 'id_jenis_microcredential', 'id_semester', 'id_admin_microcredential', 'status_pendaftaran');
+        $data = $request->only('nama', 'deskripsi', 'id_jenis_microcredential', 'id_semester', 'id_admin_microcredential', 'status_pendaftaran', 'tanggal_mulai_pendaftaran', 'tanggal_akhir_pendaftaran');
 
         if ($request->hasFile('foto_program')) {
             $data['foto_program'] = $request->file('foto_program')->store('program', 'public');
@@ -96,6 +103,8 @@ class ProgramMicrocredentialController extends Controller
             'id_jenis_microcredential' => 'required|exists:jenis_microcredential,id',
             'id_semester'           => 'required|exists:semester,id',
             'status_pendaftaran'    => 'required|in:buka,tutup',
+            'tanggal_mulai_pendaftaran' => 'required|date',
+            'tanggal_akhir_pendaftaran' => 'required|date|after_or_equal:tanggal_mulai_pendaftaran',
             'id_admin_microcredential' => 'required|exists:admin_microcredential,id',
             'foto_program'          => 'nullable|image|max:2048',
         ], [
@@ -107,6 +116,11 @@ class ProgramMicrocredentialController extends Controller
             'id_semester.exists'                => 'Semester tidak valid.',
             'status_pendaftaran.required'       => 'Status pendaftaran wajib dipilih.',
             'status_pendaftaran.in'             => 'Status harus buka atau tutup.',
+            'tanggal_mulai_pendaftaran.required' => 'Tanggal mulai pendaftaran wajib diisi.',
+            'tanggal_mulai_pendaftaran.date'     => 'Format tanggal mulai pendaftaran tidak valid.',
+            'tanggal_akhir_pendaftaran.required' => 'Tanggal akhir pendaftaran wajib diisi.',
+            'tanggal_akhir_pendaftaran.date'     => 'Format tanggal akhir pendaftaran tidak valid.',
+            'tanggal_akhir_pendaftaran.after_or_equal' => 'Tanggal akhir harus sama dengan atau setelah tanggal mulai.',
             'foto_program.image'                => 'Foto harus berupa file gambar.',
             'foto_program.max'                  => 'Ukuran foto maksimal 2 MB.',
             'id_admin_microcredential.required'  => 'Admin microcredential wajib dipilih.',
@@ -114,7 +128,7 @@ class ProgramMicrocredentialController extends Controller
         ]);
 
         $program = ProgramMicrocredential::findOrFail($id);
-        $data = $request->only('nama', 'deskripsi', 'id_jenis_microcredential', 'id_semester', 'id_admin_microcredential', 'status_pendaftaran');
+        $data = $request->only('nama', 'deskripsi', 'id_jenis_microcredential', 'id_semester', 'id_admin_microcredential', 'status_pendaftaran', 'tanggal_mulai_pendaftaran', 'tanggal_akhir_pendaftaran');
 
         if ($request->hasFile('foto_program')) {
             $data['foto_program'] = $request->file('foto_program')->store('program', 'public');

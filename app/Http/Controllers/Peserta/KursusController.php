@@ -120,6 +120,7 @@ class KursusController extends Controller
                     'url_file'    => null,
                     'nomor_urut'  => $t->nomor_urut ?? 999,
                     'meta1'       => $t->batas_waktu ? 'Tenggat: ' . $t->batas_waktu->format('d M Y, H:i') : null,
+                    'is_overdue'  => $t->batas_waktu ? $t->batas_waktu->isPast() : false,
                     'dikumpulkan' => isset($submittedTugasIds[$t->id]),
                     'tugas_url'   => route('peserta.tugas.show', $t->id),
                 ];
@@ -137,6 +138,8 @@ class KursusController extends Controller
                     'url_file'   => null,
                     'durasi'     => $k->batas_waktu_menit,
                     'nomor_urut' => $k->nomor_urut ?? 9999,
+                    'meta1'       => $k->batas_waktu ? 'Tenggat: ' . $k->batas_waktu->format('d M Y, H:i') : null,
+                    'is_overdue'  => $k->batas_waktu ? $k->batas_waktu->isPast() : false,
                     'selesai'    => isset($selesaiKuisIds[$k->id]),
                 ];
             }

@@ -10,12 +10,6 @@
         <span class="text-sm text-gray-400">{{ $kursus->count() }} kursus</span>
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 p-4 rounded-xl bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-sm text-green-700 dark:text-green-300">
-            {{ session('success') }}
-        </div>
-    @endif
-
     @if($kursus->isEmpty())
         <div class="text-center py-16 text-gray-400 dark:text-gray-500">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-3 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">

@@ -30,7 +30,7 @@
 
             <div class="w-20 h-1 bg-gradient-to-r from-primary to-accent mb-10"></div>
 
-            <form method="GET" action="{{ route('program.index') }}" 
+            <form method="GET" action="{{ route('program.index') }}" x-ref="form"
                 x-data="{ 
                     openJenis: false, 
                     currentJenis: '{{ request('jenis', '') }}', 
@@ -47,7 +47,7 @@
                     selectJenis(id) { 
                         this.currentJenis = id;
                         $refs.jenisInput.value = id;
-                        this.$el.submit();
+                        $refs.form.submit();
                     }
                 }"
                 class="flex flex-col sm:flex-row items-center gap-3 mb-8 w-full z-10 relative">

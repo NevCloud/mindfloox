@@ -56,6 +56,48 @@
                                             : ($k->programMicrocredential && $k->programMicrocredential->foto_program 
                                                 ? (str_starts_with($k->programMicrocredential->foto_program, 'http') ? $k->programMicrocredential->foto_program : asset('storage/' . $k->programMicrocredential->foto_program)) 
                                                 : 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400');
+                                                
+                                        // Calculate Progress
+                                        $pendaftaranItem = \App\Models\Pendaftaran::where('id_peserta', $peserta->id)
+                                            ->where('id_program_microcredential', $k->id_program_microcredential)
+                                            ->first();
+
+                                        $allWeeks = \App\Models\Minggu::where('id_kursus', $k->id)->get();
+                                        $totalVisibleWeeks = $allWeeks->count();
+                                        $completedWeeks = 0;
+
+                                        if ($pendaftaranItem && $totalVisibleWeeks > 0) {
+                                            $dilihatIds = \App\Models\MateriDilihat::where('id_pendaftaran', $pendaftaranItem->id)
+                                                ->pluck('id_materi_pembelajaran')->flip()->toArray();
+                                            $submittedTugasIds = \App\Models\JawabanTugas::where('id_pendaftaran', $pendaftaranItem->id)
+                                                ->where('status', 'final')
+                                                ->pluck('id_tugas')->flip()->toArray();
+                                            $completedKuisIds = \App\Models\SesiKuis::where('id_pendaftaran', $pendaftaranItem->id)
+                                                ->where('status', 'selesai')
+                                                ->pluck('id_kuis')->flip()->toArray();
+
+                                            foreach ($allWeeks as $week) {
+                                                $materiIds = \App\Models\MateriPembelajaran::where('id_kursus', $k->id)
+                                                    ->where('id_minggu', $week->id)->pluck('id')->toArray();
+                                                $tugasIds = \App\Models\Tugas::where('id_kursus', $k->id)
+                                                    ->where('id_minggu', $week->id)->pluck('id')->toArray();
+                                                $kuisIds = \App\Models\Kuis::where('id_kursus', $k->id)
+                                                    ->where('id_minggu', $week->id)->pluck('id')->toArray();
+
+                                                $totalItems = count($materiIds) + count($tugasIds) + count($kuisIds);
+                                                if ($totalItems === 0) continue;
+
+                                                $allMateriViewed = empty($materiIds) || empty(array_diff($materiIds, array_keys($dilihatIds)));
+                                                $allTugasDone = empty($tugasIds) || empty(array_diff($tugasIds, array_keys($submittedTugasIds)));
+                                                $allKuisDone = empty($kuisIds) || empty(array_diff($kuisIds, array_keys($completedKuisIds)));
+
+                                                if ($allMateriViewed && $allTugasDone && $allKuisDone) {
+                                                    $completedWeeks++;
+                                                }
+                                            }
+                                        }
+
+                                        $progress = $totalVisibleWeeks > 0 ? round(($completedWeeks / $totalVisibleWeeks) * 100) : 0;
                                     @endphp
                                     <a href="{{ route('peserta.kursus.show', $k->id) }}"
                                         class="card p-0 overflow-hidden flex flex-row cursor-pointer hover:shadow-md transition">
@@ -64,15 +106,20 @@
                                                 <div class="w-36 h-24 flex-shrink-0 rounded-xl overflow-hidden" style="background:{{ $bgRgba }}">
                                                     <img src="{{ $imgSrc }}" class="w-full h-full object-cover" alt="{{ $k->nama }}">
                                                 </div>
-                                                <div class="flex-1 min-w-0">
-                                                    <h4 class="text-sm font-semibold dark:text-white truncate">{{ $k->nama }}</h4>
-                                                    <p class="text-[11px] text-gray-400 mb-3 line-clamp-2">{{ $k->deskripsi }}</p>
-                                                    <button class="inline-flex items-center gap-2 px-3 py-1.5 {{ $btnClass }} text-white text-xs font-semibold rounded-lg transition">
-                                                        Pelajari
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                                                        </svg>
-                                                    </button>
+                                                <div class="flex-1 min-w-0 flex flex-col">
+                                                    <div class="flex items-center justify-between gap-2">
+                                                        <h4 class="text-sm font-semibold dark:text-white truncate">{{ $k->nama }}</h4>
+                                                        <span class="text-sm font-bold flex-shrink-0" style="color:{{ $color }}">{{ $progress }}%</span>
+                                                    </div>
+                                                    <p class="text-[11px] text-gray-400 mt-1 mb-auto line-clamp-2">{{ $k->deskripsi }}</p>
+                                                    <div class="mt-3">
+                                                        <button class="inline-flex items-center gap-2 px-3 py-1.5 {{ $btnClass }} text-white text-xs font-semibold rounded-lg transition">
+                                                            Pelajari
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

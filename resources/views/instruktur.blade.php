@@ -50,16 +50,7 @@
                                 {{ $inst->pengguna->role }}
                             </p>
 
-                            <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex justify-between mb-5">
-                                <div>
-                                    <p class="font-bold">{{ $inst->total_peserta }}</p>
-                                    <p class="text-xs text-gray-500">Peserta</p>
-                                </div>
-                                <div>
-                                    <p class="font-bold">5.0</p>
-                                    <p class="text-xs text-gray-500">Rating</p>
-                                </div>
-                            </div>
+
                             {{-- Sosial Media --}}
                             @if($inst->pengguna->x || $inst->pengguna->facebook || $inst->pengguna->instagram || $inst->pengguna->linkedin)
                             <div class="flex gap-4 items-center justify-center mt-auto">

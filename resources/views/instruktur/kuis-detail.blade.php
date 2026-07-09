@@ -52,7 +52,7 @@
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-base font-semibold dark:text-white">Beri Rating Kursus</h3>
                             <a href="{{ route('peserta.profil') }}"
-                                class="flex items-center gap-2 px-3 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#1A1A2E] transition-colors">
+                                class="flex items-center gap-2 px-3 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 hover:text-primary dark:hover:bg-gray-800 dark:hover:text-primary transition-all">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -61,23 +61,7 @@
                             </a>
                         </div>
 
-                        @if (session('success'))
-                            <div
-                                class="mb-4 p-4 rounded-xl bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-sm text-green-700 dark:text-green-300">
-                                {{ session('success') }}
-                            </div>
-                        @endif
 
-                        @if ($errors->any())
-                            <div
-                                class="mb-4 p-4 rounded-xl bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 text-sm text-red-700 dark:text-red-300">
-                                <ul class="list-disc list-inside space-y-1">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
 
                         <div class="card translate-none rounded-lg p-6 space-y-6">
 

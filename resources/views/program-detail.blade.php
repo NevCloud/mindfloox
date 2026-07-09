@@ -20,16 +20,10 @@
     <x-navbar />
 
     <div class="max-w-7xl mx-auto px-4 py-8 flex-1">
-        @if(session('error'))
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                {{ session('error') }}
-            </div>
-        @endif
-
         <div class="grid md:grid-cols-3 gap-8">
             <!-- Main Content -->
             <div class="md:col-span-2">
-                <img src="{{ $program->foto_program ? asset('storage/' . $program->foto_program) : asset('img/momo.png') }}" class="w-full h-80 object-cover rounded-xl mb-6 shadow-md">
+                <img src="{{ $program->foto_program ? asset('storage/' . $program->foto_program) : asset('img/momo.png') }}" class="w-full aspect-[21/9] object-cover rounded-xl mb-6 shadow-md">
 
                 <div class="flex items-center gap-2 mb-4">
                     <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
@@ -63,7 +57,44 @@
             <div>
                 <div class="bg-white dark:bg-[#1A1A2E] rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 sticky top-24">
                     <h2 class="text-xl font-bold mb-4 dark:text-white">Pendaftaran Program</h2>
-                    <p class="text-gray-500 text-sm mb-6">Silakan lengkapi formulir di bawah ini untuk mendaftar ke program ini.</p>
+                    
+                    @php
+                        $isOpen = false;
+                        $now = now();
+                        $startDate = $program->tanggal_mulai_pendaftaran ? \Carbon\Carbon::parse($program->tanggal_mulai_pendaftaran)->startOfDay() : null;
+                        $endDate = $program->tanggal_akhir_pendaftaran ? \Carbon\Carbon::parse($program->tanggal_akhir_pendaftaran)->endOfDay() : null;
+                        
+                        if ($program->status_pendaftaran === 'buka' && $startDate && $endDate) {
+                            if ($now->between($startDate, $endDate)) {
+                                $isOpen = true;
+                            }
+                        }
+                    @endphp
+
+                    @if($startDate && $endDate)
+                        <div class="mb-4 text-sm text-gray-600 dark:text-gray-300">
+                            <strong>Periode Pendaftaran:</strong><br>
+                            {{ $startDate->translatedFormat('d F Y') }} - {{ $endDate->translatedFormat('d F Y') }}
+                        </div>
+                    @endif
+
+                    @if($isOpen)
+                        <p class="text-gray-500 text-sm mb-6">Silakan lengkapi formulir di bawah ini untuk mendaftar ke program ini.</p>
+                    @else
+                        <div class="bg-red-50 dark:bg-red-900/30 border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 p-4 rounded-xl text-sm mb-6 font-medium text-center">
+                            @if(!$startDate || !$endDate)
+                                Pendaftaran Belum Tersedia
+                            @elseif($now->lt($startDate))
+                                Pendaftaran Belum Dibuka
+                            @elseif($now->gt($endDate))
+                                Waktu Pendaftaran Telah Berakhir
+                            @else
+                                Pendaftaran Sedang Ditutup<br>Mohon Kembali Lagi Nanti
+                            @endif
+                        </div>
+                    @endif
+
+                    @if($isOpen)
 
                     <form action="{{ route('program.public.daftar', $program->id) }}" method="POST">
                         @csrf
@@ -85,6 +116,7 @@
                             Kirim Pendaftaran
                         </button>
                     </form>
+                    @endif
                 </div>
             </div>
         </div>

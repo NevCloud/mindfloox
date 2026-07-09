@@ -63,6 +63,11 @@
                         Menuju Halaman Login
                     </a>
                 </div>
+            @elseif(session('cekakun_locked_until') && session('cekakun_locked_until') > time())
+                <div class="bg-red-50 border border-red-300 text-red-500 text-sm p-4 rounded-xl mb-4 text-center">
+                    <p class="font-bold mb-2">Batas Percobaan Habis</p>
+                    <p>Anda telah mencapai batas maksimal 3 kali percobaan. Silakan coba lagi besok jam 06:00.</p>
+                </div>
             @else
                 <form action="{{ route('cek-akun.process') }}" method="POST" class="space-y-4">
                     @csrf
