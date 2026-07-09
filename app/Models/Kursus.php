@@ -16,11 +16,6 @@ class Kursus extends Model
         "nama",
         "deskripsi",
         "foto_kursus",
-        "nilai_kelulusan_kursus",
-    ];
-
-    protected $casts = [
-        "nilai_kelulusan_kursus" => "decimal:2",
     ];
 
     public function programMicrocredential()
