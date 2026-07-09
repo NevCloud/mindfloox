@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Peserta;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\SertifikatKursus;
 use App\Models\Pendaftaran;
@@ -43,7 +44,11 @@ class SertifikatController extends Controller
             ->get();
 
         $rataRata = round($nilai->avg('nilai_akhir'), 2);
-
+        $this->generateQr(
+            $sertifikat,
+            $pendaftaran,
+            $program
+        );
         return view(
             'peserta.sertifikat',
             compact(
@@ -101,7 +106,11 @@ class SertifikatController extends Controller
                 $sertifikat->nomor_sertifikat . '.pdf'
             );
         }
-
+        $this->generateQr(
+            $sertifikat,
+            $pendaftaran,
+            $program
+        );
         // Generate PDF dari blade yang sama
         $pdf = Pdf::loadView('peserta.sertifikat', compact(
             'sertifikat',
@@ -131,5 +140,35 @@ class SertifikatController extends Controller
             $folder . '/' . $namaFile,
             $namaFile
         );
+    }
+
+    private function generateQr($sertifikat, $pendaftaran, $program)
+    {
+        $folder = public_path('qrcode');
+
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0755, true);
+        }
+
+        $file = $folder . '/' . $sertifikat->nomor_sertifikat . '.png';
+
+        // Jika QR sudah ada, tidak perlu dibuat lagi
+        if (!File::exists($file)) {
+
+            $namaPeserta = $pendaftaran->peserta->pengguna->nama;
+
+            $qrContent =
+                "Nama Peserta : {$namaPeserta}\n" .
+                "Nomor Sertifikat : {$sertifikat->nomor_sertifikat}\n" .
+                "Program : {$program->nama}";
+
+            $url = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" . urlencode($qrContent);
+
+            $image = @file_get_contents($url);
+
+            if ($image !== false) {
+                file_put_contents($file, $image);
+            }
+        }
     }
 }
