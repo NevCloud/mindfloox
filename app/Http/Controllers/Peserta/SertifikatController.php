@@ -136,9 +136,8 @@ class SertifikatController extends Controller
             'url_file' => $folder . '/' . $namaFile,
         ]);
 
-        return Storage::disk('public')->download(
-            $folder . '/' . $namaFile,
-            $namaFile
+        return response()->download(
+            storage_path('app/public/' . $sertifikat->url_file)
         );
     }
 

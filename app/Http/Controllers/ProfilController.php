@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use App\Models\UlasanKursus;
+use App\Models\Minggu;
+use App\Models\MateriDilihat;
+use App\Models\MateriPembelajaran;
+use App\Models\JawabanTugas;
+use App\Models\Tugas;
+use App\Models\SesiKuis;
+use App\Models\Kuis;
+use App\Models\kursus;
 use App\Models\Pengguna;
 use App\Models\ProgramMicrocredential;
 
@@ -44,7 +52,9 @@ class ProfilController extends Controller
                     $program->status_tampil = $program->status_pendaftaran;
 
                     $program->program_selesai = $program->semester
-                        ? now()->greaterThanOrEqualTo(Carbon::parse($program->semester->tanggal_selesai))
+                        ? now()->greaterThanOrEqualTo(
+                            Carbon::parse($program->semester->tanggal_selesai)
+                        )
                         : false;
 
                     return $program;
@@ -65,15 +75,39 @@ class ProfilController extends Controller
 
                     $program = $pendaftaran->programMicrocredential;
 
-                    // simpan id pendaftaran
-                    $program->id_pendaftaran = $pendaftaran->id;
+                    $programSelesai100 = true;
 
+                    foreach ($program->kursus as $kursus) {
+
+                        $progress = $this->hitungProgressKursus(
+                            $pendaftaran->id,
+                            $kursus->id
+                        );
+
+                        if ($progress < 100) {
+                            $programSelesai100 = false;
+                            break;
+                        }
+                    }
+
+                    $program->progress_100 = $programSelesai100;
+
+                    $program->id_pendaftaran = $pendaftaran->id;
                     $program->status_tampil = $pendaftaran->status;
 
-                    $program->program_selesai = true;
+                    $program->program_selesai = true; 
 
-                    $program->sudah_rating =
-                        $pendaftaran->ulasanKursus()->exists();
+                    // $program->program_selesai = $program->semester
+                    //     ? now()->greaterThanOrEqualTo(
+                    //         Carbon::parse($program->semester->tanggal_selesai)
+                    //     )
+                    //     : false;
+
+                    $program->sudah_rating = $pendaftaran->ulasanKursus()->exists();
+
+                    $program->boleh_rating =
+                        $program->program_selesai &&
+                        $program->progress_100;
 
                     $program->boleh_download =
                         $program->program_selesai &&
@@ -84,6 +118,69 @@ class ProfilController extends Controller
         }
 
         return view('profil', compact('user', 'programs'));
+    }
+
+    private function hitungProgressKursus($idPendaftaran, $idKursus)
+    {
+        $allWeeks = Minggu::where('id_kursus', $idKursus)->get();
+
+        $totalVisibleWeeks = $allWeeks->count();
+        $completedWeeks = 0;
+
+        if ($totalVisibleWeeks == 0) {
+            return 0;
+        }
+
+        $dilihatIds = MateriDilihat::where('id_pendaftaran', $idPendaftaran)
+            ->pluck('id_materi_pembelajaran')
+            ->flip()
+            ->toArray();
+
+        $submittedTugasIds = JawabanTugas::where('id_pendaftaran', $idPendaftaran)
+            ->where('status', 'final')
+            ->pluck('id_tugas')
+            ->flip()
+            ->toArray();
+
+        $completedKuisIds = SesiKuis::where('id_pendaftaran', $idPendaftaran)
+            ->where('status', 'selesai')
+            ->pluck('id_kuis')
+            ->flip()
+            ->toArray();
+
+        foreach ($allWeeks as $week) {
+
+            $materiIds = MateriPembelajaran::where('id_kursus', $idKursus)
+                ->where('id_minggu', $week->id)
+                ->pluck('id')
+                ->toArray();
+
+            $tugasIds = Tugas::where('id_kursus', $idKursus)
+                ->where('id_minggu', $week->id)
+                ->pluck('id')
+                ->toArray();
+
+            $kuisIds = Kuis::where('id_kursus', $idKursus)
+                ->where('id_minggu', $week->id)
+                ->pluck('id')
+                ->toArray();
+
+            $totalItems = count($materiIds) + count($tugasIds) + count($kuisIds);
+
+            if ($totalItems == 0) {
+                continue;
+            }
+
+            $allMateriViewed = empty($materiIds) || empty(array_diff($materiIds, array_keys($dilihatIds)));
+            $allTugasDone = empty($tugasIds) || empty(array_diff($tugasIds, array_keys($submittedTugasIds)));
+            $allKuisDone = empty($kuisIds) || empty(array_diff($kuisIds, array_keys($completedKuisIds)));
+
+            if ($allMateriViewed && $allTugasDone && $allKuisDone) {
+                $completedWeeks++;
+            }
+        }
+
+        return round(($completedWeeks / $totalVisibleWeeks) * 100);
     }
     /**
      * AJAX: cek apakah username sudah dipakai user lain.

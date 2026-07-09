@@ -148,10 +148,10 @@
                                             implode(',', sscanf(substr($color, 1), '%02x%02x%02x')) .
                                             ',0.15)';
 
-                                        $imgSrc = $k->foto_kursus 
+                                        $imgSrc = $k->foto_kursus
                                             ? (str_starts_with($k->foto_kursus, 'http') ? $k->foto_kursus : asset('storage/' . $k->foto_kursus))
-                                            : ($k->programMicrocredential && $k->programMicrocredential->foto_program 
-                                                ? (str_starts_with($k->programMicrocredential->foto_program, 'http') ? $k->programMicrocredential->foto_program : asset('storage/' . $k->programMicrocredential->foto_program)) 
+                                            : ($k->programMicrocredential && $k->programMicrocredential->foto_program
+                                                ? (str_starts_with($k->programMicrocredential->foto_program, 'http') ? $k->programMicrocredential->foto_program : asset('storage/' . $k->programMicrocredential->foto_program))
                                                 : 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400');
 
                                         $instrukturName =

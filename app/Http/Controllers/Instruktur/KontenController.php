@@ -45,11 +45,11 @@ class KontenController extends Controller
     private function resolveNomorUrut(Request $request, int $kursusId, int $mingguId): int
     {
         $posisi = $request->input('posisi');
-        
+
         $materis = MateriPembelajaran::where('id_minggu', $mingguId)->get()->map(fn($m) => ['type' => 'materi', 'nomor_urut' => $m->nomor_urut, 'model' => $m]);
         $tugas = Tugas::where('id_minggu', $mingguId)->get()->map(fn($t) => ['type' => 'tugas', 'nomor_urut' => $t->nomor_urut, 'model' => $t]);
         $kuis = Kuis::where('id_minggu', $mingguId)->get()->map(fn($k) => ['type' => 'kuis', 'nomor_urut' => $k->nomor_urut, 'model' => $k]);
-        
+
         $all = $materis->concat($tugas)->concat($kuis)->toArray();
         usort($all, fn($a, $b) => $a['nomor_urut'] <=> $b['nomor_urut']);
 
@@ -72,7 +72,7 @@ class KontenController extends Controller
             $item['model']->update(['nomor_urut' => $currentPos]);
             $currentPos++;
         }
-        
+
         return $currentPos;
     }
 
@@ -247,7 +247,7 @@ class KontenController extends Controller
                 KunciJawabanEsai::create([
                     'id_pertanyaan' => $pertanyaan->id,
                     'teks_kunci'    => $q['answer'],
-                    'case_sensitive'=> false,
+                    'case_sensitive'=> (bool) ($q['case_sensitive'] ?? false),
                 ]);
             }
         }

@@ -72,18 +72,6 @@ class NilaiKursusController extends Controller
             $nilaiAkhir = 0;
 
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Status Kelulusan
-        |--------------------------------------------------------------------------
-        */
-
-        $kursus = Kursus::findOrFail($idKursus);
-
-        $statusLulus =
-            $nilaiAkhir >= $kursus->nilai_kelulusan_kursus;
-
         /*
         |--------------------------------------------------------------------------
         | Simpan
@@ -99,7 +87,6 @@ class NilaiKursusController extends Controller
 
             [
                 'nilai_akhir' => round($nilaiAkhir, 2),
-                'status_lulus' => $statusLulus,
                 'dihitung_pada' => now(),
             ]
 

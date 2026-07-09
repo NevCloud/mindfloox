@@ -85,7 +85,17 @@ document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray
                 <!-- Scrollable content -->
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">
 
-
+                    {{-- Flash message sukses --}}
+                    @if (session('success'))
+                        <div
+                            class="bg-green-500/10 border border-green-500/20 text-green-500 text-sm rounded-xl px-4 py-3 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
                     <!-- PROFILE CONTENT -->
                     <section>
@@ -382,20 +392,26 @@ document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray
                                                         @if ($user->role === 'peserta')
                                                             <div class="mt-4 flex flex-wrap gap-2">
 
-                                                                @if (!$program->program_selesai)
+                                                                {{-- @if (!$program->program_selesai)
                                                                     <span
                                                                         class="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 text-xs">
                                                                         Program masih berlangsung
                                                                     </span>
-                                                                @else
+                                                                @else --}}
                                                                     {{-- Rating --}}
                                                                     @if (!$program->sudah_rating)
-                                                                        <a href="{{ route('peserta.ulasan.create', $program->id_pendaftaran) }}"
-                                                                            class="px-3 py-2 rounded-lg bg-yellow-500 text-white text-xs hover:bg-yellow-600 transition">
-                                                                            Beri Rating
-                                                                        </a>
+                                                                        @if ($program->boleh_rating)
+                                                                            <a href="{{ route('peserta.ulasan.create', $program->id_pendaftaran) }}"
+                                                                                class="px-3 py-2 rounded-lg bg-yellow-500 text-white text-xs hover:bg-yellow-600">
+                                                                                Beri Rating
+                                                                            </a>
+                                                                        @else
+                                                                            <button disabled
+                                                                                class="px-3 py-2 rounded-lg bg-gray-300 text-gray-500 text-xs cursor-not-allowed">
+                                                                                Beri Rating
+                                                                            </button>
+                                                                        @endif
                                                                     @endif
-
 
                                                                     {{-- Sertifikat --}}
                                                                     @if ($program->boleh_download)
@@ -403,16 +419,12 @@ document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray
 
                                                                             <a href="{{ route('peserta.sertifikat.show', $program->id_pendaftaran) }}"
                                                                                 class="px-3 py-2 rounded-lg bg-blue-600 text-white text-xs hover:bg-blue-700">
-
                                                                                 Preview
-
                                                                             </a>
 
                                                                             <a href="{{ route('peserta.sertifikat.download', $program->id_pendaftaran) }}"
-                                                                                class="px-3 py-2 rounded-lg bg-green-600 text-white text-xs hover:bg-green-700 transition">
-
+                                                                                class="px-3 py-2 rounded-lg bg-green-600 text-white text-xs hover:bg-green-700">
                                                                                 Download Sertifikat
-
                                                                             </a>
 
                                                                         </div>
@@ -422,7 +434,7 @@ document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray
                                                                             Download Sertifikat
                                                                         </button>
                                                                     @endif
-                                                                @endif
+                                                                {{-- @endif --}}
 
                                                             </div>
                                                         @endif
@@ -495,7 +507,16 @@ document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray
                 </button>
             </div>
 
-
+            {{-- Validation errors --}}
+            @if ($errors->any())
+                <div class="mb-4 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
+                    <ul class="text-sm text-red-500 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             {{-- Form edit profil --}}
             <form method="POST" action="{{ route($updateRoute) }}" enctype="multipart/form-data"

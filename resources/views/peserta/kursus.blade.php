@@ -51,12 +51,12 @@
                                         $bgRgba   = 'rgba(' . implode(',', sscanf(substr($color,1), '%02x%02x%02x')) . ',0.15)';
                                         $btnMap   = ['#2196f3'=>'bg-blue-500 hover:bg-blue-600','#9c27b0'=>'bg-purple-500 hover:bg-purple-600','#ff9800'=>'bg-orange-500 hover:bg-orange-600','#f44336'=>'bg-red-500 hover:bg-red-600','#4caf50'=>'bg-green-500 hover:bg-green-600','#00bcd4'=>'bg-cyan-500 hover:bg-cyan-600'];
                                         $btnClass = $btnMap[$color] ?? 'bg-blue-500 hover:bg-blue-600';
-                                        $imgSrc = $k->foto_kursus 
+                                        $imgSrc = $k->foto_kursus
                                             ? (str_starts_with($k->foto_kursus, 'http') ? $k->foto_kursus : asset('storage/' . $k->foto_kursus))
-                                            : ($k->programMicrocredential && $k->programMicrocredential->foto_program 
-                                                ? (str_starts_with($k->programMicrocredential->foto_program, 'http') ? $k->programMicrocredential->foto_program : asset('storage/' . $k->programMicrocredential->foto_program)) 
+                                            : ($k->programMicrocredential && $k->programMicrocredential->foto_program
+                                                ? (str_starts_with($k->programMicrocredential->foto_program, 'http') ? $k->programMicrocredential->foto_program : asset('storage/' . $k->programMicrocredential->foto_program))
                                                 : 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400');
-                                                
+
                                         // Calculate Progress
                                         $pendaftaranItem = \App\Models\Pendaftaran::where('id_peserta', $peserta->id)
                                             ->where('id_program_microcredential', $k->id_program_microcredential)
