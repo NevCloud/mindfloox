@@ -64,7 +64,10 @@
                     </a>
                 </div>
             @elseif(session('cekakun_locked_until') && session('cekakun_locked_until') > time())
-                <div class="bg-red-50 border border-red-300 text-red-500 text-sm p-4 rounded-xl mb-4 text-center">
+                <div class="bg-red-50 border border-red-300 text-red-500 text-sm p-4 rounded-xl mb-4 text-center flex flex-col items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-3 text-red-500">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                    </svg>
                     <p class="font-bold mb-2">Batas Percobaan Habis</p>
                     <p>Anda telah mencapai batas maksimal 3 kali percobaan. Silakan coba lagi besok jam 06:00.</p>
                 </div>

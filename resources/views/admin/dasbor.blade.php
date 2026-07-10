@@ -140,5 +140,7 @@
 
     <x-rightPanel />
 
+    <x-toast />
+
 </body>
 </html>

@@ -29,7 +29,7 @@ class KursusController extends Controller
     public function index()
     {
         $instruktur = $this->instruktur();
-        $kursus = $instruktur->kursus()->with('programMicrocredential.semester')->get();
+        $kursus = $instruktur->kursus()->with('programMicrocredential.periodePembelajaran')->get();
 
         return view('instruktur.kursus', compact('kursus', 'instruktur'));
     }

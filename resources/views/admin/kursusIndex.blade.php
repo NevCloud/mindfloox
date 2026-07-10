@@ -56,7 +56,6 @@
                                         <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Nama Kursus</th>
                                         <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase">Deskripsi</th>
                                         <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase text-center">Instruktur</th>
-                                        <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase text-center">Nilai Kelulusan</th>
                                         <th class="py-3 px-4 text-xs font-medium text-gray-500 uppercase text-center">Aksi</th>
                                     </tr>
                                 </thead>
@@ -77,9 +76,6 @@
                                                         <span class="text-gray-400">-</span>
                                                     </template>
                                                 </div>
-                                            </td>
-                                            <td class="py-3 px-4 text-center">
-                                                <span class="px-2 py-1 bg-purple-100 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs font-medium rounded-full" x-text="Math.round(item.nilai)"></span>
                                             </td>
                                             <td class="py-3 px-4">
                                                 <div class="flex justify-center gap-1">
@@ -103,7 +99,7 @@
                                     </template>
                                     <template x-if="courses.length === 0">
                                         <tr>
-                                            <td colspan="6" class="py-8 text-center text-gray-400 text-sm">Belum ada kursus dalam program ini.</td>
+                                            <td colspan="5" class="py-8 text-center text-gray-400 text-sm">Belum ada kursus dalam program ini.</td>
                                         </tr>
                                     </template>
                                 </tbody>
@@ -154,14 +150,6 @@
                     <textarea x-model="form.deskripsi" rows="3" :disabled="submitting"
                         class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white text-sm outline-none focus:border-primary transition resize-none"
                         placeholder="Deskripsi kursus (opsional)"></textarea>
-                </div>
-
-                <!-- Nilai Kelulusan -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nilai Kelulusan <span class="text-red-400">*</span> <span class="text-xs text-gray-400">(0–100, default 75)</span></label>
-                    <input type="number" x-model.number="form.nilai" min="0" max="100" step="0.01" :disabled="submitting"
-                        class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0F0F1A] text-gray-800 dark:text-white text-sm outline-none focus:border-primary transition"
-                        placeholder="75">
                 </div>
 
                 <!-- Instruktur (multi-select dropdown with checkboxes) -->
@@ -232,7 +220,6 @@
             'id'             => $c->id,
             'nama'           => $c->nama,
             'deskripsi'      => $c->deskripsi ?? '',
-            'nilai'          => (float) $c->nilai_kelulusan_kursus,
             'instruktur_ids' => $c->instruktur->pluck('id')->toArray(),
         ])->values());
 
@@ -260,10 +247,10 @@
                 editId: null,
                 submitting: false,
                 showInstrukturDropdown: false,
-                form: { nama: '', deskripsi: '', nilai: 75, instruktur_ids: [], foto: null },
+                form: { nama: '', deskripsi: '', instruktur_ids: [], foto: null },
 
                 resetForm() {
-                    this.form = { nama: '', deskripsi: '', nilai: 75, instruktur_ids: [], foto: null };
+                    this.form = { nama: '', deskripsi: '', instruktur_ids: [], foto: null };
                     this.editId = null;
                     this.submitting = false;
                     this.showInstrukturDropdown = false;
@@ -281,7 +268,6 @@
                     this.editId = item.id;
                     this.form.nama = item.nama;
                     this.form.deskripsi = item.deskripsi;
-                    this.form.nilai = item.nilai;
                     this.form.instruktur_ids = [...item.instruktur_ids];
                     this.showModal = true;
                 },
@@ -308,7 +294,6 @@
                         const formData = new FormData();
                         formData.append('nama', this.form.nama);
                         if (this.form.deskripsi) formData.append('deskripsi', this.form.deskripsi);
-                        formData.append('nilai_kelulusan_kursus', this.form.nilai);
                         
                         this.form.instruktur_ids.forEach(id => {
                             formData.append('id_instruktur[]', id);

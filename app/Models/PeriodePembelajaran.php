@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Semester extends Model
+class PeriodePembelajaran extends Model
 {
-    protected $table = "semester";
+    protected $table = "periode_pembelajaran";
 
     const CREATED_AT = "dibuat_pada";
     const UPDATED_AT = "diperbarui_pada";
@@ -25,6 +25,6 @@ class Semester extends Model
 
     public function programMicrocredential()
     {
-        return $this->hasMany(ProgramMicrocredential::class, 'id_semester');
+        return $this->hasMany(ProgramMicrocredential::class, 'id_periode_pembelajaran');
     }
 }

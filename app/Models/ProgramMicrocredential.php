@@ -13,7 +13,7 @@ class ProgramMicrocredential extends Model
 
     protected $fillable = [
         'id_jenis_microcredential',
-        'id_semester',
+        'id_periode_pembelajaran',
         'id_admin_microcredential',
         'nama',
         'deskripsi',
@@ -33,9 +33,9 @@ class ProgramMicrocredential extends Model
         return $this->belongsTo(JenisMicrocredential::class, 'id_jenis_microcredential');
     }
 
-    public function semester()
+    public function periodePembelajaran()
     {
-        return $this->belongsTo(Semester::class, 'id_semester');
+        return $this->belongsTo(PeriodePembelajaran::class, 'id_periode_pembelajaran');
     }
 
     public function adminMicrocredential()

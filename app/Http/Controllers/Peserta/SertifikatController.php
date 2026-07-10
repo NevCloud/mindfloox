@@ -18,7 +18,7 @@ class SertifikatController extends Controller
         $user = Auth::user();
 
         $pendaftaran = Pendaftaran::with([
-            'programMicrocredential.semester',
+            'programMicrocredential.periodePembelajaran',
             'peserta.pengguna'
         ])->findOrFail($id);
 

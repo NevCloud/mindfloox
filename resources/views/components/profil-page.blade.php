@@ -373,9 +373,9 @@ document.documentElement.classList.toggle('dark', dark)" class="relative bg-gray
                                                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                                             {{ $program->jenisMicrocredential->nama ?? '-' }}
 
-                                                            @if ($program->semester)
-                                                                · {{ $program->semester->jenis }}
-                                                                {{ $program->semester->tahun }}
+                                                            @if ($program->periodePembelajaran)
+                                                                · {{ $program->periodePembelajaran->jenis }}
+                                                                {{ $program->periodePembelajaran->tahun }}
                                                             @endif
                                                         </p>
 

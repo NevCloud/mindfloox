@@ -15,15 +15,11 @@ class NilaiKursus extends Model
         "id_pendaftaran",
         "id_kursus",
         "nilai_akhir",
-        "status_lulus",
-        "ditentukan_oleh",
-        "catatan_instruktur",
         "dihitung_pada",
     ];
 
     protected $casts = [
         "nilai_akhir" => "decimal:2",
-        "status_lulus" => "boolean",
         "dihitung_pada" => "datetime",
     ];
 

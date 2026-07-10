@@ -82,7 +82,7 @@ class KuisController extends Controller
 
             $jumlahEsai++;
 
-            $jawabanPeserta = trim($jawaban->teks_jawaban);
+            $jawabanPeserta = trim($jawaban->teks_jawaban ?? '');
 
             foreach ($pertanyaan->kunciJawabanEsai as $kunci) {
 
@@ -223,7 +223,7 @@ class KuisController extends Controller
                     'id_sesi_kuis'       => $sesi->id,
                     'id_pertanyaan'      => $pertanyaan->id,
                     'id_pilihan_jawaban' => null,
-                    'teks_jawaban'       => trim($request->input($fieldName)),
+                    'teks_jawaban'       => trim($request->input($fieldName) ?? ''),
                 ]);
             }
 

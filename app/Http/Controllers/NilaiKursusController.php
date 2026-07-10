@@ -78,18 +78,15 @@ class NilaiKursusController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        NilaiKursus::updateOrCreate(
+        $nilaiKursus = NilaiKursus::firstOrNew([
+            'id_pendaftaran' => $idPendaftaran,
+            'id_kursus' => $idKursus,
+        ]);
 
-            [
-                'id_pendaftaran' => $idPendaftaran,
-                'id_kursus' => $idKursus,
-            ],
+        $nilaiKursus->nilai_akhir = round($nilaiAkhir, 2);
+        $nilaiKursus->dihitung_pada = now();
 
-            [
-                'nilai_akhir' => round($nilaiAkhir, 2),
-                'dihitung_pada' => now(),
-            ]
 
-        );
+        $nilaiKursus->save();
     }
 }

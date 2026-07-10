@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Semester;
+use App\Models\PeriodePembelajaran;
 use Illuminate\Http\Request;
 
-class SemesterController extends Controller
+class PeriodePembelajaranController extends Controller
 {
     /**
      * Menampilkan daftar semester.
      */
     public function index(Request $request)
     {
-        $query = Semester::query();
+        $query = PeriodePembelajaran::query();
 
         if ($search = $request->input('search')) {
             $query->where('tahun', 'like', "%{$search}%")
@@ -22,7 +22,7 @@ class SemesterController extends Controller
 
         $semesters = $query->orderBy('dibuat_pada', 'desc')->paginate(10);
 
-        return view('superAdmin.semester', compact('semesters'));
+        return view('superAdmin.periodePembelajaran', compact('semesters'));
     }
 
     /**
@@ -44,10 +44,10 @@ class SemesterController extends Controller
             'tanggal_selesai.after'     => 'Tanggal selesai harus setelah tanggal mulai.',
         ]);
 
-        Semester::create($request->only('tahun', 'jenis', 'tanggal_mulai', 'tanggal_selesai'));
+        PeriodePembelajaran::create($request->only('tahun', 'jenis', 'tanggal_mulai', 'tanggal_selesai'));
 
         return redirect()
-            ->route('superAdmin.semester')
+            ->route('superAdmin.periodePembelajaran')
             ->with('success', 'Periode pembelajaran berhasil ditambahkan.');
     }
 
@@ -70,11 +70,11 @@ class SemesterController extends Controller
             'tanggal_selesai.after'     => 'Tanggal selesai harus setelah tanggal mulai.',
         ]);
 
-        $semester = Semester::findOrFail($id);
+        $semester = PeriodePembelajaran::findOrFail($id);
         $semester->update($request->only('tahun', 'jenis', 'tanggal_mulai', 'tanggal_selesai'));
 
         return redirect()
-            ->route('superAdmin.semester')
+            ->route('superAdmin.periodePembelajaran')
             ->with('success', 'Periode pembelajaran berhasil diperbarui.');
     }
 
@@ -83,21 +83,21 @@ class SemesterController extends Controller
      */
     public function destroy($id)
     {
-        $semester = Semester::findOrFail($id);
+        $semester = PeriodePembelajaran::findOrFail($id);
         
         try {
             $semester->delete();
         } catch (\Illuminate\Database\QueryException $e) {
             if ($e->getCode() == '23000') {
                 return redirect()
-                    ->route('superAdmin.semester')
+                    ->route('superAdmin.periodePembelajaran')
                     ->with('error', "Gagal menghapus! Periode pembelajaran ini tidak bisa dihapus karena sudah ada Program Microcredential yang menggunakan periode ini.");
             }
             throw $e;
         }
 
         return redirect()
-            ->route('superAdmin.semester')
+            ->route('superAdmin.periodePembelajaran')
             ->with('success', 'Periode pembelajaran berhasil dihapus.');
     }
 }

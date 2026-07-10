@@ -15,6 +15,7 @@ class Peserta extends Model
         "id_pengguna",
         "akses_aktif",
         "diaktifkan_oleh",
+        "diaktifkan_pada",
         "minat"
     ];
 

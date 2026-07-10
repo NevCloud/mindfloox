@@ -66,7 +66,6 @@ class KursusController extends Controller
             'id_program_microcredential' => $program->id,
             'nama'                       => $request->nama,
             'deskripsi'                  => $request->deskripsi,
-            'nilai_kelulusan_kursus'     => $request->nilai_kelulusan_kursus ?? 75.00,
             'foto_kursus'                => $fotoPath,
         ]);
 
@@ -112,16 +111,12 @@ class KursusController extends Controller
             'deskripsi'       => 'nullable|string|max:2000',
             'id_instruktur'   => 'nullable|array',
             'id_instruktur.*' => 'exists:instruktur,id',
-            'nilai_kelulusan_kursus' => 'nullable|numeric|min:0|max:100',
             'foto_kursus'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ], [
             'nama.required'          => 'Nama kursus wajib diisi.',
             'nama.max'               => 'Nama kursus maksimal 255 karakter.',
             'id_instruktur.array'    => 'Data instruktur tidak valid.',
             'id_instruktur.*.exists' => 'Salah satu instruktur tidak valid.',
-            'nilai_kelulusan_kursus.numeric' => 'Nilai kelulusan harus berupa angka.',
-            'nilai_kelulusan_kursus.min'     => 'Nilai kelulusan minimal 0.',
-            'nilai_kelulusan_kursus.max'     => 'Nilai kelulusan maksimal 100.',
             'foto_kursus.image'      => 'File harus berupa gambar.',
             'foto_kursus.mimes'      => 'Format gambar harus jpeg, png, jpg, atau webp.',
             'foto_kursus.max'        => 'Ukuran gambar maksimal 2MB.',
@@ -130,7 +125,6 @@ class KursusController extends Controller
         $updateData = [
             'nama'                       => $request->nama,
             'deskripsi'                  => $request->deskripsi,
-            'nilai_kelulusan_kursus'     => $request->nilai_kelulusan_kursus ?? $kursus->nilai_kelulusan_kursus,
         ];
 
         if ($request->hasFile('foto_kursus')) {

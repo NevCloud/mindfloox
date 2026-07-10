@@ -32,7 +32,7 @@ class CekAkunController extends Controller
 
         if (RateLimiter::tooManyAttempts($throttleKey, 3)) {
             $request->session()->put('cekakun_locked_until', $next6AM->timestamp);
-            return back()->with('error', 'Batas percobaan cek akun Anda telah habis (3/3). Silakan coba lagi besok jam 06:00.');
+            return back();
         }
 
         $pengguna = Pengguna::where('email', $request->email)->where('role', 'peserta')->first();
@@ -42,7 +42,7 @@ class CekAkunController extends Controller
             $attempts = RateLimiter::attempts($throttleKey);
             if ($attempts >= 3) {
                 $request->session()->put('cekakun_locked_until', $next6AM->timestamp);
-                return back()->with('error', 'Batas percobaan cek akun Anda telah habis (3/3). Silakan coba lagi besok jam 06:00.');
+                return back();
             }
             return back()->with('error', "Data peserta tidak ditemukan dengan email tersebut. (Percobaan $attempts/3)");
         }
@@ -54,7 +54,7 @@ class CekAkunController extends Controller
             $attempts = RateLimiter::attempts($throttleKey);
             if ($attempts >= 3) {
                 $request->session()->put('cekakun_locked_until', $next6AM->timestamp);
-                return back()->with('error', 'Batas percobaan cek akun Anda telah habis (3/3). Silakan coba lagi besok jam 06:00.');
+                return back();
             }
             return back()->with('error', "Data detail peserta tidak ditemukan. (Percobaan $attempts/3)");
         }
@@ -67,7 +67,7 @@ class CekAkunController extends Controller
             $attempts = RateLimiter::attempts($throttleKey);
             if ($attempts >= 3) {
                 $request->session()->put('cekakun_locked_until', $next6AM->timestamp);
-                return back()->with('error', 'Batas percobaan cek akun Anda telah habis (3/3). Silakan coba lagi besok jam 06:00.');
+                return back();
             }
             return back()->with('error', "Tidak ada riwayat pendaftaran untuk email ini. (Percobaan $attempts/3)");
         }

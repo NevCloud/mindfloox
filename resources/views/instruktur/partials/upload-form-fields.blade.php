@@ -46,7 +46,7 @@
     <div x-show="tipeMateri === 'tugas'" x-transition>
         <label class="label dark:text-white">Tanggal Mulai</label>
         <input type="text" name="tanggal_mulai" x-model="tanggalMulaiTugas" class="input flatpickr-datetime"
-            placeholder="Pilih tanggal dan waktu">
+            placeholder="Pilih tanggal dan waktu" :disabled="tipeMateri !== 'tugas'">
         <p class="text-xs text-gray-400 mt-1">Kapan tugas mulai bisa diakses peserta.</p>
     </div>
 
@@ -69,7 +69,7 @@
     <div x-show="tipeMateri === 'kuis'" x-transition>
         <label class="label dark:text-white">Tanggal Mulai</label>
         <input type="text" name="tanggal_mulai" x-model="tanggalMulaiKuis" class="input flatpickr-datetime"
-            placeholder="Pilih tanggal dan waktu">
+            placeholder="Pilih tanggal dan waktu" :disabled="tipeMateri !== 'kuis'">
         <p class="text-xs text-gray-400 mt-1">Kapan kuis mulai bisa diakses peserta.</p>
     </div>
 

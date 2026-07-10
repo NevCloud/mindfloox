@@ -28,7 +28,7 @@ class PendaftaranController extends Controller
         $peserta = $this->peserta();
 
         // Ambil semua program yang status pendaftarannya buka
-        $programs = ProgramMicrocredential::with(['jenisMicrocredential', 'semester', 'kursus'])
+        $programs = ProgramMicrocredential::with(['jenisMicrocredential', 'periodePembelajaran', 'kursus'])
             ->where('status_pendaftaran', 'buka')
             ->orderBy('dibuat_pada', 'desc')
             ->get();
@@ -105,7 +105,7 @@ class PendaftaranController extends Controller
 
         $registrations = Pendaftaran::with([
             'programMicrocredential.jenisMicrocredential',
-            'programMicrocredential.semester',
+            'programMicrocredential.periodePembelajaran',
             'diverifikasiOleh.pengguna',
         ])
             ->where('id_peserta', $peserta->id)

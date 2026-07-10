@@ -42,7 +42,7 @@
                 {{-- Search + Add --}}
                 <div class="card translate-0 p-5">
                     <div class="flex items-center gap-3 mb-5">
-                        <form action="{{ route('superAdmin.semester') }}" method="GET" class="flex-1 flex items-center gap-2 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 transition-all duration-300 focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent">
+                        <form action="{{ route('superAdmin.periodePembelajaran') }}" method="GET" class="flex-1 flex items-center gap-2 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 transition-all duration-300 focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <circle cx="11" cy="11" r="8" />
                                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -302,7 +302,7 @@
                         show: true,
                         mode: 'create',
                         title: 'Tambah Periode Pembelajaran',
-                        action: '{{ route('superAdmin.semester.store') }}',
+                        action: '{{ route('superAdmin.periodePembelajaran.store') }}',
                         data: { tahun: '', jenis: '', tanggal_mulai: '', tanggal_selesai: '' }
                     };
                     this.initFlatpickr();
@@ -318,7 +318,7 @@
                         show: true,
                         mode: 'edit',
                         title: 'Edit Periode Pembelajaran',
-                        action: '/super-admin/semester/' + item.id,
+                        action: '/super-admin/periode-pembelajaran/' + item.id,
                         data: {
                             tahun: item.tahun || '',
                             jenis: item.jenis || '',
@@ -336,7 +336,7 @@
                 openDelete(id, nama) {
                     this.deleteModal = {
                         show: true,
-                        action: '/super-admin/semester/' + id,
+                        action: '/super-admin/periode-pembelajaran/' + id,
                         nama: nama
                     };
                 }

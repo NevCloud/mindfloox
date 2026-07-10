@@ -8,7 +8,7 @@ use App\Http\Controllers\instrukturController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SuperAdmin\JenisMicrocredentialController;
-use App\Http\Controllers\SuperAdmin\SemesterController;
+use App\Http\Controllers\SuperAdmin\PeriodePembelajaranController;
 use App\Http\Controllers\SuperAdmin\ProgramMicrocredentialController;
 use App\Http\Controllers\SuperAdmin\AdminInstrukturController;
 
@@ -27,7 +27,7 @@ use App\Http\Controllers\AdminMicrocredential\ProgramController as AdminProgramC
 use App\Http\Controllers\AdminMicrocredential\VerifikasiController as AdminVerifikasiController;
 use App\Http\Controllers\Peserta\RatingKursusController;
 use App\Models\JenisMicrocredential;
-use App\Models\Semester;
+use App\Models\PeriodePembelajaran;
 use App\Models\ProgramMicrocredential;
 use App\Models\Pengguna;
 
@@ -183,8 +183,8 @@ Route::prefix('peserta')->name('peserta.')->middleware('check.session:peserta')-
 Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session:super_admin')->group(function () {
     Route::get('/dasbor', function () {
         $jenisMicrocredentials = JenisMicrocredential::orderBy('dibuat_pada', 'desc')->take(4)->get();
-        $semesters = Semester::orderBy('dibuat_pada', 'desc')->take(3)->get();
-        $programs = ProgramMicrocredential::with(['jenisMicrocredential', 'semester'])->orderBy('dibuat_pada', 'desc')->get();
+        $semesters = PeriodePembelajaran::orderBy('dibuat_pada', 'desc')->take(3)->get();
+        $programs = ProgramMicrocredential::with(['jenisMicrocredential', 'periodePembelajaran'])->orderBy('dibuat_pada', 'desc')->get();
         $adminInstrukturs = Pengguna::whereIn('role', ['admin_microcredential', 'instruktur'])->orderBy('dibuat_pada', 'desc')->get();
         return view('superAdmin.dasbor', compact('jenisMicrocredentials', 'semesters', 'programs', 'adminInstrukturs'));
     })->name('dasbor');
@@ -210,11 +210,11 @@ Route::prefix('super-admin')->name('superAdmin.')->middleware('check.session:sup
     Route::put('/program-microcredential/{id}', [ProgramMicrocredentialController::class, 'update'])->name('programMicrocredential.update');
     Route::delete('/program-microcredential/{id}', [ProgramMicrocredentialController::class, 'destroy'])->name('programMicrocredential.destroy');
 
-    // Semester CRUD
-    Route::get('/semester', [SemesterController::class, 'index'])->name('semester');
-    Route::post('/semester', [SemesterController::class, 'store'])->name('semester.store');
-    Route::put('/semester/{id}', [SemesterController::class, 'update'])->name('semester.update');
-    Route::delete('/semester/{id}', [SemesterController::class, 'destroy'])->name('semester.destroy');
+    // Periode Pembelajaran CRUD
+    Route::get('/periode-pembelajaran', [PeriodePembelajaranController::class, 'index'])->name('periodePembelajaran');
+    Route::post('/periode-pembelajaran', [PeriodePembelajaranController::class, 'store'])->name('periodePembelajaran.store');
+    Route::put('/periode-pembelajaran/{id}', [PeriodePembelajaranController::class, 'update'])->name('periodePembelajaran.update');
+    Route::delete('/periode-pembelajaran/{id}', [PeriodePembelajaranController::class, 'destroy'])->name('periodePembelajaran.destroy');
 });
 
 /*

@@ -33,6 +33,6 @@ class ProgramController extends Controller
         }
 
         // Fallback jika belum ada program yang di-assign
-        return redirect()->route('admin.dasbor')->with('info', 'Belum ada program yang di-assign ke Anda.');
+        return redirect()->route('admin.dasbor')->with('error', 'Akses ditolak: Belum ada program yang ditugaskan kepada Anda.');
     }
 }

@@ -42,7 +42,7 @@ class ProfilController extends Controller
 
             $programs = ProgramMicrocredential::with([
                 'jenisMicrocredential',
-                'semester'
+                'periodePembelajaran'
             ])
                 ->where('id_admin_microcredential', $user->adminMicrocredential->id)
                 ->latest('dibuat_pada')
@@ -51,9 +51,9 @@ class ProfilController extends Controller
 
                     $program->status_tampil = $program->status_pendaftaran;
 
-                    $program->program_selesai = $program->semester
+                    $program->program_selesai = $program->periodePembelajaran
                         ? now()->greaterThanOrEqualTo(
-                            Carbon::parse($program->semester->tanggal_selesai)
+                            Carbon::parse($program->periodePembelajaran->tanggal_selesai)
                         )
                         : false;
 
@@ -64,7 +64,7 @@ class ProfilController extends Controller
             $programs = $user->peserta
                 ->pendaftaran()
                 ->with([
-                    'programMicrocredential.semester',
+                    'programMicrocredential.periodePembelajaran',
                     'programMicrocredential.jenisMicrocredential',
                     'programMicrocredential.kursus'
                 ])
@@ -97,9 +97,9 @@ class ProfilController extends Controller
 
                     $program->program_selesai = true; 
 
-                    // $program->program_selesai = $program->semester
+                    // $program->program_selesai = $program->periodePembelajaran
                     //     ? now()->greaterThanOrEqualTo(
-                    //         Carbon::parse($program->semester->tanggal_selesai)
+                    //         Carbon::parse($program->periodePembelajaran->tanggal_selesai)
                     //     )
                     //     : false;
 

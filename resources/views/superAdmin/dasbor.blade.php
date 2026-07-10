@@ -237,7 +237,7 @@
                                         <p class="text-xs text-gray-500">Manajemen periode pembelajaran (ganjil/genap)</p>
                                     </div>
                                 </div>
-                                <a href="{{ url('/super-admin/semester') }}"
+                                <a href="{{ url('/super-admin/periode-pembelajaran') }}"
                                     class="flex items-center gap-1 px-3 py-1.5 text-xs text-[#6C63FF] hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition font-medium">
                                     Lihat Semua
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"

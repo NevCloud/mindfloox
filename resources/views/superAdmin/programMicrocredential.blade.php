@@ -96,8 +96,8 @@
                                         <td class="py-3 px-4 font-medium">{{ $item->nama }}</td>
                                         <td class="py-3 px-4 text-gray-500">{{ $item->jenisMicrocredential->nama ?? '-' }}</td>
                                         <td class="py-3 px-4 text-gray-500">
-                                            @if ($item->semester)
-                                                {{ $item->semester->jenis }} {{ $item->semester->tahun }}
+                                            @if ($item->periodePembelajaran)
+                                                {{ $item->periodePembelajaran->jenis }} {{ $item->periodePembelajaran->tahun }}
                                             @else
                                                 -
                                             @endif
@@ -230,7 +230,7 @@
                     </div>
 
                     {{-- Periode Akademik --}}
-                    <div x-data="{ open: false, options: [], init() { this.options = semesterList.map(s => ({id: s.id, label: s.jenis + ' - ' + s.tahun})); }, get selectedLabel() { const f = this.options.find(s => s.id == modal.data.id_semester); return f ? f.label : '' } }">
+                    <div x-data="{ open: false, options: [], init() { this.options = periodePembelajaranList.map(s => ({id: s.id, label: s.jenis + ' - ' + s.tahun})); }, get selectedLabel() { const f = this.options.find(s => s.id == modal.data.id_periode_pembelajaran); return f ? f.label : '' } }">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Periode Akademik <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <div @click="open = !open" @click.outside="open = false"
@@ -242,15 +242,15 @@
                             <div x-show="open" x-transition class="absolute z-50 w-full mt-1 bg-white dark:bg-[#0F0F1A] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden">
                                 <div class="max-h-[84px] overflow-y-auto">
                                     <template x-for="s in options" :key="s.id">
-                                        <div @click="modal.data.id_semester = s.id; open = false"
+                                        <div @click="modal.data.id_periode_pembelajaran = s.id; open = false"
                                             class="px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-                                            :class="modal.data.id_semester == s.id ? 'bg-primary/10 text-primary font-medium' : 'text-gray-800 dark:text-white'"
+                                            :class="modal.data.id_periode_pembelajaran == s.id ? 'bg-primary/10 text-primary font-medium' : 'text-gray-800 dark:text-white'"
                                             x-text="s.label"></div>
                                     </template>
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="id_semester" :value="modal.data.id_semester">
+                        <input type="hidden" name="id_periode_pembelajaran" :value="modal.data.id_periode_pembelajaran">
                     </div>
 
                     {{-- Waktu Pendaftaran --}}
@@ -397,7 +397,7 @@
                 },
 
                 jenisList: @json($jenisList),
-                semesterList: @json($semesterList),
+                periodePembelajaranList: @json($periodePembelajaranList),
                 adminList: @json($adminList),
 
                 modal: {
@@ -409,8 +409,7 @@
                         nama: '',
                         deskripsi: '',
                         id_jenis_microcredential: '',
-                        id_semester: '',
-                        id_semester: '',
+                        id_periode_pembelajaran: '',
                         id_admin_microcredential: '',
                         status_pendaftaran: 'buka',
                         tanggal_mulai_pendaftaran: '',
@@ -477,7 +476,7 @@
                             nama: '',
                             deskripsi: '',
                             id_jenis_microcredential: '',
-                            id_semester: '',
+                            id_periode_pembelajaran: '',
                             id_admin_microcredential: '',
                             status_pendaftaran: 'buka',
                             tanggal_mulai_pendaftaran: '',
@@ -508,7 +507,7 @@
                             nama: item.nama || '',
                             deskripsi: item.deskripsi || '',
                             id_jenis_microcredential: item.id_jenis_microcredential || '',
-                            id_semester: item.id_semester || '',
+                            id_periode_pembelajaran: item.id_periode_pembelajaran || '',
                             id_admin_microcredential: item.id_admin_microcredential || '',
                             status_pendaftaran: item.status_pendaftaran || 'buka',
                             tanggal_mulai_pendaftaran: fmt(item.tanggal_mulai_pendaftaran),
@@ -518,7 +517,7 @@
                     // Force Alpine to re-evaluate select bindings after DOM update
                     this.$nextTick(() => {
                         this.modal.data.id_jenis_microcredential = item.id_jenis_microcredential || '';
-                        this.modal.data.id_semester = item.id_semester || '';
+                        this.modal.data.id_periode_pembelajaran = item.id_periode_pembelajaran || '';
                         this.modal.data.id_admin_microcredential = item.id_admin_microcredential || '';
                         this.modal.data.status_pendaftaran = item.status_pendaftaran || 'buka';
                     });

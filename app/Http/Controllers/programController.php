@@ -27,7 +27,7 @@ class programController extends Controller
         }
 
         $program = $query->latest('dibuat_pada')->get();
-        $kategori = JenisMicrocredential::all();
+        $kategori = JenisMicrocredential::has('programMicrocredential')->get();
 
         return view('program', compact('program', 'kategori'));
     }

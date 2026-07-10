@@ -30,7 +30,7 @@ class homeController extends Controller
                     $query->where('status', 'diterima');
                 }
             ])
-            ->take(6)
+            ->take(3)
             ->get()
             ->map(function ($prog) {
 
@@ -50,7 +50,7 @@ class homeController extends Controller
             });
 
         // Get categories
-        $kategori = JenisMicrocredential::withCount('programMicrocredential')->get();
+        $kategori = JenisMicrocredential::has('programMicrocredential')->withCount('programMicrocredential')->get();
 
         return view('index', compact('program', 'instruktur', 'kategori'));
     }

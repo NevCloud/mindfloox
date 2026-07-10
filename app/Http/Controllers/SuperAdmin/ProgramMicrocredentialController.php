@@ -5,7 +5,7 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\Controller;
 use App\Models\ProgramMicrocredential;
 use App\Models\JenisMicrocredential;
-use App\Models\Semester;
+use App\Models\PeriodePembelajaran;
 use App\Models\AdminMicrocredential;
 use Illuminate\Http\Request;
 
@@ -16,7 +16,7 @@ class ProgramMicrocredentialController extends Controller
      */
     public function index(Request $request)
     {
-        $query = ProgramMicrocredential::with(['jenisMicrocredential', 'semester', 'adminMicrocredential.pengguna']);
+        $query = ProgramMicrocredential::with(['jenisMicrocredential', 'periodePembelajaran', 'adminMicrocredential.pengguna']);
 
         if ($search = $request->input('search')) {
             $query->where('nama', 'like', "%{$search}%")
@@ -30,7 +30,7 @@ class ProgramMicrocredentialController extends Controller
         $programs = $query->orderBy('dibuat_pada', 'desc')->paginate(10);
 
         $jenisList = JenisMicrocredential::orderBy('nama', 'asc')->get();
-        $semesterList = Semester::orderBy('dibuat_pada', 'desc')->get();
+        $periodePembelajaranList = PeriodePembelajaran::orderBy('dibuat_pada', 'desc')->get();
         $adminList = AdminMicrocredential::with(['pengguna', 'jenisMicrocredential', 'programs'])->get()
             ->map(fn($a) => [
                 'id' => $a->id,
@@ -40,7 +40,7 @@ class ProgramMicrocredentialController extends Controller
                 'assigned_program_ids' => $a->programs->pluck('id')->toArray(),
             ])->values();
 
-        return view('superAdmin.programMicrocredential', compact('programs', 'jenisList', 'semesterList', 'adminList'));
+        return view('superAdmin.programMicrocredential', compact('programs', 'jenisList', 'periodePembelajaranList', 'adminList'));
     }
 
     /**
@@ -52,7 +52,7 @@ class ProgramMicrocredentialController extends Controller
             'nama'                  => 'required|string|max:255',
             'deskripsi'             => 'required|string|max:1000',
             'id_jenis_microcredential' => 'required|exists:jenis_microcredential,id',
-            'id_semester'           => 'required|exists:semester,id',
+            'id_periode_pembelajaran'   => 'required|exists:periode_pembelajaran,id',
             'status_pendaftaran'    => 'required|in:buka,tutup',
             'tanggal_mulai_pendaftaran' => 'required|date',
             'tanggal_akhir_pendaftaran' => 'required|date|after_or_equal:tanggal_mulai_pendaftaran',
@@ -63,8 +63,8 @@ class ProgramMicrocredentialController extends Controller
             'deskripsi.required'                => 'Deskripsi program wajib diisi.',
             'id_jenis_microcredential.required' => 'Jenis microcredential wajib dipilih.',
             'id_jenis_microcredential.exists'   => 'Jenis microcredential tidak valid.',
-            'id_semester.required'              => 'Semester wajib dipilih.',
-            'id_semester.exists'                => 'Semester tidak valid.',
+            'id_periode_pembelajaran.required'      => 'Periode pembelajaran wajib dipilih.',
+            'id_periode_pembelajaran.exists'        => 'Periode pembelajaran tidak valid.',
             'status_pendaftaran.required'       => 'Status pendaftaran wajib dipilih.',
             'status_pendaftaran.in'             => 'Status harus buka atau tutup.',
             'tanggal_mulai_pendaftaran.required' => 'Tanggal mulai pendaftaran wajib diisi.',
@@ -79,7 +79,7 @@ class ProgramMicrocredentialController extends Controller
             'id_admin_microcredential.exists'   => 'Admin microcredential tidak valid.',
         ]);
 
-        $data = $request->only('nama', 'deskripsi', 'id_jenis_microcredential', 'id_semester', 'id_admin_microcredential', 'status_pendaftaran', 'tanggal_mulai_pendaftaran', 'tanggal_akhir_pendaftaran');
+        $data = $request->only('nama', 'deskripsi', 'id_jenis_microcredential', 'id_periode_pembelajaran', 'id_admin_microcredential', 'status_pendaftaran', 'tanggal_mulai_pendaftaran', 'tanggal_akhir_pendaftaran');
 
         if ($request->hasFile('foto_program')) {
             $data['foto_program'] = $request->file('foto_program')->store('program', 'public');
@@ -101,7 +101,7 @@ class ProgramMicrocredentialController extends Controller
             'nama'                  => 'required|string|max:255',
             'deskripsi'             => 'required|string|max:1000',
             'id_jenis_microcredential' => 'required|exists:jenis_microcredential,id',
-            'id_semester'           => 'required|exists:semester,id',
+            'id_periode_pembelajaran'   => 'required|exists:periode_pembelajaran,id',
             'status_pendaftaran'    => 'required|in:buka,tutup',
             'tanggal_mulai_pendaftaran' => 'required|date',
             'tanggal_akhir_pendaftaran' => 'required|date|after_or_equal:tanggal_mulai_pendaftaran',
@@ -112,8 +112,8 @@ class ProgramMicrocredentialController extends Controller
             'deskripsi.required'                => 'Deskripsi program wajib diisi.',
             'id_jenis_microcredential.required' => 'Jenis microcredential wajib dipilih.',
             'id_jenis_microcredential.exists'   => 'Jenis microcredential tidak valid.',
-            'id_semester.required'              => 'Semester wajib dipilih.',
-            'id_semester.exists'                => 'Semester tidak valid.',
+            'id_periode_pembelajaran.required'      => 'Periode pembelajaran wajib dipilih.',
+            'id_periode_pembelajaran.exists'        => 'Periode pembelajaran tidak valid.',
             'status_pendaftaran.required'       => 'Status pendaftaran wajib dipilih.',
             'status_pendaftaran.in'             => 'Status harus buka atau tutup.',
             'tanggal_mulai_pendaftaran.required' => 'Tanggal mulai pendaftaran wajib diisi.',
@@ -128,7 +128,7 @@ class ProgramMicrocredentialController extends Controller
         ]);
 
         $program = ProgramMicrocredential::findOrFail($id);
-        $data = $request->only('nama', 'deskripsi', 'id_jenis_microcredential', 'id_semester', 'id_admin_microcredential', 'status_pendaftaran', 'tanggal_mulai_pendaftaran', 'tanggal_akhir_pendaftaran');
+        $data = $request->only('nama', 'deskripsi', 'id_jenis_microcredential', 'id_periode_pembelajaran', 'id_admin_microcredential', 'status_pendaftaran', 'tanggal_mulai_pendaftaran', 'tanggal_akhir_pendaftaran');
 
         if ($request->hasFile('foto_program')) {
             $data['foto_program'] = $request->file('foto_program')->store('program', 'public');
