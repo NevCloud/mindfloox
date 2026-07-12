@@ -14,7 +14,6 @@ class UlasanKursus extends Model
     protected $fillable = [
         "id_pendaftaran",
         "id_kursus",
-        "komentar_kursus",
         "rating_kursus",
     ];
 

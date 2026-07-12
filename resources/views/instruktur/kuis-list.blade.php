@@ -2,7 +2,7 @@
 @section('title', 'Evaluasi Kuis')
 @section('content')
 
-    <x-banner />
+
 
     <div class="flex items-center justify-between mb-4">
         <div>

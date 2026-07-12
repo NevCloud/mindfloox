@@ -170,6 +170,21 @@ class KuisController extends Controller
             ->latest('diselesaikan_pada')
             ->first();
 
+        return view('peserta.kuis-detail', compact('kuis', 'pendaftaran', 'sesiSelesai'));
+    }
+
+    public function mulai(Kuis $kuis)
+    {
+        $kuis->load(['pertanyaanKuis.pilihanJawaban']);
+        $pendaftaran = $this->getPendaftaran($kuis);
+
+        $sesiSelesai = SesiKuis::where('id_pendaftaran', $pendaftaran->id)
+            ->where('id_kuis', $kuis->id)
+            ->where('status', 'selesai')
+            ->with('nilaiKuis')
+            ->latest('diselesaikan_pada')
+            ->first();
+
         return view('peserta.kuis-mulai', compact('kuis', 'pendaftaran', 'sesiSelesai'));
     }
 

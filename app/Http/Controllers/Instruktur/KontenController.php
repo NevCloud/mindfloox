@@ -166,7 +166,6 @@ class KontenController extends Controller
             'nomor_urut'           => $nomor,
             'judul'                => $request->judul,
             'deskripsi'            => $request->deskripsi,
-            'nilai'                => 0,
             'tanggal_mulai'        => $request->tanggal_mulai,
             'batas_waktu'          => $request->batas_waktu,
         ]);
@@ -207,7 +206,6 @@ class KontenController extends Controller
                 'nomor_urut'           => $nomor,
                 'judul'                => $request->judul,
                 'deskripsi'            => $request->deskripsi,
-                'nilai'                => 0,
                 'batas_waktu_menit'    => $request->batas_waktu_menit,
                 'tanggal_mulai'        => $request->tanggal_mulai,
                 'batas_waktu'          => $request->batas_waktu_kuis,
@@ -326,7 +324,6 @@ class KontenController extends Controller
                 Tugas::where('id_kursus', $kursus->id)->findOrFail($id)->update([
                     'judul'       => $request->judul,
                     'deskripsi'   => $request->deskripsi,
-                    'nilai'       => 0,
                     'tanggal_mulai' => $request->tanggal_mulai,
                     'batas_waktu' => $request->batas_waktu,
                 ]);
@@ -355,7 +352,6 @@ class KontenController extends Controller
                         'id_minggu'         => $minggu->id,
                         'judul'             => $request->judul,
                         'deskripsi'         => $request->deskripsi,
-                        'nilai'             => 0,
                         'batas_waktu_menit' => $request->batas_waktu_menit,
                         'tanggal_mulai'     => $request->tanggal_mulai,
                         'batas_waktu'       => $request->batas_waktu_kuis,

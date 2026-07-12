@@ -189,17 +189,26 @@
                                                         <template x-if="item.tipe_materi === 'tugas'">
                                                             <div class="flex items-center gap-2">
                                                                 <a :href="item.tugas_url"
-                                                                    :class="item.dikumpulkan
+                                                                    :class="item.dinilai
                                                                         ? 'bg-green-100 dark:bg-green-500/10 text-green-600 hover:bg-green-500 hover:text-white'
-                                                                        : 'bg-purple-100 dark:bg-purple-500/10 text-purple-500 hover:bg-purple-500 hover:text-white'"
+                                                                        : (item.dikumpulkan
+                                                                            ? 'bg-blue-100 dark:bg-blue-500/10 text-blue-600 hover:bg-blue-500 hover:text-white'
+                                                                            : 'bg-purple-100 dark:bg-purple-500/10 text-purple-500 hover:bg-purple-500 hover:text-white')"
                                                                     class="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg transition-all duration-200 text-xs font-medium">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                                                                    <span x-text="item.dikumpulkan ? 'Kumpulkan Ulang' : 'Kumpulkan'"></span>
+                                                                    <span x-text="item.dinilai ? 'Lihat Hasil' : (item.dikumpulkan ? 'Kumpulkan Ulang' : 'Kumpulkan')"></span>
                                                                 </a>
-                                                                <template x-if="item.dikumpulkan">
-                                                                    <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-[10px] font-medium">
-                                                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                                                        Dikumpulkan
+                                                                <template x-if="item.dinilai || item.dikumpulkan">
+                                                                    <span 
+                                                                        :class="item.dinilai 
+                                                                            ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' 
+                                                                            : 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'"
+                                                                        class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium">
+                                                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                            <path x-show="item.dinilai" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                                                            <path x-show="!item.dinilai" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                                        </svg>
+                                                                        <span x-text="item.dinilai ? 'Selesai' : 'Dikumpulkan'"></span>
                                                                     </span>
                                                                 </template>
                                                             </div>

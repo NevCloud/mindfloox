@@ -75,7 +75,7 @@ class ProgramPublicController extends Controller
                 'username' => $username,
                 'kata_sandi' => Hash::make($username), // default password is username
                 'role' => 'peserta',
-                'aktif' => 1,
+                'aktif' => 'aktif',
             ]);
 
             // Create Peserta

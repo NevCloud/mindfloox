@@ -14,7 +14,6 @@ class Instruktur extends Model
     protected $fillable = [
         "id_dibuat_oleh",
         "id_pengguna",
-        "keahlian",
     ];
 
     public function pengguna()

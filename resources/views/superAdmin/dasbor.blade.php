@@ -91,7 +91,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="text-gray-800 dark:text-gray-300">
-                                        @forelse ($jenisMicrocredentials as $item)
+                                        @forelse ($jenisMicrocredentials->take(5) as $item)
                                             <tr class="border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
                                                 <td class="py-3 font-medium">{{ $item->nama }}</td>
                                                 <td class="py-3 text-gray-500">{{ Str::limit($item->deskripsi, 40) }}</td>
@@ -136,8 +136,8 @@
                                 </div>
                             </div>
 
-                            <div class="p-5 space-y-3 max-h-[250px] overflow-y-auto">
-                                @forelse ($adminInstrukturs as $user)
+                            <div class="p-5 space-y-3">
+                                @forelse ($adminInstrukturs->take(3) as $user)
                                     <div
                                         class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                                         <div class="flex items-center gap-3 min-w-0">
@@ -186,7 +186,7 @@
                                     </div>
                                 </div>
                                 <div class="flex gap-2">
-                                    <a href="{{ url('/super-admin/program') }}"
+                                    <a href="{{ url('/super-admin/program-microcredential') }}"
                                         class="flex items-center gap-1 px-3 py-1.5 text-xs text-[#6C63FF] hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition font-medium">
                                         Lihat Semua
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
@@ -197,8 +197,8 @@
                                 </div>
                             </div>
 
-                            <div class="p-5 space-y-3 max-h-[250px] overflow-y-auto">
-                                @forelse ($programs as $prog)
+                            <div class="p-5 space-y-3">
+                                @forelse ($programs->take(3) as $prog)
                                     <div
                                         class="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                                         <div class="flex-1">
@@ -248,7 +248,7 @@
                             </div>
 
                             <div class="p-5 space-y-4">
-                                @forelse ($semesters as $sem)
+                                @forelse ($semesters->take(3) as $sem)
                                     <div
                                         class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                                         <div class="flex-1">

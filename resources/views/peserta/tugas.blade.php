@@ -28,7 +28,7 @@
 
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">
 
-                    <section x-data="{ page: 1, perPage: 6, total: {{ $tugasList->count() }} }">
+                    <section x-data="{ page: 1, perPage: 9, total: {{ $tugasList->count() }} }">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-base font-semibold dark:text-white">Tugas Saya</h3>
                             <span class="text-xs text-gray-400">{{ $tugasList->count() }} tugas</span>

@@ -18,14 +18,12 @@ class Kuis extends Model
         'deskripsi',
         'id_minggu',
         'nomor_urut',
-        'nilai',
         'batas_waktu_menit',
         'tanggal_mulai',
         'batas_waktu',
     ];
 
     protected $casts = [
-        'nilai' => 'decimal:2',
         'tanggal_mulai' => 'datetime',
         'batas_waktu' => 'datetime',
     ];

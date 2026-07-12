@@ -97,7 +97,7 @@ class TugasController extends Controller
 
             $btnLabel = 'Kerjakan';
             if ($nilai !== null || $dikumpulkan) {
-                $btnLabel = 'Lihat Hasil';
+                $btnLabel = 'Lihat Kuis';
             }
 
             return [

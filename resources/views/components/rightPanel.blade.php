@@ -308,20 +308,54 @@
         @endphp
 
     @if(!empty($tasks))
-    <div class="space-y-2">
-        @foreach($tasks as $task)
-            <div class="rounded-xl p-3 {{ $task['container_class'] ?? '' }}" style="{{ $task['container_style'] ?? '' }}">
-                <div class="flex items-start justify-between gap-2 mb-1">
-                    <p class="text-xs font-semibold leading-tight {{ $task['title_class'] ?? '' }}">
-                        {{ $task['title'] }}
-                    </p>
-                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0 {{ $task['badge_class'] ?? '' }}" style="{{ $task['badge_style'] ?? '' }}">
-                        {{ $task['badge_text'] }}
-                    </span>
+    <div x-data="{
+        page: 1,
+        perPage: 4,
+        tasks: {{ \Illuminate\Support\Js::from($tasks) }},
+        get paginatedTasks() {
+            let start = (this.page - 1) * this.perPage;
+            let end = this.page * this.perPage;
+            return this.tasks.slice(start, end);
+        },
+        get totalPages() {
+            return Math.ceil(this.tasks.length / this.perPage);
+        }
+    }" class="space-y-4">
+        
+        <div class="space-y-2">
+            <template x-for="(task, index) in paginatedTasks" :key="index">
+                <div class="rounded-xl p-3" :class="task.container_class" :style="task.container_style">
+                    <div class="flex items-start justify-between gap-2 mb-1">
+                        <p class="text-xs font-semibold leading-tight" :class="task.title_class" x-text="task.title"></p>
+                        <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0" :class="task.badge_class" :style="task.badge_style" x-text="task.badge_text"></span>
+                    </div>
+                    <p class="text-[10px]" :class="task.subtext_class" x-text="task.subtext"></p>
                 </div>
-                <p class="text-[10px] {{ $task['subtext_class'] ?? '' }}">{{ $task['subtext'] }}</p>
+            </template>
+        </div>
+
+        <template x-if="totalPages > 1">
+            <div class="flex items-center justify-center gap-1.5 mt-2">
+                <button @click="if(page > 1) page--" :disabled="page === 1" 
+                    class="w-7 h-7 flex items-center justify-center rounded-lg bg-white dark:bg-white/5 text-gray-500 hover:bg-gray-50 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 disabled:opacity-50 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                
+                <template x-for="p in totalPages" :key="p">
+                    <button @click="page = p" 
+                        class="w-7 h-7 flex items-center justify-center rounded-lg text-xs font-semibold transition border"
+                        :class="page === p 
+                            ? 'bg-[#6C63FF] text-white border-[#6C63FF]' 
+                            : 'bg-white dark:bg-white/5 text-gray-500 hover:bg-gray-50 dark:hover:bg-white/10 border-gray-200 dark:border-white/10'" 
+                        x-text="p"></button>
+                </template>
+                
+                <button @click="if(page < totalPages) page++" :disabled="page === totalPages" 
+                    class="w-7 h-7 flex items-center justify-center rounded-lg bg-white dark:bg-white/5 text-gray-500 hover:bg-gray-50 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 disabled:opacity-50 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
-        @endforeach
+        </template>
     </div>
     @else
     <div class="text-center py-6 text-gray-400 dark:text-gray-500">

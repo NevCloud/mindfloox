@@ -176,8 +176,8 @@
 
     {{-- ============ MODAL CREATE / EDIT ============ --}}
     <div x-show="modal.show" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
-        style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
-        <div @click.away="modal.show = false" x-show="modal.show" x-transition
+        style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);" @click.self="modal.show = false">
+        <div x-show="modal.show" x-transition
             class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-800">
 
             <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6" x-text="modal.title"></h3>
@@ -355,8 +355,8 @@
 
     {{-- ============ MODAL DELETE CONFIRMATION ============ --}}
     <div x-show="deleteModal.show" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
-        style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
-        <div @click.away="deleteModal.show = false" x-show="deleteModal.show" x-transition
+        style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);" @click.self="deleteModal.show = false">
+        <div x-show="deleteModal.show" x-transition
             class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-gray-100 dark:border-gray-800">
             <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-500/20">
                 <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

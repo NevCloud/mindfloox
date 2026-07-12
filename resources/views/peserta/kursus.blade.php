@@ -26,7 +26,7 @@
                 <x-topNav />
 
                 <div class="flex-1 overflow-y-auto p-5 space-y-5">
-                    <x-banner />
+
 
                     <section>
                         <div class="flex items-center justify-between mb-4">
@@ -69,8 +69,7 @@
                                         if ($pendaftaranItem && $totalVisibleWeeks > 0) {
                                             $dilihatIds = \App\Models\MateriDilihat::where('id_pendaftaran', $pendaftaranItem->id)
                                                 ->pluck('id_materi_pembelajaran')->flip()->toArray();
-                                            $submittedTugasIds = \App\Models\JawabanTugas::where('id_pendaftaran', $pendaftaranItem->id)
-                                                ->where('status', 'final')
+                                            $gradedTugasIds = \App\Models\NilaiTugas::where('id_pendaftaran', $pendaftaranItem->id)
                                                 ->pluck('id_tugas')->flip()->toArray();
                                             $completedKuisIds = \App\Models\SesiKuis::where('id_pendaftaran', $pendaftaranItem->id)
                                                 ->where('status', 'selesai')
@@ -88,7 +87,7 @@
                                                 if ($totalItems === 0) continue;
 
                                                 $allMateriViewed = empty($materiIds) || empty(array_diff($materiIds, array_keys($dilihatIds)));
-                                                $allTugasDone = empty($tugasIds) || empty(array_diff($tugasIds, array_keys($submittedTugasIds)));
+                                                $allTugasDone = empty($tugasIds) || empty(array_diff($tugasIds, array_keys($gradedTugasIds)));
                                                 $allKuisDone = empty($kuisIds) || empty(array_diff($kuisIds, array_keys($completedKuisIds)));
 
                                                 if ($allMateriViewed && $allTugasDone && $allKuisDone) {

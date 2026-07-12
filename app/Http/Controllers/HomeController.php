@@ -30,7 +30,6 @@ class homeController extends Controller
                     $query->where('status', 'diterima');
                 }
             ])
-            ->take(3)
             ->get()
             ->map(function ($prog) {
 
@@ -47,7 +46,9 @@ class homeController extends Controller
                 $prog->jumlah_ulasan = $ratings->count();
 
                 return $prog;
-            });
+            })
+            ->sortByDesc('rating')
+            ->take(3);
 
         // Get categories
         $kategori = JenisMicrocredential::has('programMicrocredential')->withCount('programMicrocredential')->get();

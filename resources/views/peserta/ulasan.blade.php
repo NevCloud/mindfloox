@@ -35,8 +35,9 @@
                     <div class="p-6 mx-auto">
 
                         <a href="{{ route('peserta.profil') }}"
-                            class="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 mb-5">
-                            ← Kembali ke Profil
+                            class="text-xs text-gray-400 hover:text-primary flex items-center gap-1 mb-5 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                            Kembali ke Profil
                         </a>
 
                         <div class="card-fix p-6">
@@ -56,12 +57,7 @@
                                 Berikan penilaian untuk setiap kursus yang telah Anda ikuti.
                             </p>
 
-                            @if (session('success'))
-                                <div
-                                    class="mb-6 rounded-lg bg-green-100 text-green-700 px-4 py-3 dark:bg-green-500/20 dark:text-green-300">
-                                    {{ session('success') }}
-                                </div>
-                            @endif
+
 
                             @if ($errors->any())
                                 <div
@@ -138,7 +134,10 @@
                         <div class="flex justify-end mt-8">
 
                             <button type="submit"
-                                class="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition">
+                                class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#6C63FF] hover:bg-[#5a52d5] text-white font-medium transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                                </svg>
                                 Simpan Rating
                             </button>
 

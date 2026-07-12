@@ -42,13 +42,11 @@ class KursusSeeder extends Seeder
                 'nama'                   => 'Dasar Pemrograman Web',
                 'deskripsi'              => 'Mempelajari HTML, CSS, dan JavaScript sebagai fondasi pengembangan web.',
                 'foto_kursus'            => 'default.jpg',
-                'nilai_kelulusan_kursus' => 70.00,
             ],
             [
                 'nama'                   => 'Framework Laravel',
                 'deskripsi'              => 'Membangun aplikasi web menggunakan framework Laravel.',
                 'foto_kursus'            => 'default.jpg',
-                'nilai_kelulusan_kursus' => 75.00,
             ],
         ];
 

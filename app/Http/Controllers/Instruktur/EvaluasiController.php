@@ -43,7 +43,7 @@ class EvaluasiController extends Controller
                 'nilaiTugas as dinilai_count',
             ])
             ->latest('dibuat_pada')
-            ->paginate(20);
+            ->paginate(9);
 
         return view('instruktur.tugas', compact('tugasList'));
     }
@@ -179,7 +179,7 @@ class EvaluasiController extends Controller
                 'sesiKuis as dinilai_count' => fn($q) => $q->whereHas('nilaiKuis'),
             ])
             ->latest('dibuat_pada')
-            ->paginate(20);
+            ->paginate(9);
 
         return view('instruktur.kuis-list', compact('kuisList'));
     }

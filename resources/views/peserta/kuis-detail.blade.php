@@ -107,17 +107,29 @@
                     <section>
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-base font-semibold dark:text-white">Detail Kuis</h3>
+                            <a href="{{ route('peserta.kursus.show', $kuis->id_kursus) }}" class="flex items-center gap-2 px-3 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 hover:text-primary dark:hover:bg-gray-800 dark:hover:text-primary transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                                </svg>
+                                Kembali
+                            </a>
                         </div>
                         <div class="">
                             <div class="card translate-none rounded-lg p-6 space-y-4">
 
                                 <!-- Quiz Header -->
                                 <div class="border-b border-gray-200 dark:border-gray-700">
-                                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Kuis Pemrograman Web</h2>
+                                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">{{ $kuis->judul }}</h2>
                                     <div class="flex flex-wrap gap-3 mb-3">
-                                        <span class="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-full">Durasi: 60 Menit</span>
+                                        @if($kuis->batas_waktu_menit)
+                                        <span class="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-full">Durasi: {{ $kuis->batas_waktu_menit }} Menit</span>
+                                        @endif
+                                        @if($sesiSelesai)
+                                        <span class="inline-block px-3 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold rounded-full">Status: Selesai</span>
+                                        @else
                                         <span class="inline-block px-3 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold rounded-full">Status: Tersedia</span>
-                                        <span class="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 text-xs font-semibold rounded-full">Jumlah Soal: 20</span>
+                                        @endif
+                                        <span class="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 text-xs font-semibold rounded-full">Jumlah Soal: {{ $kuis->pertanyaanKuis->count() }}</span>
                                     </div>
                                 </div>
 
@@ -125,35 +137,48 @@
                                 <div class="pb-4 border-b border-gray-200 dark:border-gray-700 grid grid-cols-2 gap-4">
                                     <div>
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Dibuka pada:</p>
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">10 Jan 2024, 08:00</p>
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $kuis->tanggal_mulai ? $kuis->tanggal_mulai->format('d M Y, H:i') : 'Tidak dibatasi' }}</p>
                                     </div>
                                     <div>
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Deadline:</p>
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">15 Jan 2024, 17:00</p>
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $kuis->batas_waktu ? $kuis->batas_waktu->format('d M Y, H:i') : 'Tidak dibatasi' }}</p>
                                     </div>
                                 </div>
 
                                 <!-- Description Section -->
                                 <div class="pb-4 border-b border-gray-200 dark:border-gray-700">
                                     <p class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wide">Deskripsi</p>
-                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">Kuis ini mencakup materi fundamental pemrograman web termasuk HTML, CSS, JavaScript, dan konsep dasar HTTP.</p>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{!! nl2br(e($kuis->deskripsi)) !!}</p>
                                 </div>
 
                                 <!-- Instructions Section -->
                                 <div class="pb-4 border-b border-gray-200 dark:border-gray-700">
                                     <p class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wide">Petunjuk</p>
                                     <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1 list-disc list-inside">
-                                        <li>Jawab semua pertanyaan dengan hati-hati</li>
-                                        <li>Anda memiliki 60 menit untuk menyelesaikan kuis</li>
-                                        <li>Tidak bisa kembali ke soal sebelumnya setelah melanjut</li>
+                                        <li>Jawab semua pertanyaan dengan teliti.</li>
+                                        @if($kuis->batas_waktu_menit)
+                                        <li>Anda memiliki waktu {{ $kuis->batas_waktu_menit }} menit setelah mulai.</li>
+                                        @endif
+                                        <li>Kuis akan otomatis dikumpulkan jika waktu habis.</li>
                                     </ul>
                                 </div>
 
                                 <!-- Start Button -->
                                 <div class="pt-2">
-                                    <a href="kuis-mulai"
-                                        class="bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200">
-                                        Mulai Kuis
+                                    <a href="{{ route('peserta.kuis.mulai', $kuis->id) }}"
+                                        class="bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200 inline-flex items-center gap-2">
+                                        @if($sesiSelesai)
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                            Lihat Hasil Kuis
+                                        @else
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                            Mulai Kuis
+                                        @endif
                                     </a>
                                 </div>
                             </div>

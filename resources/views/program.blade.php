@@ -103,7 +103,7 @@
 
                             <div class="flex justify-between items-center mb-4 mt-auto">
                                 <span class="text-yellow-400 font-bold">
-                                    ⭐ 5.0
+                                    ⭐ {{ number_format($prog->rating, 1) }}
                                 </span>
                                 <span class="flex gap-1 text-primary font-bold">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

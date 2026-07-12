@@ -102,8 +102,7 @@
                                         if ($pendaftaranItem && $totalVisibleWeeks > 0) {
                                             $dilihatIds = \App\Models\MateriDilihat::where('id_pendaftaran', $pendaftaranItem->id)
                                                 ->pluck('id_materi_pembelajaran')->flip()->toArray();
-                                            $submittedTugasIds = \App\Models\JawabanTugas::where('id_pendaftaran', $pendaftaranItem->id)
-                                                ->where('status', 'final')
+                                            $gradedTugasIds = \App\Models\NilaiTugas::where('id_pendaftaran', $pendaftaranItem->id)
                                                 ->pluck('id_tugas')->flip()->toArray();
                                             $completedKuisIds = \App\Models\SesiKuis::where('id_pendaftaran', $pendaftaranItem->id)
                                                 ->where('status', 'selesai')
@@ -121,7 +120,7 @@
                                                 if ($totalItems === 0) continue;
 
                                                 $allMateriViewed = empty($materiIds) || empty(array_diff($materiIds, array_keys($dilihatIds)));
-                                                $allTugasDone = empty($tugasIds) || empty(array_diff($tugasIds, array_keys($submittedTugasIds)));
+                                                $allTugasDone = empty($tugasIds) || empty(array_diff($tugasIds, array_keys($gradedTugasIds)));
                                                 $allKuisDone = empty($kuisIds) || empty(array_diff($kuisIds, array_keys($completedKuisIds)));
 
                                                 if ($allMateriViewed && $allTugasDone && $allKuisDone) {
@@ -133,7 +132,7 @@
                                         $progress = $totalVisibleWeeks > 0 ? round(($completedWeeks / $totalVisibleWeeks) * 100) : 0;
 
                                         $statusText =
-                                            $progress === 100 && $totalVisibleWeeks > 0
+                                            $progress >= 100 && $totalVisibleWeeks > 0
                                                 ? 'Selesai'
                                                 : ($progress > 50
                                                     ? 'Hampir selesai'

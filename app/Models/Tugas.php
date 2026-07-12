@@ -18,13 +18,11 @@ class Tugas extends Model
         "nomor_urut",
         "judul",
         "deskripsi",
-        "nilai",
         "tanggal_mulai",
         "batas_waktu",
     ];
 
     protected $casts = [
-        "nilai" => "decimal:2",
         "tanggal_mulai" => "datetime",
         "batas_waktu" => "datetime",
     ];

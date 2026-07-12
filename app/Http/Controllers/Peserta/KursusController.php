@@ -70,6 +70,11 @@ class KursusController extends Controller
             ->pluck('id_tugas')
             ->flip()->toArray();
 
+        // Tugas yang sudah dinilai
+        $gradedTugasIds = \App\Models\NilaiTugas::where('id_pendaftaran', $pendaftaran->id)
+            ->pluck('id_tugas')
+            ->flip()->toArray();
+
         // Materi yang sudah dilihat
         $dilihatMateriIds = MateriDilihat::where('id_pendaftaran', $pendaftaran->id)
             ->pluck('id_materi_pembelajaran')
@@ -86,7 +91,7 @@ class KursusController extends Controller
             ])
             ->get();
 
-        $weeksJs = $minggu->map(function (Minggu $m) use ($selesaiKuisIds, $submittedTugasIds, $dilihatMateriIds) {
+        $weeksJs = $minggu->map(function (Minggu $m) use ($selesaiKuisIds, $submittedTugasIds, $gradedTugasIds, $dilihatMateriIds) {
             $items = [];
 
             // Materi
@@ -122,6 +127,7 @@ class KursusController extends Controller
                     'meta1'       => $t->batas_waktu ? 'Tenggat: ' . $t->batas_waktu->format('d M Y, H:i') : null,
                     'is_overdue'  => $t->batas_waktu ? $t->batas_waktu->isPast() : false,
                     'dikumpulkan' => isset($submittedTugasIds[$t->id]),
+                    'dinilai'     => isset($gradedTugasIds[$t->id]),
                     'tugas_url'   => route('peserta.tugas.show', $t->id),
                 ];
             }

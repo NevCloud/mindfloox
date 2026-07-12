@@ -175,7 +175,7 @@
 
     <!--STATS PESERTA-->
 @elseif(request()->is('peserta/*'))
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+    <div class="grid grid-cols-2 md:grid-cols-2 gap-3">
         @php
             $peserta = Auth::user()->peserta;
             $totalKursus = 0;
@@ -231,20 +231,6 @@
             <p class="text-xs text-gray-400 mt-0.5">Total Tugas</p>
         </div>
 
-        <div class="card p-4">
-            <div class="flex items-start justify-between mb-3">
-                <div class="w-9 h-9 rounded-xl flex items-center justify-center"
-                    style="background:rgba(233,30,140,0.15)">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" style="color:#e91e8c" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="8" r="7" />
-                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-                    </svg>
-                </div>
-            </div>
-            <p class="text-2xl font-bold dark:text-white">{{ $totalSertifikat }}</p>
-            <p class="text-xs text-gray-400 mt-0.5">Sertifikat</p>
-        </div>
     </div>
 @else
     <!-- Tampilkan sesuatu yang default atau kosongkan jika tidak ada stats khusus -->

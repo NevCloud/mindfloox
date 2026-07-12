@@ -16,7 +16,6 @@ class Peserta extends Model
         "akses_aktif",
         "diaktifkan_oleh",
         "diaktifkan_pada",
-        "minat"
     ];
 
     protected $casts = [

@@ -148,8 +148,8 @@ Route::prefix('peserta')->name('peserta.')->middleware('check.session:peserta')-
     Route::get('/kursus', [PesertaKursusController::class, 'index'])->name('kursus');
     Route::get('/kursus/{kursus}', [PesertaKursusController::class, 'show'])->name('kursus.show');
     Route::post('/kursus/{kursus}/materi/{materi}/viewed', [PesertaKursusController::class, 'markMateriViewed'])->name('kursus.materi.viewed');
-    // Kuis (F017)
     Route::get('/kuis/{kuis}', [PesertaKuisController::class, 'show'])->name('kuis.show');
+    Route::get('/kuis/{kuis}/mulai', [PesertaKuisController::class, 'mulai'])->name('kuis.mulai');
     Route::post('/kuis/{kuis}/submit', [PesertaKuisController::class, 'submit'])->name('kuis.submit');
     // Tugas (F017)
     Route::get('/tugas/{tugas}', [PesertaTugasController::class, 'show'])->name('tugas.show');

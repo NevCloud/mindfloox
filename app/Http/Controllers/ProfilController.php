@@ -136,8 +136,7 @@ class ProfilController extends Controller
             ->flip()
             ->toArray();
 
-        $submittedTugasIds = JawabanTugas::where('id_pendaftaran', $idPendaftaran)
-            ->where('status', 'final')
+        $gradedTugasIds = \App\Models\NilaiTugas::where('id_pendaftaran', $idPendaftaran)
             ->pluck('id_tugas')
             ->flip()
             ->toArray();
@@ -172,7 +171,7 @@ class ProfilController extends Controller
             }
 
             $allMateriViewed = empty($materiIds) || empty(array_diff($materiIds, array_keys($dilihatIds)));
-            $allTugasDone = empty($tugasIds) || empty(array_diff($tugasIds, array_keys($submittedTugasIds)));
+            $allTugasDone = empty($tugasIds) || empty(array_diff($tugasIds, array_keys($gradedTugasIds)));
             $allKuisDone = empty($kuisIds) || empty(array_diff($kuisIds, array_keys($completedKuisIds)));
 
             if ($allMateriViewed && $allTugasDone && $allKuisDone) {
