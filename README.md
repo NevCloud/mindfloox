@@ -1,53 +1,77 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=220&section=header&text=MIND%20FLOOX&fontSize=60&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Platform%20Pembelajaran%20Daring%20untuk%20Sertifikasi%20Microcredential&descAlignY=55&descSize=18" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:6C63FF,50:2EC4B6,100:2D2A5E&height=230&section=header&text=MIND%20FLOOX&fontSize=62&fontColor=ffffff&animation=twinkling&fontAlignY=36&desc=Platform%20Pembelajaran%20Daring%20untuk%20Sertifikasi%20Microcredential&descAlignY=53&descSize=18" width="100%"/>
 
 <a href="https://github.com/">
-  <img src="https://readme-typing-svg.demolab.com?font=Poppins&size=22&duration=3000&pause=800&color=6C63FF&center=true&vCenter=true&width=600&lines=Selamat+Datang+di+Repositori+Mind+Floox+%F0%9F%91%8B;Platform+Microcredential+Berbasis+Web;Dibangun+dengan+Laravel+%2B+Tailwind+%2B+Alpine.js;Kelompok+PBL-214+%7C+TRPL+Polibatam" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Poppins&size=22&duration=2800&pause=900&color=6C63FF&center=true&vCenter=true&width=650&multiline=false&lines=Selamat+Datang+di+Repositori+Mind+Floox+%F0%9F%91%8B;Platform+Microcredential+Berbasis+Web;Dibangun+dengan+Laravel+%2B+Tailwind+%2B+Alpine.js;Kelompok+PBL-214+%7C+TRPL+Polibatam" alt="Typing SVG" />
 </a>
 
+<br/><br/>
+
+<img src="https://img.shields.io/badge/Laravel-6C63FF?style=for-the-badge&logo=laravel&logoColor=white" />
+<img src="https://img.shields.io/badge/Tailwind_CSS-2EC4B6?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+<img src="https://img.shields.io/badge/Alpine.js-2D2A5E?style=for-the-badge&logo=alpine.js&logoColor=white" />
+<img src="https://img.shields.io/badge/MySQL-4A3F8C?style=for-the-badge&logo=mysql&logoColor=white" />
+
 <br/>
 
-<img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" />
-<img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
-<img src="https://img.shields.io/badge/Alpine.js-8BC0D0?style=for-the-badge&logo=alpine.js&logoColor=black" />
-<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
+<img src="https://img.shields.io/badge/status-in%20development-6C63FF?style=flat-square&labelColor=2D2A5E" />
+<img src="https://img.shields.io/badge/versi-1.0.0-2EC4B6?style=flat-square&labelColor=2D2A5E" />
+<img src="https://img.shields.io/badge/lisensi-Academic-4A3F8C?style=flat-square&labelColor=2D2A5E" />
+<img src="https://img.shields.io/badge/PBL-214-6C63FF?style=flat-square&labelColor=2D2A5E" />
 
-<br/>
-
-![Repo Size](https://img.shields.io/github/repo-size/your-org/mindfloox?style=flat-square&color=6C63FF)
-![Last Commit](https://img.shields.io/github/last-commit/your-org/mindfloox?style=flat-square&color=4CAF50)
-![Contributors](https://img.shields.io/github/contributors/your-org/mindfloox?style=flat-square&color=FF6584)
-![License](https://img.shields.io/badge/license-Academic-lightgrey?style=flat-square)
+<br/><br/>
 
 </div>
 
-<img src="https://capsule-render.vercel.app/api?type=transparent&height=1&section=header" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=cylinder&color=0:2D2A5E,100:6C63FF&height=6&section=header" width="100%"/>
 
 ## 📖 Deskripsi Umum
 
 **Mind Floox** adalah platform pembelajaran daring (LMS) berbasis web yang dirancang untuk memfasilitasi sertifikasi kompetensi jangka pendek (*microcredential*) bagi mahasiswa. Sistem ini mengintegrasikan empat aktor utama: **Super Admin**, **Admin Microcredential**, **Instruktur**, dan **Peserta**.
 
-Proses bisnis yang dicakup meliputi:
+<table>
+<tr>
+<td width="50%" valign="top">
+
+**Proses bisnis yang dicakup:**
 - 📝 Pendaftaran dan verifikasi peserta program
 - 📚 Pengelolaan kursus 14 minggu
 - ✅ Evaluasi melalui tugas dan kuis
+
+</td>
+<td width="50%" valign="top">
+
+**Nilai tambah sistem:**
 - 📊 Pelacakan progres belajar secara transparan
 - 🎓 Penerbitan sertifikat digital otomatis
+- 🔐 Manajemen akses berbasis role
+
+</td>
+</tr>
+</table>
 
 Dibangun menggunakan **Laravel** (pola arsitektur MVC), **Tailwind CSS**, dan **Alpine.js**, aplikasi ini menghasilkan sistem pembelajaran yang responsif, aman, dan efisien.
 
 <br/>
 
-## 🎯 Latar Belakang
+<details>
+<summary><b>🎯 Latar Belakang</b> (klik untuk buka)</summary>
+<br/>
 
 > Mahasiswa membutuhkan perolehan kompetensi spesifik tambahan untuk kesiapan kerja, didukung oleh data riset yang menunjukkan tingginya urgensi *microcredential* bagi karier mahasiswa. Platform yang ada saat ini belum terintegrasi secara khusus dengan institusi pendidikan serta belum menyediakan sistem terpusat untuk pendaftaran, penilaian, dan pengakuan kompetensi secara resmi.
 
-## 🚀 Tujuan
+</details>
+
+<details>
+<summary><b>🚀 Tujuan</b> (klik untuk buka)</summary>
+<br/>
 
 > Membangun platform pembelajaran daring guna memudahkan pengelolaan pendaftaran, materi, evaluasi, hingga penerbitan sertifikat kompetensi mahasiswa, serta menyediakan validasi kelulusan otomatis demi menjamin keabsahan sertifikat digital.
 
-<br/>
+</details>
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:2EC4B6,100:6C63FF&height=4" width="100%"/>
 
 ## 👥 Aktor & Fitur Utama
 
@@ -68,16 +92,18 @@ Dibangun menggunakan **Laravel** (pola arsitektur MVC), **Tailwind CSS**, dan **
 
 <div align="center">
 
-<img src="https://skillicons.dev/icons?i=laravel,tailwind,mysql,postgres,js,html,css,git,github,vscode" />
+<img src="https://skillicons.dev/icons?i=laravel,tailwind,mysql,js,html,css,git,github,vscode&theme=dark" />
+
+<br/><br/>
+
+<img src="https://img.shields.io/badge/Backend-Laravel%20(MVC)-6C63FF?style=flat-square&labelColor=2D2A5E" /><br/>
+<img src="https://img.shields.io/badge/Frontend-Tailwind%20v4%20%2B%20Alpine.js-2EC4B6?style=flat-square&labelColor=2D2A5E" /><br/>
+<img src="https://img.shields.io/badge/Database-MySQL-4A3F8C?style=flat-square&labelColor=2D2A5E" /><br/>
+<img src="https://img.shields.io/badge/Metodologi-SDLC%20Waterfall-6C63FF?style=flat-square&labelColor=2D2A5E" />
 
 </div>
 
-- **Backend:** Laravel (PHP) — pola arsitektur MVC
-- **Frontend:** Tailwind CSS v4 + Alpine.js
-- **Database:** MySQL / PostgreSQL
-- **Metodologi Pengembangan:** SDLC Model Waterfall
-
-<br/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=0:6C63FF,100:2EC4B6&height=4" width="100%"/>
 
 ## 🔄 Metodologi Pengembangan
 
@@ -91,12 +117,12 @@ flowchart LR
     D --> E["🧪 Testing & Integration"]
     E --> F["🔧 Maintenance"]
 
-    style A fill:#B0392B,color:#fff
-    style B fill:#1F3A63,color:#fff
-    style C fill:#3B8FC4,color:#fff
-    style D fill:#2E9E7F,color:#fff
-    style E fill:#E2B33C,color:#000
-    style F fill:#D9822B,color:#fff
+    style A fill:#6C63FF,color:#fff,stroke:#2D2A5E,stroke-width:2px
+    style B fill:#5B54E0,color:#fff,stroke:#2D2A5E,stroke-width:2px
+    style C fill:#4A45C2,color:#fff,stroke:#2D2A5E,stroke-width:2px
+    style D fill:#3A9EA3,color:#fff,stroke:#2D2A5E,stroke-width:2px
+    style E fill:#2EC4B6,color:#fff,stroke:#2D2A5E,stroke-width:2px
+    style F fill:#2D2A5E,color:#fff,stroke:#6C63FF,stroke-width:2px
 ```
 
 <br/>
@@ -105,29 +131,10 @@ flowchart LR
 
 Aplikasi Microcredential Mind Floox berhasil dirancang sesuai spesifikasi kebutuhan untuk menjadi platform pembelajaran daring yang efisien. Melalui integrasi manajemen multi-role, pelacakan progres belajar yang transparan, serta sistem otomatisasi penerbitan sertifikat digital, aplikasi ini mampu menjawab kebutuhan institusi pendidikan dalam menyelenggarakan program penguatan kompetensi mahasiswa secara terorganisasi dan akuntabel.
 
-<br/>
-
-## 👨‍💻 Tim Pengembang
-
 <div align="center">
 
-Proyek ini dikembangkan oleh mahasiswa Program Studi <b>Teknologi Rekayasa Perangkat Lunak (TRPL)</b>, Politeknik Negeri Batam — Kelompok <b>PBL-214</b>.
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:2D2A5E,50:6C63FF,100:2EC4B6&height=150&section=footer&animation=twinkling"/>
 
-| NIM | Nama | Peran |
-|:---:|---|:---:|
-| 4342501015 | Shabir Khan | Anggota Kelompok |
-| 4342501009 | Charoline Feby Riyani | Anggota Kelompok |
-| 4342501008 | Arkam Arasid Meliala | Anggota Kelompok |
-| 4342501024 | Nadya Nofitri | Anggota Kelompok |
-| 4342501012 | Muhammad Fahad Arifin | Anggota Kelompok |
-| NIK 1222382 | Cahya Miranto | 🧑‍💼 Manajer Proyek |
+<sub>Teknologi Rekayasa Perangkat Lunak — Politeknik Negeri Batam</sub>
 
-</div>
-
-<br/>
-
-<div align="center">
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=120&section=footer"/>
-
-<i>Teknologi Rekayasa Perangkat Lunak — Politeknik Negeri Batam</i>
 </div>
